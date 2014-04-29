@@ -98,3 +98,28 @@ format long
 1/3
 
 factorial(100)
+
+speed_of_light = 3.0e8
+
+realmax
+
+realmin
+
+factorial(170)
+
+factorial(171)
+
+1/0
+
+0/0
+
+% 1.9 Comments
+
+speed_of_light = 3.0e8 % meters per second
+
+x = 5 % assing the value 5 to x (avoid this type of comment)
+
+p = 0    % postion formt he origin in meters
+v = 100  % velocity in meters / second
+a = -9.8 % acceleration of gravity in meters / second^2
+
