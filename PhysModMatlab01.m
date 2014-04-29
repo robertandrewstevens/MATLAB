@@ -117,7 +117,7 @@ factorial(171)
 
 speed_of_light = 3.0e8 % meters per second
 
-x = 5 % assing the value 5 to x (avoid this type of comment)
+x = 5 % assign the value 5 to x (avoid this type of comment)
 
 p = 0    % postion formt he origin in meters
 v = 100  % velocity in meters / second
