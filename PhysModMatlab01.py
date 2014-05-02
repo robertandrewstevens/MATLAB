@@ -1,5 +1,5 @@
 # Physical Modeling in MATLAB by Allen B. Downey
-# Chapter 1
+# Chapter 1:  Variables and values
 # MATLAB script refactored into Python (from R) 
 # comments are indicted by "#" instead of "%"
 # need to use "print" to see results in Python
