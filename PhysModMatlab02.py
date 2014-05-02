@@ -4,6 +4,8 @@
 # comments are indicted by "#" instead of "%"
 # assignments use "<-" instead of "=" (although it's allowed, it is not recommneded)
 
+from math import *
+
 # 2.1 M-files
 
 source("myscript.R", echo = TRUE)
