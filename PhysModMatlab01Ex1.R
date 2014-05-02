@@ -4,6 +4,8 @@
 # Write a MATLAB expression that evaluates the following math expression.
 # You can assume that the variables mu, sigma and x already exist.
 
+# MATLAB script refactored into R
+
 mu <- 0.8 # mean
 sigma <- 0.3 # standard deviation
 x <- 1 # value of random variable from a Normal distribution with mu and sigma
