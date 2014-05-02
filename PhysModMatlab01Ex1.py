@@ -1,5 +1,5 @@
 # Physical Modeling in MATLAB by Allen B. Downey
-# Chapter 1
+# Chapter 1:  Variables and values
 # Exercise 1.1
 # Write a MATLAB expression that evaluates the following math expression.
 # You can assume that the variables mu, sigma and x already exist.
