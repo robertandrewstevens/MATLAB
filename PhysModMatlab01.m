@@ -1,5 +1,5 @@
 % Physical Modeling in MATLAB by Allen B. Downey
-% Chapter 1
+% Chapter 1:  Variables and values
 
 echo on
 
