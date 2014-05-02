@@ -1,5 +1,5 @@
 # Physical Modeling in MATLAB by Allen B. Downey
-# Chapter 1
+# Chapter 1:  Variables and values
 # MATLAB script refactored into R
 # comments are indicted by "#" instead of "%"
 # assignments use "<-" instead of "=" (although it's allowed, it is not recommneded)
