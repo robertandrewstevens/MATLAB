@@ -1,8 +1,6 @@
 # Physical Modeling in MATLAB by Allen B. Downey
 # Chapter 2:  Scripts
 # MATLAB script refactored into Python (via R)
-# comments are indicted by "#" instead of "%"
-# assignments use "<-" instead of "=" (although it's allowed, it is not recommneded)
 
 from math import *
 import myscript
