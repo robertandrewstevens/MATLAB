@@ -4,7 +4,6 @@
 
 from math import *
 import myscript
-#import fibanocci1
 
 # 2.1 M-files
 
