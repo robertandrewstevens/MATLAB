@@ -12,4 +12,5 @@ t1 = (1.0 + sqrt(5.0)) / 2.0
 t2 = (1.0 - sqrt(5.0)) / 2.0
 diff = t1**n - t2**n
 ans = diff / sqrt(5.0)
-print "ans = ", ans
+print ">> ans = ", ans
+print ""
