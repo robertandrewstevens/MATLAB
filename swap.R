@@ -8,5 +8,3 @@
 temp <- x
 x <- y
 y <- temp
-x
-y
