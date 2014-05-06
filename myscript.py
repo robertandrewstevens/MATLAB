@@ -4,3 +4,5 @@
 # MATLAB script refactored into Python (via R)
 
 x = 5
+print ">> x = ", x
+print ""
