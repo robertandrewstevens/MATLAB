@@ -1,7 +1,7 @@
 # Physical Modeling in MATLAB by Allen B. Downey
 # Chapter 2:  Scripts
 # Exercise 2.3
-# MATLAB script refactored into R
+# MATLAB script refactored into Python (via R)
 
 # Imagine that you are the owner of a car rental company with two locations,
 # Albany and Boston. 
