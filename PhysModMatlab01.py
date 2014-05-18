@@ -8,7 +8,6 @@
 from math import *
 import cmath
 
-
 print ""
 print ">> 1.1 A glorified calculator"
 print ""
