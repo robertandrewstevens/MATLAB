@@ -198,7 +198,7 @@ for(i in 1:length(Y)) {
   }
 }
 ans
-Y[11:13]
+Y[11:13] # R finds a match at i = 11 and Y = 0.891..., but MATLAB does not - why?
 
 # 4.15 Spoiling the fun
 
