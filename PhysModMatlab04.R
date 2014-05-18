@@ -93,7 +93,7 @@ ls.str() # whos in MATLAB
 
 (Y <- 1:5)
 
-(Z <- X %*% Y) # # gives an error in MATLAB
+(Z <- X %*% Y) # gives an error in MATLAB
 
 X * Y # X .* Y in MATAB
 
