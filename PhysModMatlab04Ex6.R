@@ -20,10 +20,12 @@ F[2] <- 1
 for(i in 1:(n - 2)) {
   F[i + 2] <- F[i + 1] + F[i]
 }
+F
 
-ratio <- rep(NA, n) # initialize
+ratio <- rep(NA, n - 1) # initialize
 for(i in 1:(n - 1)) {
-  ratio[i + 1] = F[i + 1]/F[i]
+  ratio[i] = F[i + 1]/F[i]
 }
+ratio
 
 plot(ratio)
