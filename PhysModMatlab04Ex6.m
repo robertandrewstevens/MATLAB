@@ -20,10 +20,12 @@ F(2) = 1;
 for i = 1:n - 2
     F(i + 2) = F(i + 1) + F(i);
 end
+F
 
 for i = 1:n - 1
-    ratio(i + 1) = F(i + 1)/F(i);
+    ratio(i) = F(i + 1)/F(i);
 end
+ratio
 
 plot(ratio);
 
