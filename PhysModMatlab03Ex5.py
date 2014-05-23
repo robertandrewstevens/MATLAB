@@ -1,7 +1,7 @@
 # Physical Modeling in MATLAB by Allen B. Downey
 # Chapter 3:  Loops
 # Exercise 3.5
-# MATLAB script refactored into Pyton (via R)
+# MATLAB script refactored into Python (via R)
 
 # We have already seen the Fibonacci sequence, F, which is defined recurrently as
 #    F[i] = F[i - 1] + F[i - 2]
