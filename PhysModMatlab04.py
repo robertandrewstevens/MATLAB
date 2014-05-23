@@ -1,6 +1,6 @@
 # Physical Modeling in MATLAB by Allen B. Downey
 # Chapter 4:  Vectors
-# MATLAB script refactored into Pyton (via R)
+# MATLAB script refactored into Python (via R)
 
 from math import *
 import numpy as np
