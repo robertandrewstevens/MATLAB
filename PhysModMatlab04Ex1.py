@@ -1,7 +1,7 @@
 # Physical Modeling in MATLAB by Allen B. Downey
 # Chapter 4:  Vectors
 # Exercise 4.1
-# MATLAB script refactored into Pyton (via R)
+# MATLAB script refactored into Python (via R)
 
 # Write a loop that computes the first n elements of the geometric
 # sequence Ai+1 = Ai/2 with A1 = 1. 
