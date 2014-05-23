@@ -1,7 +1,7 @@
 # Physical Modeling in MATLAB by Allen B. Downey
 # Chapter 3:  Loops
 # Exercise 3.2
-# MATLAB script refactored into Pyton (via R)
+# MATLAB script refactored into Python (via R)
 
 # Modify car loop so that each time through the loop it plots the value of a 
 # versus the value of i.
