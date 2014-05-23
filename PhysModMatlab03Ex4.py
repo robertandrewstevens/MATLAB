@@ -1,7 +1,7 @@
 # Physical Modeling in MATLAB by Allen B. Downey
 # Chapter 3:  Loops
 # Exercise 3.4
-# MATLAB script refactored into Pyton (via R)
+# MATLAB script refactored into Python (via R)
 
 # This example computes the terms of the series directly; as an exercise, 
 # write a script named series that computes the same sum by computing the 
