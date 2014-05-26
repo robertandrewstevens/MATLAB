@@ -2,7 +2,7 @@
 # Chapter 5:  Functions
 # MATLAB script refactored into R
 
-source("PhyModMatlab05Functions.R") # file for functions in Chapter 5
+source("PhysModMatlab05Functions.R") # file for functions in Chapter 5
 
 # 5.1 Name Collisions
 
@@ -16,7 +16,7 @@ total
 
 # 5.2 Functions
 
-# add "myfunc" to "PhyModMatlab05Functions.R"
+# add "myfunc" to "PhysModMatlab05Functions.R"
 
 (myfunc(1))
 
@@ -24,7 +24,7 @@ total
 
 rm(list = ls()) # clear in MATLAB
 
-source("PhyModMatlab05Functions.R") # need to "reinstall" functions
+source("PhysModMatlab05Functions.R") # need to "reinstall" functions
 
 y = myfunc(1)
 
@@ -47,7 +47,7 @@ c
 # 5.4 Function names
 
 # If change 'myfunc' to 'something_else' and "reinstall" functions
-source("PhyModMatlab05Functions.R")
+source("PhysModMatlab05Functions.R")
 
 (y <- myfunc(1))
 (y = something_else(1))
@@ -56,15 +56,15 @@ source("PhyModMatlab05Functions.R")
 
 sum(1:3)
 
-# Add function 'sum' to 'PhyModMatlab05Functions.R' and "reinstall" functions
-source("PhyModMatlab05Functions.R")
+# Add function 'sum' to 'PhysModMatlab05Functions.R' and "reinstall" functions
+source("PhysModMatlab05Functions.R")
 
 (sum())
 
 # 5.5 Multiple input variables
 
-# Add function 'hypotenuse' to 'PhyModMatlab05Functions.R' and "reinstall" functions
-source("PhyModMatlab05Functions.R")
+# Add function 'hypotenuse' to 'PhysModMatlab05Functions.R' and "reinstall" functions
+source("PhysModMatlab05Functions.R")
 (c <- hypotenuse(3, 4))
 
 #c <- hypotenuse(3) #comment out intentional error
@@ -73,8 +73,8 @@ source("PhyModMatlab05Functions.R")
 
 # 5.6 Logical functions
 
-# Add function 'is.prime' to 'PhyModMatlab05Functions.R' and "reinstall" functions
-source("PhyModMatlab05Functions.R")
+# Add function 'is.prime' to 'PhysModMatlab05Functions.R' and "reinstall" functions
+source("PhysModMatlab05Functions.R")
 
 is.prime(17)
 is.prime(21)
@@ -82,15 +82,15 @@ is.prime(21)
 (c <- hypotenuse(3, 4))
 is.integer(c)
 
-# Add function 'is.integral' to 'PhyModMatlab05Functions.R' and "reinstall" functions
+# Add function 'is.integral' to 'PhysModMatlab05Functions.R' and "reinstall" functions
 # see help for 'is.integer' for fuction 'is.wholenumber' - same result?  TODO:  check
-source("PhyModMatlab05Functions.R")
+source("PhysModMatlab05Functions.R")
 is.integral(c)
 
 # 5.7 An incremental development example
 
-# Add each version of 'find_tripples' function to 'PhyModMatlab05Functions.R' and "reinstall" functions
-source("PhyModMatlab05Functions.R")
+# Add each version of 'find_tripples' function to 'PhysModMatlab05Functions.R' and "reinstall" functions
+source("PhysModMatlab05Functions.R")
 
 find_triples1()
 
