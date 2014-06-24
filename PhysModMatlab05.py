@@ -56,7 +56,7 @@ print "c =", c
 
 # If change 'myfunc' to 'something_else'
 
-y <- myfunc(1)
+y = myfunc(1)
 print "y =", y
 y = something_else(1)
 print "y =", y
@@ -73,7 +73,7 @@ print "mysum() =", mysum()
 # 5.5 Multiple input variables
 
 # Add function 'hypotenuse' to 'PhysModMatlab05Functions.py'
-c <- hypotenuse(3, 4)
+c = hypotenuse(3, 4)
 print "c =", c
 
 #c <- hypotenuse(3) #comment out intentional error
