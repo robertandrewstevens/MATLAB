@@ -1,0 +1,408 @@
+---
+title: "PhysModMatlab01"
+author: "Robert A. Stevens"
+date: "March 1, 2015"
+output: html_document
+---
+
+# Physical Modeling in MATLAB
+
+Allen B. Downey 
+
+Version 1.1.6
+
+# Chapter 1:  Variables and values
+
+## 1.1 A glorified calculator
+
+At heart, MATLAB is a glorified calculator. When you start MATLAB you will see a window entitled MATLAB that contains smaller windows entitled Current Directory, Command History and Command Window. The Command Window runs the MATLAB interpreter, which allows you to type MATLAB commands, then executes them and prints the result.
+
+Initially, the Command Window contains a welcome message with information about the version of MATLAB you are running, followed by a chevron:
+
+    >>
+
+which is the MATLAB prompt; that is, this symbol prompts you to enter a command.
+
+The simplest kind of command is a mathematical expression, which is made up of operands (like numbers, for example) and operators (like the plus sign, +).
+
+If you type an expression and then press Enter (or Return), MATLAB evaluates the expression and prints the result.
+
+    >> 2 + 1 
+    ans = 3
+
+Just to be clear: in the example above, MATLAB printed >>; I typed 2 + 1 and then hit Enter, and MATLAB printed ans = 3. And when I say “printed,” I really mean “displayed on the screen,” which might be confusing, but it’s the way people talk.
+
+An expression can contain any number of operators and operands. You don’t have to put spaces between them; some people do and some people don’t.
+
+    >> 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9
+    ans = 45
+
+Speaking of spaces, you might have noticed that MATLAB puts some space between ans = and the result. In my examples I will leave it out to save paper.
+
+The other arithmetic operators are pretty much what you would expect. Sub- traction is denoted by a minus sign, -; multiplication by an asterisk, * (some- times pronounced “splat”); division by a forward slash /.
+
+    >> 2*3 - 4/5
+    ans = 5.2000
+
+The order of operations is what you would expect from basic algebra: multi- plication and division happen before addition and subtraction. If you want to override the order of operations, you can use parentheses.
+
+    >> 2*(3 - 4)/5
+    ans = -0.4000
+
+When I added the parentheses I also changed the spacing to make the grouping of operands clearer to a human reader. This is the first of many style guidelines I will recommend for making your programs easier to read. Style doesn’t change what the program does; the MATLAB interpreter doesn’t check for style. But human readers do, and the most important human who will read your code is you.
+
+And that brings us to the First Theorem of debugging: 
+
+    Readable code is debuggable code.
+
+It is worth spending time to make your code pretty; it will save you time debugging!
+
+The other common operator is exponentiation, which uses the ^ symbol, sometimes pronounced “carat” or “hat”. So 2 raised to the 16th power is
+
+    >> 2^16
+    ans = 65536
+
+As in basic algebra, exponentiation happens before multiplication and division, but again, you can use parentheses to override the order of operations.
+
+## 1.2 Math functions
+
+MATLAB knows how to compute pretty much every math function you’ve heard of. It knows all the trigonometric functions; here’s how you use them:
+
+    >> sin(1)
+    ans = 0.8415
+
+This command is an example of a function call. The name of the function is sin, which is the usual abbreviation for the trigonometric sine. The value in parentheses is called the argument. All the trig functions in MATLAB work in radians.
+
+Some functions take more than one argument, in which case they are separated by commas. For example, atan2 computes the inverse tangent, which is the angle in radians between the positive x-axis and the point with the given y and x coordinates.
+
+    >> atan2(1, 1)
+    ans = 0.7854
+
+If that bit of trigonometry isn’t familiar to you, don’t worry about it. It’s just an example of a function with multiple arguments.
+
+MATLAB also provides exponential functions, like exp, which computes e raised to the given power. So exp(1) is just e.
+
+    >> exp(1)
+    ans = 2.7183
+
+The inverse of exp is log, which computes the logarithm base e: 
+
+    >> log(exp(3))
+    ans = 3
+
+This example also demonstrates that function calls can be nested; that is, you can use the result from one function as an argument for another.
+
+More generally, you can use a function call as an operand in an expression.
+
+    >> sqrt(sin(0.5)^2 + cos(0.5)^2)
+    ans = 1
+
+As you probably guessed, sqrt computes the square root.
+
+There are lots of other math functions, but this is not meant to be a reference manual. To learn about other functions, you should read the documentation.
+
+## 1.3 Documentation
+
+MATLAB comes with two forms of online documentation, help and doc.
+
+The help command works from the Command Window; just type help followed by the name of a command.
+
+    >> help sin
+     SIN    Sine of argument in radians.
+        SIN(X) is the sine of the elements of X.
+        See also asin, sind.
+        Overloaded functions or methods (ones with the same name in other
+           directories) help sym/sin.m
+    
+        Reference page in Help browser
+           doc sin
+
+Unfortunately, this documentation is not beginner-friendly.
+
+One gotcha is that the name of the function appears in the help page in capital letters, but if you type it like that in MATLAB, you get an error:
+
+    >> SIN(1)
+    ??? Undefined command/function ‘SIN’.
+
+Another problem is that the help page uses vocabulary you don’t know yet. For example, “the elements of X” won’t make sense until we get to vectors and matrices a few chapters from now.
+
+The doc pages are usually better. If you type doc sin, a browser appears with more detailed information about the function, including examples of how to use it. The examples often use vectors and arrays, so they may not make sense yet, but you can get a preview of what’s coming.
+
+## 1.4 Variables
+
+One of the features that makes MATLAB more powerful than a calculator is the ability to give a name to a value. A named value is called a variable.
+
+MATLAB comes with a few predefined variables. For example [1], the name pi refers to the mathematical quantity π, which is approximately
+
+    >> pi
+    ans = 3.1416
+
+And if you do anything with complex numbers, you might find it convenient that both i and j are predefined as the square root of −1.
+
+You can use a variable name anywhere you can use a number; for example, as an operand in an expression:
+
+    >> pi * 3^2
+    ans = 28.2743
+
+or as an argument to a function:
+
+    >> sin(pi/2)
+    ans = 1
+    
+    >> exp(i * pi)
+    ans = -1.0000 + 0.0000i
+
+As the second example shows, many MATLAB functions work with complex numbers. This example demonstrates Euler’s Equality: exp(iπ) = −1.
+
+Whenever you evaluate an expression, MATLAB assigns the result to a variable named ans. You can use ans in a subsequent calculation as shorthand for “the value of the previous expression”.
+
+    >> 3^2 + 4^2
+    ans = 25
+
+    >> sqrt(ans)
+    ans = 5
+
+But keep in mind that the value of ans changes every time you evaluate an expression.
+
+## 1.5 Assignment statements
+
+You can create your own variables, and give them values, with an assignment statement. The assignment operator is the equals sign, =.
+
+    >> x = 6 * 7
+    x = 42
+
+This example creates a new variable named x and assigns it the value of the expression 6 * 7. MATLAB responds with the variable name and the computed value.
+
+In every assignment statement, the left side has to be a legal variable name. The right side can be any expression, including function calls.
+
+Almost any sequence of lower and upper case letters is a legal variable name. Some punctuation is also legal, but the underscore, , is the only commonly-used non-letter. Numbers are fine, but not at the beginning. Spaces are not allowed. Variable names are “case sensitive”, so x and X are different variables.
+
+    >> fibonacci0 = 1;
+    
+    >> LENGTH = 10;
+    
+    >> first_name = ‘allen’
+    first_name = allen
+
+The first two examples demonstrate the use of the semi-colon, which suppresses the output from a command. In this case MATLAB creates the variables and assigns them values, but displays nothing.
+
+The third example demonstrates that not everything in MATLAB is a number. A sequence of characters in single quotes is a string.
+
+Although i, j and pi are predefined, you are free to reassign them. It is common to use i and j for other purposes, but it is probably not a good idea to change the value of pi!
+
+## 1.6 Why variables?
+
+The most common reasons to use variables are:
+
+To avoid recomputing a value that is used repeatedly. For example, if you are performing computations involving e, you might want to compute it once and save the result.
+
+    >> e = exp(1)  
+    e = 2.7183
+
+To make the connection between the code and the underlying mathematics more apparent. If you are computing the area of a circle, you might want to use a variable named r:
+
+    >> r = 3 
+    r = 3
+     
+    >> area = pi * r^2
+    area = 28.2743
+
+That way your code resembles the familiar formula πr2.
+
+To break a long computation into a sequence of steps. Suppose you are evaluating a big, hairy expression like this:
+
+    ans = ((x - theta) * sqrt(2 * pi) * sigma) ^ -1 * ... exp(-1/2 * (log(x - theta) - zeta)^2 / sigma^2)
+
+You can use an ellipsis to break the expression into multiple lines. Just type ... at the end of the first line and continue on the next.
+
+But often it is better to break the computation into a sequence of steps and assign intermediate results to variables.
+
+    shiftx = x - theta
+    denom = shiftx * sqrt(2 * pi) * sigma
+    temp = (log(shiftx) - zeta) / sigma
+    exponent = -1/2 * temp^2
+    ans = exp(exponent) / denom
+
+The names of the intermediate variables explain their role in the computation. shiftx is the value of x shifted by theta. It should be no surprise that exponent is the argument of exp, and denom ends up in the denominator. Choosing informative names makes the code easier to read and understand (see the First Theorem of Debugging).
+
+## 1.7 Errors
+
+It’s early, but now would be a good time to start making errors. Whenever you learn a new feature, you should try to make as many errors as possible, as soon as possible.
+
+When you make deliberate errors, you get to see what the error messages look like. Later, when you make accidental errors, you will know what the messages mean.
+
+A common error for beginning programmers is leaving out the * for multiplication.
+
+    >> area = pi r^2
+    ??? area = pi r^2
+                  |
+    Error: Unexpected MATLAB expression.
+
+The error message indicates that, after seeing the operand pi, MATLAB was “expecting” to see an operator, like *. Instead, it got a variable name, which is the “unexpected expression” indicated by the vertical line, | (which is called a “pipe”).
+
+Another common error is to leave out the parentheses around the arguments of a function. For example, in math notation, it is common to write something like sin π, but not in MATLAB.
+
+    >> sin pi
+    ??? Function ‘sin’ is not defined for values of class ‘char’.
+
+The problem is that when you leave out the parentheses, MATLAB treats the argument as a string (rather than as an expression). In this case the sin function generates a reasonable error message, but in other cases the results can be baffling. For example, what do you think is going on here?
+
+    >> abs pi
+    ans =  112   105
+
+There is a reason for this “feature”, but rather than get into that now, let me suggest that you should always put parentheses around arguments.
+
+This example also demonstrates the Second Theorem of Debugging:
+
+    The only thing worse than getting an error message is not getting an error message.
+
+Beginning programmers hate error messages and do everything they can to make them go away. Experienced programmers know that error messages are your friend. They can be hard to understand, and even misleading, but it is worth making some effort to understand them.
+
+Here’s another common rookie error. If you were translating the following mathematical expression into MATLAB:
+
+    1/2√π
+
+You might be tempted to write something like this:
+
+    1/2*sqrt(pi)
+
+But that would be wrong. So very wrong.
+
+## 1.8 Floating-point arithmetic
+
+In mathematics, there are several kinds of numbers: integer, real, rational, irrational, imaginary, complex, etc. MATLAB only has one kind of number, called floating-point.
+
+You might have noticed that MATLAB expresses values in decimal notation. So, for example, the rational number 1/3 is represented by the floating-point value
+
+    >> 1/3
+    ans = 0.3333
+
+which is only approximately correct. It’s not quite as bad as it seems; MATLAB uses more digits than it shows by default. You can change the format to see the other digits.
+
+    >> format long
+    >> 1/3
+    ans = 0.33333333333333
+
+Internally, MATLAB uses the IEEE double-precision floating-point format, which provides about 15 significant digits of precision (in base 10). Leading and trailing zeros don’t count as “significant” digits, so MATLAB can represent large and small numbers with the same precision.
+
+Very large and very small values are displayed in scientific notation.
+
+    >> factorial(100)
+    ans = 9.332621544394410e+157
+
+The e in this notation is not the transcendental number known as e; it is just an abbreviation for “exponent”. So this means that 100! is approximately 9.33 × 10157. The exact solution is a 158-digit integer, but we only know the first 16 digits.
+
+You can enter numbers using the same notation.
+
+    >> speed_of_light = 3.0e8
+    speed_of_light = 300000000
+
+Although MATLAB can handle large numbers, there is a limit. The predefined variables realmax and realmin contain the largest and smallest numbers that MATLAB can handle [2].
+
+    >> realmax
+    ans = 1.797693134862316e+308
+    
+    >> realmin
+    ans = 2.225073858507201e-308
+
+If the result of a computation is too big, MATLAB “rounds up” to infinity.
+
+    >> factorial(170)
+    ans = 7.257415615307994e+306
+    
+    >> factorial(171)
+    ans = Inf
+
+Division by zero also returns Inf, but in this case MATLAB gives you a warning because division by zero is usually considered undefined.
+
+    >> 1/0
+    Warning: Divide by zero.
+    
+    ans = Inf
+
+A warning is like an error message without teeth; the computation is allowed to continue. Allowing Inf to propagate through a computation doesn’t always do what you expect, but if you are careful with how you use it, Inf can be quite useful.
+
+For operations that are truly undefined, MATLAB returns NaN, which stands for “not a number”.
+
+    >> 0/0
+    Warning: Divide by zero.
+    
+    ans = NaN
+
+1.9 Comments
+
+Along with the commands that make up a program, it is useful to include comments that provide additional information about the program. The percent symbol % separates the comments from the code.
+
+    >> speed_of_light = 3.0e8     % meters per second
+    speed_of_light = 300000000
+
+The comment runs from the percent symbol to the end of the line. In this case it specifies the units of the value. In an ideal world, MATLAB would keep track of units and propagate them through the computation, but for now that burden falls on the programmer.
+
+Comments have no effect on the execution of the program. They are there for human readers. Good comments make programs more readable, but bad comments are useless or (even worse) misleading.
+
+Avoid comments that are redundant with the code:
+
+    >> x = 5        % assign the value 5 to x
+
+Good comments provide additional information that is not in the code, like units in the example above, or the meaning of a variable:
+
+    >> p = 0        % position from the origin in meters
+    >> v = 100      % velocity in meters / second
+    >> a = -9.8     % acceleration of gravity in meters / second^2
+
+If you use longer variable names, you might not need explanatory comments, but there is a tradeoff: longer code can become harder to read. Also, if you are translating from math that uses short variable names, it can be useful to make your program consistent with your math.
+
+## 1.10 Glossary
+
+interpreter: The program that reads and executes MATLAB code.
+
+command: A line of MATLAB code executed by the interpreter.
+
+prompt: The symbol the interpreter prints to indicate that it is waiting for you to type a command.
+
+operator: One of the symbols, like * and +, that represent mathematical operations.
+
+operand: A number or variable that appears in an expression along with operators.
+
+expression: A sequence of operands and operators that specifies a mathematical computation and yields a value.
+
+value: The numerical result of a computation.
+
+evaluate: To compute the value of an expression.
+
+order of operations: The rules that specify which operations in an expression are performed first.
+
+function: A named computation; for example log10 is the name of a function that computes logarithms in base 10.
+
+call: To cause a function to execute and compute a result.
+
+function call: A kind of command that executes a function.
+
+argument: An expression that appears in a function call to specify the value the function operates on.
+
+nested function call: An expression that uses the result from one function call as an argument for another.
+
+variable: A named value.
+
+assignment statement: A command that creates a new variable (if necessary) and gives it a value.
+
+string: A value that consists of a sequence of characters (as opposed to a number).
+
+floating-point: The kind of number MATLAB works with. All floating-point numbers can be represented with about 16 significant decimal digits (unlike mathematical integers and reals).
+
+scientific notation: A format for typing and displaying large and small numbers; e.g. 3.0e8, which represents 3.0 × 108 or 300,000,000.
+
+comment: Part of a program that provides additional information about the program, but does not affect its execution.
+
+## 1.11 Exercises
+
+Exercise 1.1 Write a MATLAB expression that evaluates the following math expression. You can assume that the variables mu, sigma and x already exist.
+
+    exp(-((x - m)/(s*sqrt(2))^2)/(s*sqrt(2*pi))
+
+Note: you can’t use Greek letters in MATLAB; when translating math expressions with Greek letters, it is common to write out the name of the letter (assuming you know it).
+
+
+[1] Technically pi is a function, not a variable, but for now it’s best to pretend.
+
+[2] The names of these variables are misleading; floating-point numbers are sometimes, wrongly, called “real”.
