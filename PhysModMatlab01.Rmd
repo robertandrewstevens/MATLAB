@@ -354,53 +354,53 @@ If you use longer variable names, you might not need explanatory comments, but t
 
 ## 1.10 Glossary
 
-interpreter: The program that reads and executes MATLAB code.
+**interpreter:** The program that reads and executes MATLAB code.
 
-command: A line of MATLAB code executed by the interpreter.
+**command:** A line of MATLAB code executed by the interpreter.
 
-prompt: The symbol the interpreter prints to indicate that it is waiting for you to type a command.
+**prompt:** The symbol the interpreter prints to indicate that it is waiting for you to type a command.
 
-operator: One of the symbols, like * and +, that represent mathematical operations.
+**operator:** One of the symbols, like * and +, that represent mathematical operations.
 
-operand: A number or variable that appears in an expression along with operators.
+**operand:** A number or variable that appears in an expression along with operators.
 
-expression: A sequence of operands and operators that specifies a mathematical computation and yields a value.
+**expression:** A sequence of operands and operators that specifies a mathematical computation and yields a value.
 
-value: The numerical result of a computation.
+**value:** The numerical result of a computation.
 
-evaluate: To compute the value of an expression.
+**evaluate:** To compute the value of an expression.
 
-order of operations: The rules that specify which operations in an expression are performed first.
+**order of operations:** The rules that specify which operations in an expression are performed first.
 
-function: A named computation; for example log10 is the name of a function that computes logarithms in base 10.
+**function:** A named computation; for example log10 is the name of a function that computes logarithms in base 10.
 
-call: To cause a function to execute and compute a result.
+**call:** To cause a function to execute and compute a result.
 
-function call: A kind of command that executes a function.
+**function call:** A kind of command that executes a function.
 
-argument: An expression that appears in a function call to specify the value the function operates on.
+**argument:** An expression that appears in a function call to specify the value the function operates on.
 
-nested function call: An expression that uses the result from one function call as an argument for another.
+**nested function call:** An expression that uses the result from one function call as an argument for another.
 
-variable: A named value.
+**variable:** A named value.
 
-assignment statement: A command that creates a new variable (if necessary) and gives it a value.
+**assignment statement:** A command that creates a new variable (if necessary) and gives it a value.
 
-string: A value that consists of a sequence of characters (as opposed to a number).
+**string:** A value that consists of a sequence of characters (as opposed to a number).
 
-floating-point: The kind of number MATLAB works with. All floating-point numbers can be represented with about 16 significant decimal digits (unlike mathematical integers and reals).
+**floating-point:** The kind of number MATLAB works with. All floating-point numbers can be represented with about 16 significant decimal digits (unlike mathematical integers and reals).
 
-scientific notation: A format for typing and displaying large and small numbers; e.g. 3.0e8, which represents 3.0 × 108 or 300,000,000.
+**scientific notation:** A format for typing and displaying large and small numbers; e.g. 3.0e8, which represents 3.0 × 108 or 300,000,000.
 
-comment: Part of a program that provides additional information about the program, but does not affect its execution.
+**comment:** Part of a program that provides additional information about the program, but does not affect its execution.
 
 ## 1.11 Exercises
 
-Exercise 1.1 Write a MATLAB expression that evaluates the following math expression. You can assume that the variables mu, sigma and x already exist.
+**Exercise 1.1** *Write a MATLAB expression that evaluates the following math expression. You can assume that the variables mu, sigma and x already exist.*
 
     exp(-((x - m)/(s*sqrt(2))^2)/(s*sqrt(2*pi))
 
-Note: you can’t use Greek letters in MATLAB; when translating math expressions with Greek letters, it is common to write out the name of the letter (assuming you know it).
+*Note: you can’t use Greek letters in MATLAB; when translating math expressions with Greek letters, it is common to write out the name of the letter (assuming you know it).*
 
 
 [1] Technically pi is a function, not a variable, but for now it’s best to pretend.
