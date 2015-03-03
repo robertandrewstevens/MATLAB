@@ -194,9 +194,7 @@ When you start writing scripts that are more than a few lines, you might find yo
 
 Incremental development is a way of programming that tries to minimize the pain of debugging. The fundamental steps are
 
-1. Always start with a working program. If you have an example from a book or a program you wrote that is similar to what you are working on, start with that. Otherwise, start with something you know is correct, like x = 5. Run the program and confirm that you are running the program you think you are running.
-
-This step is important, because in most environments there are lots of little things that can trip you up when you start a new project. Get them out of the way so you can focus on programming.
+1. Always start with a working program. If you have an example from a book or a program you wrote that is similar to what you are working on, start with that. Otherwise, start with something you know is correct, like x = 5. Run the program and confirm that you are running the program you think you are running. This step is important, because in most environments there are lots of little things that can trip you up when you start a new project. Get them out of the way so you can focus on programming.
 
 2. Make one small, testable change at a time. A “testable” change is one that displays something on the screen (or has some other effect) that you can check. Ideally, you should know what the correct answer is, or be able to check it by performing another computation.
 
