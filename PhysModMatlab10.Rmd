@@ -1,0 +1,323 @@
+---
+title: "PhysModMatlab10"
+author: "Robert A. Stevens"
+date: "March 7, 2015"
+output: html_document
+---
+
+# Physical Modeling in MATLAB
+
+Allen B. Downey 
+
+Version 1.1.6
+
+# Chapter 10: Second-order systems
+
+## 10.1 Nested functions
+
+In the Section 7.1, we saw an example of an M-file with more than one function:
+
+    function res = duck()
+        error = error_func(10)
+    end
+    
+    function res = error_func(h)
+        rho = 0.3;      % density in g / cm^3
+        r = 10;         % radius in cm
+        res = ...
+    end
+
+Because the first function ends before the second begins, they are at the same level of indentation. Functions like these are parallel, as opposed to nested. A nested function is defined inside another, like this:
+
+    function res = duck()
+        error = error_func(10)
+    
+        function res = error_func(h)
+            rho = 0.3;      % density in g / cm^3
+            r = 10;         % radius in cm
+            res = ...
+        end 
+    end
+
+The top-level function, duck, is the outer function and error func is an inner function.
+
+Nesting functions is useful because the variables of the outer function can be accessed from the inner function. This is not possible with parallel functions.
+
+In this example, using a nested function makes it possible to move the parameters rho and r out of error func.
+
+    function res = duck(rho)
+        r = 10;
+        error = error_func(10)
+            
+        function res = error_func(h)
+            res = ...
+        end 
+    end
+
+Both rho and r can be accessed from error func. By making rho an input argument, we made it easier to test duck with different parameter values.
+
+## 10.2 Newtonian motion
+
+Newton’s second law of motion is often written like this 
+
+    F = ma
+
+where F is the net force acting on a object, m is the mass of the object, and a is the resulting acceleration of the object. In a simple case where the object is moving along a straight line, F and a are scalars, but in general they are vectors.
+
+Even more generally, if F and a vary in time, then they can be thought of as functions that return vectors; that is, F is a function and the result of evaluating F(t) is a vector that describes the net force at time t. So a more explicit way to write Newton’s law is
+
+    ∀ t : F(t) = m a(t)
+
+The arrangement of this equation suggests that if you know m and a you can compute force, which is true, but in most physical simulations it is the other way around. Based on a physical model, you know F and m, and compute a.
+
+So if you know acceleration, a, as a function of time, how do you find the position of the object, p? Well, we know that acceleration is the second derivative of position, so we can write a differential equation
+
+    ptt = a
+
+Where a and p are functions of time that return vectors, and ptt is the second time derivative of p.
+
+Because this equation includes a second derivative, it is a second-order ODE. ode45 can’t solve this equation in this form, but by introducing a new variable, v, for velocity, we can rewrite it as a system of first-order ODEs.
+
+    pt = v 
+    vt = a
+
+The first equation says that the first derivative of p is v; the second says that the derivative of v is a.
+
+## 10.3 Freefall
+
+Let’s start with a simple example, an object in freefall in a vacuum (where there’s no air resistance). Near the surface of the earth, the acceleration of gravity is g = −9.8 m/s2, where the minus sign indicates that gravity pulls down.
+
+If the object falls straight down (in the same direction as gravity), we can de- scribe its position with a scalar value, altitude. So this will be a one-dimensional problem, at least for now.
+
+Here is a rate function we can use with ode45 to solve this problem:
+
+    function res = freefall(t, X)
+        p = X(1); % the first element is position
+        v = X(2); % the second element is velocity
+    
+        dpdt = v;
+        dvdt = acceleration(t, p, v);
+ 
+        res = [dpdt; dvdt]; % pack the results in a column vector
+    end
+    
+    function res = acceleration(t, p, v)
+        g = -9.8; % acceleration of gravity in m/s^2
+        res = g;
+    end
+
+The first function is the rate function. It gets t and X as input variables, where the elements of X are understood to be position and velocity. The return value from freefall is a (column) vector that contains the derivatives of position and velocity, which are velocity and acceleration, respectively.
+
+Computing pt is easy because we are given velocity as an element of X. The only thing we have to compute is acceleration, which is what the second function does.
+
+acceleration computes acceleration as a function of time, position and velocity. In this example, the net acceleration is a constant, so we don’t really have to include all this information yet, but we will soon.
+
+Here’s how to run ode45 with this rate function:
+
+    >> ode45(@freefall, [0, 30], [4000, 0])
+
+As always, the first argument is the function handle, the second is the time interval (30 seconds) and the third is the initial condition: in this case, the initial altitude is 4000 meters and the initial velocity is 0. So you can think of the “object” a a skydiver jumping out of an airplane at about 12,000 feet.
+
+Here’s what the result looks like:
+
+The bottom line shows velocity starting at zero and dropping linearly. The top line shows position starting at 4000 m and dropping parabolically (but remember that this parabola is a function of time, not a ballistic trajectory).
+
+Notice that ode45 doesn’t know where the ground is, so the skydiver keeps going through zero into negative altitude. We will address this issue later.
+
+## 10.4 Air resistance
+
+To make this simulation more realistic, we can add air resistance. For large objects moving quickly through air, the force due to air resistance, called “drag,” is proportional to v2:
+
+    Fdrag = cv2
+
+Where c is a drag constant that depends on the density of air, the cross-sectional area of the object and the surface properties of the object. For purposes of this problem, let’s say that c = 0.2.
+
+To convert from force to acceleration, we have to know mass, so let’s say that the skydiver (with equipment) weighs 75 kg.
+
+Here’s a version of acceleration that takes air resistance into account (you don’t have to make any changes in freefall:
+
+    function res = acceleration(t, p, v)
+        a_grav = -9.8; % acceleration of gravity in m/s^2 
+        c=0.2; % drag constant
+        m = 75; % mass in kg
+        f_drag = c * v^2; % drag force in N
+        a_drag = f_drag / m; % drag acceleration in m/s^2
+        res = a_grav + a_drag; % total acceleration
+    end
+
+The sign of the drag force (and acceleration) is positive as long as the object is falling, the direction of the drag force is up. The net acceleration is the sum of gravity and drag. Be careful when you are working with forces and accelerations; make sure you only add forces to forces or accelerations to accelerations. In my code, I use comments to remind myself what units the values are in. That helps me avoid nonsense like adding forces to accelerations.
+
+Here’s what the result looks like with air resistance:
+
+Big difference! With air resistance, velocity increases until the drag acceleration equals g; after that, velocity is a constant, known as “terminal velocity,” and position decreases linearly (and much more slowly than it would in a vacuum). To examine the results more closely, we can assign them to variables
+
+    >> [T, M] = ode45(@freefall, [0, 30], [4000, 0]);
+
+And then read the terminal position and velocity:
+
+    >> M(end,1)
+    ans = 2.4412e+03          % altitude in meters
+    
+    >> M(end,2)
+    ans = -60.6143            % velocity in m/s
+
+**Exercise 10.1** *Increase the mass of the skydiver, and confirm that terminal velocity increases. This relationship is the source of the intuition that heavy objects fall faster; in air, they do!*
+
+## 10.5 Parachute!
+
+In the previous section, we saw that the terminal velocity of a 75kg skydiver is about 60 m/s, which is about 130 mph. If you hit the ground at that speed, you would almost certainly be killed. That’s where parachutes come in.
+
+**Exercise 10.2** *Modify acceleration so that after 30 seconds of free-fall the skydiver deploys a parachute, which (almost) instantly increases the drag constant to 2.7.*
+
+*What is the terminal velocity now? How long (after deployment) does it take to reach the ground?*
+
+## 10.6 Two dimensions
+
+So far we have used ode45 for a system of first-order equations and for a single second-order equation. The next logical step is a system of second-order equations, and the next logical example is a projectile. A “projectile” is an object propelled through space, usually toward, and often to the detriment of, a target.
+
+If a projectile stays in a plane, we can think of the system as two-dimensional, with x representing the horizontal distance traveled and y representing the height or altitude. So now instead of a skydiver, think of a circus performer being fired out of a cannon.
+
+According to the Wikipedia [1], the record distance for a human cannonball is 56.5 meters (almost 186 feet).
+
+Here is a general framework for computing the trajectory of a projectile in two dimensions using ode45:
+
+    function res = projectile(t, W)
+        P = W(1:2);
+        V = W(3:4);
+        
+        dPdt = V;
+        dVdt = acceleration(t, P, V);
+        
+        res = [dPdt; dVdt];
+    end
+    
+    function res = acceleration(t, P, V)
+        g = -9.8; % acceleration of gravity in m/s^2
+        res = [0; g];
+    end
+
+The second argument of the rate function is a vector, W, with four elements. The first two are assigned to P, which represents position; the last two are assigned to V, which represents velocity. P and V are vectors with elements for the x and y components.
+
+The result from acceleration is also a vector; ignoring air resistance (for now), the acceleration in the x direction is 0; in the y direction it’s g. Other than that, this code is similar to what we saw in Section 10.3.
+
+If we launch the human projectile from an initial height of 3 meters, with velocities 40 m/s and 30 m/s in the x and y directions, the ode45 call looks like this:
+
+    ode45(@projectile, [0,10], [0, 3, 40, 30]);
+
+And the result looks like this:
+
+You might have to think a little to figure out which line is which. It looks like the flight time is about 6 seconds.
+
+**Exercise 10.3** *Extract the x and y components of position, plot the trajectory of the projectile, and estimate the distance traveled.*
+
+**Exercise 10.4** *Add air resistance to this simulation. In the skydiver scenario, we estimated that the drag constant was 0.2, but that was based on the assumption that the skydiver is falling flat. A human cannonball, flying head-first, probably has a drag constant closer to 0.1. What initial velocity is needed to achieve the record flight distance of 65.6 meters? Hint: what is the optimal launch angle?*
+
+## 10.7 What could go wrong?
+
+What could go wrong? Well, vertcat for one. To explain what that means, I’ll start with catenation, which is the operation of joining two matrices into a larger matrix. “Vertical catenation” joins the matrices by stacking them on top of each other; “horizontal catenation” lays them side by side.
+
+Here’s an example of horizontal catenation with row vectors:
+
+    >> x = 1:3
+    x = 1 2 3
+    
+    >> y = 4:5
+    y = 4 5
+    
+    >> z = [x, y]
+    z = 1 2 3 4 5
+
+Inside brackets, the comma operator performs horizontal catenation. The vertical catenation operator is the semi-colon. Here is an example with matrices:
+
+    >> X = zeros(2,3)
+    X = 0 0 0
+        0 0 0
+    
+    >> Y = ones(2,3)
+    Y = 1 1 1
+        1 1 1
+    
+    >> Z = [X; Y]
+    Z = 0 0 0
+        0 0 0
+        1 1 1
+        1 1 1
+
+These operations only work if the matrices are the same size along the dimension where they are glued together. If not, you get:
+
+    >> a = 1:3
+    a = 1    2    3 
+    
+    >> b = a'
+    b = 1
+        2 
+        3
+    
+    >> c = [a, b]
+    ??? Error using ==> horzcat
+    All matrices on a row in the bracketed expression must have the same number of rows.
+    
+    >> c = [a; b]
+    ??? Error using ==> vertcat
+    All rows in the bracketed expression must have the same number of columns.
+
+In this example, a is a row vector and b is a column vector, so they can’t be catenated in either direction.
+
+Reading the error messages, you probably guessed that horzcat is the function that performs horizontal catenation, and likewise with vertcat and vertical catenation.
+
+These operations are relevant to projectile because of the last line, which packs dPdt and dVdt into the output variable:
+
+    function res = projectile(t, W)
+        P = W(1:2);
+        V = W(3:4);
+        
+        dPdt = V;
+        dVdt = acceleration(t, P, V);
+        
+        res = [dPdt; dVdt];
+    end
+
+As long as both dPdt and dVdt are column vectors, the semi-colon performs vertical catenation, and the result is a column vector with four elements. But if either of them is a row vector, that’s trouble.
+
+ode45 expects the result from projectile to be a column vector, so if you are working with ode45, it is probably a good idea to make everything a column vector.
+
+In general, if you run into problems with horzcat and vertcat, use size to display the dimensions of the operands, and make sure you are clear on which way your vectors go.
+
+## 10.8 Glossary
+
+**parallel functions:** Two or more functions defined side-by-side, so that one ends before the next begins.
+
+**nested function:** A function defined inside another function.
+
+**outer function:** A function that contains another function definition.
+
+**inner function:** A function defined inside another function definition. The inner function can access the variables of the outer function.
+
+**catenation:** The operation of joining two matrices end-to-end to form a new matrix.
+
+## 10.9 Exercises
+
+**Exercise 10.5** *The flight of a baseball is governed by three forces: gravity, drag due to air resistance, and Magnus force due to spin. If we ignore wind and Magnus force, the path of the baseball stays in a plane, so we can model it as a projectile in two dimensions.*
+
+*A simple model of the drag of a baseball is:*
+
+    Fd = −(1/2)*ρ*v^2*A*Cd*V
+
+*where Fd is a vector that represents the force on the baseball due to drag, Cd is the drag coefficient (0.3 is a reasonable choice), ρ is the density of air (1.3 kg/m3 at sea level), A is the cross sectional area of the baseball (0.0042 m2), v is the magnitude of the velocity vector, and Vˆ is a unit vector in the direction of the velocity vector. The mass of the baseball is 0.145 kg.*
+
+*For more information about drag, see* http://en.wikipedia.org/wiki/Drag_(physics).
+
+- *Write a function that takes the initial velocity of the baseball and the launch angle as input variables, uses ode45 to compute the trajectory, and returns the range (horizontal distance in flight) as an output variable.*
+
+- *Write a function that takes the initial velocity of the baseball as an input variable, computes the launch angle that maximizes the range, and returns the optimal angle and range as output variables. How does the optimal angle vary with initial velocity?*
+
+- *When the Red Sox won the World Series in 2007, they played the Colorado Rockies at their home field in Denver, Colorado. Find an estimate of the density of air in the Mile High City. What effect does this have on drag? Make a prediction about what effect this will have on the optimal launch angle, and then use your simulation to test your prediction.*
+
+- *The Green Monster in Fenway Park is about 12 m high and about 97 m from home plate along the left field line. What is the minimum speed a ball must leave the bat in order to clear the monster (assuming it goes off at the optimal angle)? Do you think it is possible for a person to stand on home plate and throw a ball over the Green Monster?*
+
+- *The actual drag on a baseball is more complicated than what is captured by our simple model. In particular, the drag coefficient varies with velocity. You can get some of the details from The Physics of Baseball [2]; you also might find information on the web. Either way, specify a more realistic model of drag and modify your program to implement it. How big is the effect on your computed ranges? How big is the effect on the optimal angles?*
+
+
+[1] http://en.wikipedia.org/wiki/Human_cannonball
+
+[2] Robert K. Adair, Harper Paperbacks, 3rd Edition, 2002.
