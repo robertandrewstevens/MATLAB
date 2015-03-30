@@ -5,6 +5,10 @@ date: "March 1, 2015"
 output: html_document
 ---
 
+```{r, comment=NA, echo=FALSE}
+setwd("~/GitHub/MATLAB")
+```
+
 # Physical Modeling in MATLAB
 
 Allen B. Downey 
@@ -25,6 +29,10 @@ Type the following code in the editor
 
     x = 5
 
+```{r, comment=NA}
+x <- 5
+```
+
 and then press the (outdated) floppy disk icon, or select Save from the File menu. Either way, a dialog box appears where you can choose the file name and the directory where it should go. Change the name to myscript.m and leave the directory unchanged.
 
 By default, MATLAB will store your script in a directory that is on the search path, which is the list of directories MATLAB searches for scripts.
@@ -34,6 +42,10 @@ Go back to the Command Window and type myscript (without the extension) at the p
     >> myscript
     x = 5
 
+```{r, comment=NA}
+source("myscript.R", echo = TRUE)
+```
+
 When you run a script, MATLAB executes the commands in the M-File, one after another, exactly as if you had typed them at the prompt.
 
 If something goes wrong and MATLAB can’t find your script, you will get an error message like:
@@ -41,12 +53,20 @@ If something goes wrong and MATLAB can’t find your script, you will get an err
     >> myscript
     ??? Undefined function or variable ‘myscript’.
 
+```{r, comment=NA, error=TRUE}
+source("myscript2.R", echo = TRUE)
+```
+
 In this case you can either save your script again in a directory that is on the search path, or modify the search path to include the directory where you keep your scripts. You’ll have to consult the documentation for the details (sorry!).
 
 The filename can be anything you want, but you should try to choose something meaningful and memorable. You should be very careful to choose a name that is not already in use; if you do, you might accidentally replace one of MATLAB’s functions with your own. Finally, the name of the file cannot contain spaces. If you create a file named my script.m, MATLAB doesn’t complain until you try to run it:
 
     >> my script
     ??? Undefined function or method ‘my’ for input arguments of type ‘char’.
+
+```{r, comment=NA, error=TRUE}
+source("my script.R", echo = TRUE)
+```
 
 The problem is that it is looking for a script named my. The problem is even worse if the first word of the filename is a function that exists. Just for fun, create a script named abs val.m and run it.
 
@@ -59,6 +79,11 @@ Keeping track of your scripts can be a pain. To keep things simple, for now, I s
     F(n) = [((1 + √5)/2)^n - ((1 - √5)/2)^n]/√5
 
 *Translate this expression into MATLAB and store your code in a file named fibonacci1. At the prompt, set the value of n to 10 and then run your script. The last line of your script should assign the value of Fn to ans. (The correct value of F10 is 55).*
+
+```{r, comment=NA}
+n <- 10
+source("fibonacci1.R", echo = TRUE)
+```
 
 ## 2.2 Why scripts?
 
@@ -76,7 +101,7 @@ Unfortunately, the great power of scripts comes with great responsibility, which
 
 First, whenever you edit your script, you have to save it before you run it. If you forget to save it, you will be running the old version.
 
-Also, whenever you start a new script, start with something simple, like x=5, that produces a visible effect. Then run your script and confirm that you get what you expect. MATLAB comes with a lot of predefined functions. It is easy to write a script that has the same name as a MATLAB function, and if you are not careful, you might find yourself running the MATLAB function instead of your script.
+Also, whenever you start a new script, start with something simple, like x = 5, that produces a visible effect. Then run your script and confirm that you get what you expect. MATLAB comes with a lot of predefined functions. It is easy to write a script that has the same name as a MATLAB function, and if you are not careful, you might find yourself running the MATLAB function instead of your script.
 
 Either way, if the code you are running is not the code you are looking at, you will find debugging a frustrating exercise! And that brings us to the Third Theorem of Debugging:
 
@@ -94,6 +119,13 @@ The variables you create are stored in the workspace, which is a set of variable
     Your variables are: 
     x  y  z
 
+```{r, comment=NA}
+x <- 5
+y <- 7
+z <- 9
+objects() # "who" in MATLAB
+```
+
 The clear command removes variables. 
 
     >> clear y
@@ -102,15 +134,28 @@ The clear command removes variables.
     Your variables are:
     x  z
 
+```{r, comment=NA}
+rm(y) # "clear y" in MATLAB
+objects()
+```
+
 To display the value of a variable, you can use the disp function.
 
     >> disp(z) 
     9
 
+```{r, comment=NA}
+print(z) # "disp(z)" in MATLAB
+```
+
 But it’s easier to just type the variable name.
 
     >> z 
     z = 9
+
+```{r, comment=NA}
+z
+```
 
 (Strictly speaking, the name of a variable is an expression, so evaluating it should assign a value to ans, but MATLAB seems to handle this as a special case.)
 
@@ -125,6 +170,13 @@ The most common error with scripts is to run a script without creating the neces
     
     Error in ==> fibonacci1 at 4
     diff = t1^(n + 1) - t2^(n + 1);
+
+```{r, comment=NA, error=TRUE}
+rm(n)
+source("fibonacci1.R", echo = FALSE)
+n <- 10
+source("fibonacci1.R", echo = FALSE)
+```
 
 The details of this message might be different for you, depending on what’s in your script. But the general idea is that n is undefined. Notice that MATLAB tells you what line of your program the error is in, and displays the line.
 
@@ -153,6 +205,10 @@ If there is a comment at the beginning of a script, MATLAB assumes it is the doc
       Precondition: you must assign a value to n before running
       this script.  Postcondition: the result is stored in ans.
 
+```{r, comment=NA, error=TRUE}
+help("fibanocci1.R") # help is for commands or packages
+```
+
 That way, scripts that you write behave just like predefined scripts. You can even use the doc command to see your comment in the Help Window.
 
 ## 2.6 Assignment and equality
@@ -165,12 +221,22 @@ One difference is that the sides of an assignment statement are not interchangea
     >> x = y + 1 
     x = 2
 
+```{r, comment=NA}
+y <- 1
+x <- y + 1
+x
+```
+
 But this is not:
 
     >> y + 1 = x
     ??? y+1 = x
             |
     Error: The expression to the left of the equals sign is not a valid target for an assignment.
+
+```{r, comment=NA, error=TRUE}
+y + 1 <- x # intentional error
+```
 
 In this case the error message is pretty helpful, as long as you know what a “target” is.
 
@@ -182,11 +248,25 @@ A third difference is that a mathematical equality is a statement that may or ma
     >> y = y + 1 
     y = 2
 
+```{r, comment=NA}
+y <- 1
+y <- y + 1
+y
+```
+
 When you read MATLAB code, you might find it helpful to pronounce the equals sign “gets” rather than “equals.” So x = y + 1 is pronounced “x gets the value of y plus one.”
 
 To test your understanding of assignment statements, try this exercise:
 
 **Exercise 2.2** *Write a few lines of code that swap the values of x and y. Put your code in a script called swap and test it.*
+
+```{r, comment=NA}
+x <-  1 
+y <- 10 
+source("swap.R")
+x
+y
+```
 
 ## 2.7 Incremental development
 
@@ -225,15 +305,27 @@ Since we know sin(0) = 0, we could try
     >> asin(0)
     ans = 0
 
+```{r, comment=NA}
+asin(0)
+```
+
 which is correct. Also, we know that the sine of 90 degrees is 1, so if we try asin(1), we expect the answer to be 90, right?
 
     >> asin(1)
     ans = 1.5708
 
+```{r, comment=NA}
+asin(1)
+```
+
 Oops. We forgot that the trig functions in MATLAB work in radians, not degrees. So the correct answer is π/2, which we can confirm by dividing through by pi:
 
     >> asin(1) / pi
     ans = 0.5000
+
+```{r, comment=NA}
+asin(1)/pi
+```
 
 With this kind of unit testing, you are not really checking for errors in MATLAB, you are checking your understanding. If you make an error because you are confused about how MATLAB works, it might take a long time to find, because when you look at the code, it looks right.
 
@@ -276,3 +368,27 @@ Which brings us to the Sixth Theorem of Debugging:
 *If you execute your script repeatedly, you can simulate the passage of time from week to week. What do you think will happen to the number of cars? Will all the cars end up in one place? Will the number of cars reach an equilibrium, or will it oscillate from week to week?*
 
 *In the next chapter we will see how to execute your script automatically, and how to plot the values of a and b versus time.*
+
+```{r, comment=NA}
+a <- 150 # initial number of cars in Albany
+b <- 150 # initial number of cars in Boston
+
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+```

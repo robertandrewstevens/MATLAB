@@ -5,6 +5,10 @@ date: "March 3, 2015"
 output: html_document
 ---
 
+```{r, comment=NA, echo=FALSE}
+setwd("~/GitHub/MATLAB")
+```
+
 # Physical Modeling in MATLAB
 
 Allen B. Downey 
@@ -29,10 +33,25 @@ It works for any positive value of n, but what if n is negative? In that case, y
 
     total = 0
 
+```{r, comment=NA}
+n <- -1
+A1 <- 1
+total <- 0
+for(i in 1:n) {
+  a <- A1 * 0.5^(i - 1)
+  total <- total + a
+}
+total
+```
+
 Why? Because the expression 1:-1 means “all the numbers from 1 to -1, counting up by 1.” It’s not immediately obvious what that should mean, but MATLAB’s interpretation is that there aren’t any numbers that fit that description, so the result is
 
     >> 1:-1
     ans = Empty matrix: 1-by-0
+
+```{r, comment=NA}
+1:-1
+```
 
 If the matrix is empty, you might expect it to be “0-by-0,” but there you have it. In any case, if you loop over an empty range, the loop never runs at all, which is why in this example the value of total is zero for any negative value of n.
 
@@ -45,6 +64,12 @@ The if statement allows you to check for certain conditions and execute statemen
     if n < 0
         ans = NaN 
     end
+
+```{r, comment=NA}
+if(n < 0) {
+  print(ans <- NA)
+}
+```
 
 The syntax is similar to a for loop. The first line specifies the condition we are interested in; in this case we are asking if n is negative. If it is, MATLAB executes the body of the statement, which is the indented sequence of statements between the if and the end.
 
@@ -68,6 +93,20 @@ The complete version of the previous example might look like this:
         ans = total
     end
 
+```{r, comment=NA}
+if(n < 0) {
+  print(ans <- NA)
+} else {
+  A1 <- 1
+  total <- 0
+  for(i in 1:n) {
+    a <- A1 * 0.5^(i - 1)
+    total <- total + a
+  }
+  print(ans <- total)
+}
+```
+
 Statements like if and for that contain other statements are called compound statements. All compound statements end with, well, end.
 
 In this example, one of the statements in the else clause is a for loop. Putting one compound statement inside another is legal and common, and sometimes called nesting.
@@ -82,10 +121,20 @@ Relational operators often appear in if statements, but you can also evaluate th
     >> x < 10
     ans = 1
 
+```{r, comment=NA}
+x <- 5
+x < 10
+```
+
 You can assign a logical value to a variable:
 
     >> flag = x > 10
     flag = 0
+
+```{r, comment=NA}
+flag <- x > 10
+flag
+```
 
 A variable that contains a logical value is often called a flag because it flags the status of some condition.
 
@@ -98,6 +147,11 @@ Don’t forget that == is the operator that tests equality, and = is the assignm
              |
     Error: The expression to the left of the equals sign is not a valid target for an assignment.
 
+```{r, comment=NA, error=TRUE}
+#if x <- 5 # comment out intentional error so script runs
+if(x <- 5) {} # intentional error
+```
+
 MATLAB thinks you are making an assignment to a variable named if x!
 
 ## 4.4 Logical operators
@@ -108,11 +162,23 @@ To test if a number falls in an interval, you might be tempted to write somethin
     >> 0 < x < 10            % right for the wrong reason
     ans = 1
 
+```{r, comment=NA, error=TRUE}
+x <- 5
+#0 < x < 10 # right for the wrong reason
+0 < x & x < 10
+```
+
 But don’t be fooled!
 
     >> x = 17
     >> 0 < x < 10            % just plain wrong
     ans = 1
+
+```{r, comment=NA, error=TRUE}
+x <- 17
+#0 < x < 10 # just plain wrong
+0 < x & x < 10
+```
 
 The problem is that MATLAB is evaluating the operators from left to right, so first it checks if 0 < x. It is, so the result is 1. Then it compares the logical value 1 (not the value of x) to 10. Since 1 < 10, the result is true, even though x is not in the interval.
 
@@ -127,6 +193,16 @@ One way around this problem is to use a nested if statement to check the two con
         end 
     end
 
+```{r, comment=NA}
+ans <- 0
+if(0 < x) {
+  if(x < 10) {
+    ans <- 1
+  }
+}
+ans
+```
+
 But it is more concise to use the AND operator, &&, to combine the conditions. 
 
     >> x = 5;
@@ -136,6 +212,14 @@ But it is more concise to use the AND operator, &&, to combine the conditions.
     >> x = 17;
     >> 0 < x && x < 10
     ans = 0
+
+```{r, comment=NA}
+x <- 5
+0 < x && x < 10
+
+x <- 17
+0 < x && x < 10
+```
 
 The result of AND is true if both of the operands are true. The OR operator, ||, is true if either or both of the operands are true.
 
@@ -150,6 +234,10 @@ In general, anything you can do with a scalar, you can also do with a vector. Yo
     >> X = 1:5 
     X = 1  2  3  4  5
 
+```{r, comment=NA}
+(X <- 1:5)
+```
+
 Variables that contain vectors are often capital letters. That’s just a convention; MATLAB doesn’t require it, but for beginning programmers it is a useful way to remember what is a scalar and what is a vector.
 
 Just as with sequences, the numbers that make up the vector are called elements.
@@ -161,13 +249,20 @@ You can perform arithmetic with vectors, too. If you add a scalar to a vector, M
     >> Y = X + 5
     Y = 6 7 8 9 10
 
+```{r, comment=NA}
+(Y <- X + 5)
+```
+
 The result is a new vector; the original value of X is not changed.
 
-If you add two vectors, MATLAB adds the corresponding elements of each
-vector and creates a new vector that contains the sums:
+If you add two vectors, MATLAB adds the corresponding elements of each vector and creates a new vector that contains the sums:
 
     >> Z = X + Y
     Z = 7 9 11 13 15
+
+```{r, comment=NA}
+(Z <- X + Y)
+```
 
 But adding vectors only works if the operands are the same size. Otherwise:
 
@@ -177,6 +272,11 @@ But adding vectors only works if the operands are the same size. Otherwise:
     >> X + W
     ??? Error using ==> plus
     Matrix dimensions must agree.
+
+```{r, comment=NA}
+(W <- 1:3)
+X + W # gives an error in MATLAB, but recycles values in R and gives a warning
+```
 
 The error message in this case is confusing, because we are thinking of these values as vectors, not matrices. The problem is a slight mismatch between math vocabulary and MATLAB vocabulary.
 
@@ -199,6 +299,12 @@ First I’ll make one of each kind of value:
     1  1  1 
     1  1  1
 
+```{r, comment=NA}
+(scalar <- 5)
+(vector <- 1:5)
+(matrix <- matrix(1, nrow = 2, ncol = 3)) # ones(2, 3) in MATLAB
+```
+
 ones is a function that builds a new matrix with the given number of rows and columns, and sets all the elements to 1. Now let’s see what we’ve got.
 
     >> whos
@@ -206,6 +312,10 @@ ones is a function that builds a new matrix with the given number of rows and co
       scalar       1x1      8  double array
       vector       1x5     40  double array
       matrix       2x3     32  double array
+
+```{r, comment=NA}
+ls.str() # whos in MATLAB
+```
 
 According to MATLAB, everything is a double array: “double” is another name for double-precision floating-point numbers, and “array” is another name for a matrix.
 
@@ -225,12 +335,22 @@ Here’s another example where the error message only makes sense if you know wh
     ??? Error using ==> mtimes
     Inner matrix dimensions must agree.
 
+```{r, comment=NA}
+(X <- 1:5)
+(Y <- 1:5)
+(Z <- X %*% Y) # gives an error in MATLAB
+```
+
 First of all, mtimes is the MATLAB function that performs matrix multiplication. The reason the “inner matrix dimensions must agree” is that the way matrix multiplication is defined in linear algebra, the number of rows in X has to equal the number of columns in Y (those are the inner dimensions).
 
 If you don’t know linear algebra, this doesn’t make much sense. When you saw X\*Y you probably expected it to multiply each the the elements of X by the corresponding element of Y and put the results into a new vector. That operation is called elementwise multiplication, and the operator that performs it is .*:
 
     >> X .* Y
     ans = 1 4 9 16 25
+
+```{r, comment=NA}
+X * Y # X .* Y in MATAB
+```
 
 We’ll get back to the elementwise operators later; you can forget about them for now.
 
@@ -247,6 +367,12 @@ You can select elements of a vector with parentheses:
     >> Y(5)
     ans = 10
 
+```{r, comment=NA}
+(Y <- 6:10)
+Y[1]
+Y[5]
+```
+
 This means that the first element of Y is 6 and the fifth element is 10. The number in parentheses is called the index because it indicates which element of the vector you want.
 
 The index can be any kind of expression.
@@ -255,11 +381,22 @@ The index can be any kind of expression.
     >> Y(i+1)
     ans = 7
 
+```{r, comment=NA}
+i <- 1
+Y[i + 1]
+```
+
 Loops and vectors go together like the storm and rain. For example, this loop displays the elements of Y.
 
     for i = 1:5
         Y(i)
     end
+
+```{r, comment=NA}
+for(i in 1:5) {
+  print(Y[i])
+}
+```
 
 Each time through the loop we use a different value of i as an index into Y.
 
@@ -268,6 +405,12 @@ A limitation of this example is that we had to know the number of elements in Y.
     for i = 1:length(Y)
         Y(i)
     end
+
+```{r, comment=NA}
+for(i in 1:length(Y)) {
+  print(Y[i])
+}
+```
 
 There. Now that will work for a vector of any length.
 
@@ -278,6 +421,11 @@ An index can be any kind of expression, but the value of the expression has to b
     >> Y(0)
     ??? Subscript indices must either be real positive integers or logicals.
 
+```{r, comment=NA, error=TRUE}
+#Y[0] # comment out intentional error so script runs
+Y[0] # intentional error
+```
+
 “Subscript indices” is MATLAB’s longfangled way to say “indices.” “Real positive integers” means that complex numbers are out. And you can forget about “logicals” for now.
 
 If the index is too big, you get this:
@@ -285,12 +433,22 @@ If the index is too big, you get this:
     >> Y(6)
     ??? Index exceeds matrix dimensions.
 
+```{r, comment=NA, error=TRUE}
+#Y[6] # comment out intentional error so script runs
+Y[6] # intentional error
+```
+
 There’s the “m” word again, but other than that, this message is pretty clear. 
 
 Finally, don’t forget that the index has to be an integer:
 
     >> Y(1.5)
     ??? Subscript indices must either be real positive integers or logicals.
+
+```{r, comment=NA, error=TRUE}
+#Y[1.5] # comment out intentional error so script runs
+Y[1.5] # intentional error
+```
 
 ## 4.10 Vectors and sequences
 
@@ -303,6 +461,16 @@ Vectors and sequences go together like ice cream and apple pie. For example, ano
     end
     ans = F(n)
 
+```{r, comment=NA}
+n <- 10
+F[1] <- 1
+F[2] <- 1
+for(i in 3:n) {
+  F[i] <- F[i - 1] + F[i - 2]
+}
+print(F[n])
+```
+
 Notice that I am using a capital letter for the vector F and lowercase letters for the scalars i and n. At the end, the script extracts the final element of F and stores it in ans, since the result of this script is supposed to be the nth Fibonacci number, not the whole sequence.
 
 If you had any trouble with Exercise 3.5, you have to appreciate the simplicity of this version. The MATLAB syntax is similar to the math notation, which makes it easier to check correctness. The only drawbacks are you have to be careful with the range of the loop. In this version, the loop runs from 3 to n, and each time we assign a value to the ith element. It would also work to “shift” the index over by two, running the loop from 1 to n - 2:
@@ -314,17 +482,40 @@ If you had any trouble with Exercise 3.5, you have to appreciate the simplicity 
     end
     ans = F(n)
 
+```{r, comment=NA}
+F[1] <- 1
+F[2] <- 1
+for(i in 1:(n - 2)) {
+  F[i + 2] <- F[i + 1] + F[i]
+}
+print(F[n])
+```
+
 Either version is fine, but you have to choose one approach and be consistent. If you combine elements of both, you will get confused. I prefer the version that has F(i) on the left side of the assignment, so that each time through the loop it assigns the ith element.
 
 If you really only want the nth Fibonacci number, then storing the whole sequence wastes some storage space. But if wasting space makes your code easier to write and debug, that’s probably ok.
 
 **Exercise 4.1** *Write a loop that computes the first n elements of the geometric sequence A(i + 1) = A(i)/2 with A(1) = 1. Notice that the math notation puts A(i + 1) on the left side of the equality. When you translate to MATLAB, you may want to shift the index.*
 
+```{r, comment=NA}
+n <- 10
+A <- rep(0, n) # initialize
+A[1] <- 1
+for(i in 1:(n - 1)) {
+  A[i + 1] <- A[i]/2
+}
+A
+```
+
 ## 4.11 Plotting vectors
 
 Plotting and vectors go together like the moon and June, whatever that means. If you call plot with a single vector as an argument, MATLAB plots the indices on the x-axis and the elements on the y-axis. To plot the Fibonacci numbers we computed in the previous section:
 
     plot(F)
+
+```{r, comment=NA}
+plot(F)
+```
 
 This display is often useful for debugging, especially if your vectors are big enough that displaying the elements on the screen is unwieldy.
 
@@ -333,6 +524,12 @@ If you call plot with two vectors as arguments, MATLAB plots the second one as a
     X = 1:5
     Y = 6:10
     plot(X, Y)
+
+```{r, comment=NA}
+X <- 1:5
+Y <- 6:10
+plot(X, Y)
+```
 
 By default, MATLAB draws a blue line, but you can override that setting with the same kind of string we saw in Section 3.5. For example, the string ’ro-’ tells MATLAB to plot a red circle at each data point; the hyphen means the points should be connected with a line.
 
@@ -350,9 +547,26 @@ For example, this loop adds up the elements of a vector named X (which we assume
     end
     ans = total
 
+```{r, comment=NA}
+total <- 0
+for(i in 1:length(X)) {
+  total <- total + X[i]
+}
+total
+```
+
 The use of total as an accumulator is similar to what we saw in Section 3.7. Again, we use the length function to find the upper bound of the range, so this loop will work regardless of the length of X. Each time through the loop, we add in the ith element of X, so at the end of the loop total contains the sum of the elements.
 
 **Exercise 4.2** *Write a similar loop that multiplies all the elements of a vector together. You might want to call the accumulator product, and you might want to think about the initial value you give it before the loop.*
+
+```{r, comment=NA}
+X <- 1:5
+product <- 1 # initialize
+for(i in 1:length(X)) {
+  product <- product * X[i]
+}
+product
+```
 
 ## 4.13 Apply
 
@@ -364,6 +578,14 @@ For example, the following loop computes a vector Y that contains the squares of
         Y(i) = X(i)^2
     end
 
+```{r, comment=NA}
+X <- 1:5 # redefine so example runs as intended (?)
+for(i in 1:length(X)) {
+  Y[i] <- X[i]^2
+}
+Y
+```
+
 **Exercise 4.3** *Write a loop that computes a vector Y that contains the sines of the elements of X. To test your loop, write a script that*
 
 1. *Uses linspace (see the documentation) to assign to X a vector with 100 elements running from 0 to 2π.*
@@ -371,6 +593,16 @@ For example, the following loop computes a vector Y that contains the squares of
 2. *Uses your loop to store the sines in Y.*
 
 3. *Plots the elements of Y as a function of the elements of X.*
+
+```{r, comment=NA}
+X <- seq(0, 2, len = 100) # X = linspace(0, 2) in MATLAB
+Y <- rep(0, length(X)) # initialize
+
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+```
 
 ## 4.14 Search
 
@@ -380,15 +612,28 @@ To create some fake data, we’ll use an extended version of the colon operator:
 
     X = 10:-1:-10
 
+```{r, comment=NA}
+(X <- seq(from = 10, to = -10, by = -1))
+```
+
 The values in this range run from 10 to -10, with a step size of -1. The step size is the interval between elements of the range.
 
 The following loop finds the index of the element 0 in X:
 
     for i = 1:length(X)
         if X(i) == 0
-		        ans = i 
+            ans = i 
         end
     end
+
+```{r, comment=NA}
+for(i in 1:length(X)) {
+  if(X[i] == 0) {
+    ans <- i
+  }
+}
+ans
+```
 
 One funny thing about this loop is that it keeps going after it finds what it is looking for. That might be what you want; if the target value appears more than one, this loop provides the index of the last one.
 
@@ -401,6 +646,16 @@ But if you want the index of the first one (or you know that there is only one),
 	      end
     end
 
+```{r, comment=NA}
+for(i in 1:length(X)) {
+  if(X[i] == 0) {
+    ans <- i
+    break
+  }
+}
+ans
+```
+
 break does pretty much what it sounds like. It ends the loop and proceeds immediately to the next statement after the loop (in this case, there isn’t one, so the script ends).
 
 This example demonstrates the basic idea of a search, but it also demonstrates a dangerous use of the if statement. Remember that floating-point values are often only approximately right. That means that if you look for a perfect match, you might not find it. For example, try this:
@@ -411,6 +666,14 @@ This example demonstrates the basic idea of a search, but it also demonstrates a
     end
     plot(X, Y)
 
+```{r, comment=NA}
+X <- seq(from = 1, to = 2, len = 100)
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+```
+
 You can see in the plot that the value of sinx goes through 0.9 in this range, but if you search for the index where Y(i) == 0.9, you will come up empty.
 
     for i = 1:length(Y)
@@ -420,11 +683,56 @@ You can see in the plot that the value of sinx goes through 0.9 in this range, b
 	      end
     end
 
+```{r, comment=NA}
+for(i in 1:length(Y)) {
+  if(Y[i] == 0.9) {
+    ans <- i
+    break
+  }
+}
+ans
+Y[11:13] # R finds a match at i = 11 and Y = 0.891..., but MATLAB does not - why?
+```
+
 The condition is never true, so the body of the if statement is never executed.
 
 Even though the plot shows a continuous line, don’t forget that X and Y are sequences of discrete (and usually approximate) values. As a rule, you should (almost) never use the == operator to compare floating-point values. There are a number of ways to get around this limitation; we will get to them later.
 
 **Exercise 4.4** *Write a loop that finds the index of the first negative number in a vector and stores it in ans. If there are no negative numbers, it should set ans to -1 (which is not a legal index, so it is a good way to indicate the special case).*
+
+```{r, comment=NA}
+X <- seq(0, 2*pi, len = 100)
+Y <- rep(NA, length(X))
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+
+ans <- -1
+for(i in 1:length(Y)) {
+  if(Y[i] < 0) {
+    ans <- i
+    break
+  }
+}
+ans
+
+X <- seq(0, pi, len = 100) # check when no negative numbers
+Y <- rep(NA, length(X))
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+
+ans <- -1
+for(i in 1:length(Y)) {
+  if(Y[i] < 0) {
+    ans <- i
+    break
+  }
+}
+ans
+```
 
 ## 4.15 Spoiling the fun
 
@@ -436,11 +744,22 @@ Many apply operations can be done with elementwise operators. The following stat
 
     Y = X .^ 2
 
+```{r, comment=NA}
+(X <- 1:5) # redefine so example runs as intended (?)
+(Y <- X^2) # Y = X .^ 2 in MATLAB
+```
+
 Also, most built-in MATLAB functions work with vectors:
 
     X = linspace(0, 2*pi)
     Y = sin(X)
     plot(X, Y)
+
+```{r, comment=NA}
+X <- seq(0, 2*pi, len = 100)
+Y <- sin(X)
+plot(X, Y)
+```
 
 Finally, the find function can perform search operations, but understanding it requires a couple of concepts we haven’t got to, so for now you are better off on your own.
 
@@ -449,6 +768,16 @@ I started with simple loops because I wanted to demonstrate the basic concepts a
 If you understand loops and you are are comfortable with the shortcuts, feel free to use them! Otherwise, you can always write out the loop.
 
 **Exercise 4.5** *Write an expression that computes the sum of the squares of the elements of a vector.*
+
+```{r, comment=NA}
+X <- 1:5
+
+total <- 0
+for(i in 1:length(X)) {
+  total <- total + X[i]^2
+}
+total
+```
 
 ## 4.16 Glossary
 
@@ -484,6 +813,26 @@ If you understand loops and you are are comfortable with the shortcuts, feel fre
 
 **Exercise 4.6** *The ratio of consecutive Fibonacci numbers, F(n + 1)/F(n), converges to a constant value as n increases. Write a script that computes a vector with the first n elements of a Fibonacci sequence (assuming that the variable n is defined), and then computes a new vector that contains the ratios of consecutive Fibonacci numbers. Plot this vector to see if it seems to converge. What value does it converge on?*
 
+```{r, comment=NA}
+n <- 10
+F <- rep(NA, n) # initialize
+
+F[1] <- 1
+F[2] <- 1
+for(i in 1:(n - 2)) {
+  F[i + 2] <- F[i + 1] + F[i]
+}
+F
+
+ratio <- rep(NA, n - 1) # initialize
+for(i in 1:(n - 1)) {
+  ratio[i] = F[i + 1]/F[i]
+}
+ratio
+
+plot(ratio)
+```
+
 **Exercise 4.7** *A certain famous system of differential equations can be approximated by a system of difference equations that looks like this:*
 
     x(i + 1) = x(i) + σ[y(i) − x(i)]dt
@@ -500,6 +849,43 @@ If you understand loops and you are are comfortable with the shortcuts, feel fre
 
 - *Run the program with different values for σ, b and r and see if you can get a sense of how each variable affects the system.*
 
+```{r, comment=NA}
+library(lattice) # for "cloud"
+library(rgl) # for "plot3d"
+
+#n <- 10
+#n <- 100
+#n <- 1000
+n <- 10000
+
+X <- as.numeric(rep(NA, n)) # initialize
+Y <- as.numeric(rep(NA, n)) # initialize
+Z <- as.numeric(rep(NA, n)) # initialize
+
+X[1] <- 1
+Y[1] <- 2
+Z[1] <- 3
+
+s <- 10
+b <- 8/3
+r <- 28
+dt <- 0.01
+
+for(i in 1:(n - 1)) {
+  X[i + 1] <- X[i] + s*(Y[i] - X[i])*dt
+  Y[i + 1] <- Y[i] + (X[i]*(r - Z[i]) - Y[i])*dt
+  Z[i + 1] <- Z[i] + (X[i]*Y[i] - b*Z[i])*dt
+}
+
+cloud(Z ~ X*Y) # plot3(X, Y, Z) in MATLAB
+
+plot3d(X, Y , Z)
+
+# comet3(X, Y, Z) in MATLAB
+# Animations in R require ImageMagik?
+# And code is very complicated, so delay until later
+```
+
 **Exercise 4.8** *The logistic map is often cited as an example of how complex, chaotic behavior can arise from simple non-linear dynamical equations [some of this description is adapted from the Wikipedia page on the logistic map]. It was popularized in a seminal 1976 paper by the biologist Robert May.*
 
 *It has been used to model the biomass of a species in the presence of limiting factors such as food supply and disease. In this case, there are two processes at work: (1) A reproductive process increases the biomass of the species in proportion to the current population. (2) A starvation process causes the biomass to decrease at a rate proportional to the carrying capacity of the environment less the current population.*
@@ -515,3 +901,19 @@ If you understand loops and you are are comfortable with the shortcuts, feel fre
 - *Plot the results for a range of values of r from 2.4 to 4.0. How does the behavior of the system change as you vary r.*
 
 - *One way to characterize the effect of r is to make a plot with r on the x-axis and biomass on the y axis, and to show, for each value of r, the values of biomass that occur in steady state. See if you can figure out how to generate this plot.*
+
+```{r, comment=NA}
+r <- 3.9
+source("logmap.R")
+plot(X)
+
+rVec <- seq(2.4, 4.0, len = 100)
+yVec <- as.numeric(rep(0, length(rVec)))
+
+for(i in 1:length(rVec)) {
+  r <- rVec[i]
+  source("logmap.R")
+  yVec[i] <- X[n]
+}
+plot(rVec, yVec, pch = 16, col = "red")
+```

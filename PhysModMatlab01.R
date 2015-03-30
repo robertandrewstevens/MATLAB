@@ -42,7 +42,7 @@ pi * 3^2
 
 sin(pi/2)
 
-exp(i * pi)
+exp(1i*pi)
 
 3^2 + 4^2
 
@@ -105,9 +105,9 @@ factorial(100)
 
 speed_of_light <- 3.0e8
 
-1.7e+308 # "realmax" in MATLAB
+.Machine$double.xmax # "realmax" in MATLAB
 
-2e-308 # "realmin" in MATLAB
+.Machine$double.xmin # "realmin" in MATLAB
 
 factorial(170)
 
