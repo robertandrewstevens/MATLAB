@@ -27,6 +27,16 @@ For example, the following (increasingly familiar) script computes the sum of th
      end
      ans = total
 
+```{r, comment=NA}
+A1 <- 1
+total <- 0
+for(i in 1:10) {
+  a <- A1 * 0.5^(i - 1)
+  total <- total + a
+}
+total
+```
+
 If you were using any of those variable names before calling this script, you might be surprised to find, after running the script, that their values had changed. If you have two scripts that use the same variable names, you might find that they work separately and then break when you try to combine them. This kind of interaction is called a name collision.
 
 As the number of scripts you write increases, and they get longer and more complex, name collisions become more of a problem. Avoiding this problem is one of the motivations for functions.
@@ -47,6 +57,14 @@ To define a new function, you create an M-file with the name you want, and put a
          res = abs(s) + abs(c)
      end
 
+```{r, comment=NA}
+myfunc <- function (x) {
+  s <- sin(x)
+  c <- cos(x)
+  res <- abs(s) + abs(c)
+}
+```
+
 The first word of the file has to be the word function, because that’s how MATLAB tells the difference between a script and a function file.
 
 A function definition is a compound statement. The first line is called the signature of the function; it defines the inputs and outputs of the function. In this case the input variable is named x. When this function is called, the argument provided by the user will be assigned to x.
@@ -61,6 +79,10 @@ Once you have defined a new function, you call it the same way you call built-in
      res = 1.38177329067604
      ans = 1.38177329067604
 
+```{r, comment=NA}
+(myfunc(1))
+```
+
 But it is more common (and better style) to assign the result to a variable:
 
      >> y = myfunc(1)
@@ -68,6 +90,10 @@ But it is more common (and better style) to assign the result to a variable:
      c = 0.54030230586814
      res = 1.38177329067604
      y = 1.38177329067604
+
+```{r, comment=NA}
+(y = myfunc(1))
+```
 
 While you are debugging a new function, you might want to display intermediate results like this, but once it is working, you will want to add semi-colons to make it a silent function. Most built-in functions are silent; they compute a result, but they don’t display anything (except sometimes warning messages).
 
@@ -77,10 +103,25 @@ Each function has its own workspace, which is created when the function starts a
      >> y = myfunc(1);
      >> who
 
+```{r, comment=NA}
+rm(list = ls()) # clear in MATLAB
+myfunc <- function (x) {
+  s <- sin(x)
+  c <- cos(x)
+  res <- abs(s) + abs(c)
+}
+y = myfunc(1)
+objects()
+```
+
 Your variables are: y
 
      >> s
      ??? Undefined function or variable ’s’.
+
+```{r, comment=NA, error=TRUE}
+s
+```
 
 The only value from the function that you can access is the result, which in this case is assigned to y.
 
@@ -92,6 +133,14 @@ If you have variables named s or c in your workspace before you call myfunc, the
      >> s, c
      s = 1 
      c = 1
+
+```{r, comment=NA}
+s <- 1
+c <- 1
+y <- myfunc(1)
+s
+c
+```
 
 So inside a function you can use whatever variable names you want without worrying about collisions.
 
@@ -109,12 +158,26 @@ At the beginning of every function file, you should include a comment that expla
           res = abs(s) + abs(c);
      end
 
+```{r, comment=NA}
+myfunc <- function (x) {
+  # Compute the Manhattan distance from the origin to the
+  # point on the unit circle with angle (x) in radians.
+  s <- sin(x)
+  c <- cos(x)
+  res <- abs(s) + abs(c)
+}
+```
+
 When you ask for help, MATLAB prints the comment you provide.
 
      >> help myfunc
        res = myfunc (x)
        Compute the Manhattan distance from the origin to the
        point on the unit circle with angle (x) in radians.
+
+```{r, comment=NA}
+help(myfunc)
+```
 
 There are lots of conventions about what should be included in these comments. Among other things, it is a good idea to include
 
@@ -140,11 +203,25 @@ If this is what you put in myfunc.m:
           res = abs(s) + abs(c);
      end
 
+```{r, comment=NA}
+rm(list = ls()) # clear in MATLAB
+something_else <- function(x) {
+  s <- sin(x)
+  c <- cos(x)
+  res <- abs(s) + abs(c);
+}
+```
+
 Then here’s what you’ll get:
 
      >> y = myfunc(1);
      >> y = something_else(1);
-     ??? Undefined command/function 􏰦something_else􏰦.
+     ??? Undefined command/function 'something_else'.
+
+```{r, comment=NA, error=TRUE}
+(y <- myfunc(1))
+(y <- something_else(1))
+```
 
 The second gotcha is that the name of the file can’t have spaces. For example, if you write a function and name the file my func.m, which the MATLAB editor will happily allow you to do, and then try to run it, you get:
 
@@ -153,11 +230,21 @@ The second gotcha is that the name of the file can’t have spaces. For example,
                 |
      Error: Unexpected MATLAB expression.
 
+```{r, comment=NA, error=TRUE}
+#y <- my func(1) # comment out intentional error
+```
+
 The third gotcha is that your function names can collide with built-in MATLAB functions. For example, if you create an M-file named sum.m, and then call sum, MATLAB might call your new function, not the built-in version! Which one actually gets called depends on the order of the directories in the search path, and (in some cases) on the arguments. As an example, put the following code in a file named sum.m:
 
      function res = sum(x)
           res = 7;
      end
+
+```{r, comment=NA}
+sum <- function() {
+  res <- 7
+}
+```
 
 And then try this:
 
@@ -166,6 +253,11 @@ And then try this:
      
      >> sum
      ans = 7
+
+```{r, comment=NA, error=TRUE}
+sum(1:3)
+(sum())
+```
 
 In the first case MATLAB used the built-in function; in the second case it ran your function! This kind of interaction can be very confusing. Before you create a new function, check to see if there is already a MATLAB function with the same name. If there is, choose another name!
 
@@ -177,12 +269,22 @@ Functions can, and often do, take more than one input variable. For example, the
           res = sqrt(a^2 + b^2);
      end
 
+```{r, comment=NA}
+hypotenuse <- function(a, b) {
+  res <- sqrt(a^2 + b^2)
+}
+```
+
 If you remember the Pythagorean Theorem, you probably figured out that this function computes the length of the hypotenuse of a right triangle if the lengths of the adjacent sides are a and b. (There is a MATLAB function called hypot that does the same thing.)
 
 If we call it from the Command Window with arguments 3 and 4, we can confirm that the length of the third side is 5.
 
      >> c = hypotenuse(3, 4)
      c = 5
+
+```{r, comment=NA}
+(c <- hypotenuse(3, 4))
+```
 
 The arguments you provide are assigned to the input variables in order, so in this case 3 is assigned to a and 4 is assigned to b. MATLAB checks that you provide the right number of arguments; if you provide too few, you get
 
@@ -192,6 +294,10 @@ The arguments you provide are assigned to the input variables in order, so in th
      Error in ==> hypotenuse at 2
          res = sqrt(a^2 + b^2);
 
+```{r, comment=NA, error=TRUE}
+c <- hypotenuse(3)
+```
+
 This error message is confusing, because it suggests that the problem is in hypotenuse rather than in the function call. Keep that in mind when you are debugging.
 
 If you provide too many arguments, you get
@@ -199,6 +305,10 @@ If you provide too many arguments, you get
      >> c = hypotenuse(3, 4, 5) 
      ??? Error using ==> hypotenuse 
      Too many input arguments. 
+
+```{r, comment=NA, error=TRUE}
+c <- hypotenuse(3, 4, 5) 
+```
 
 Which is a better message.
 
@@ -213,6 +323,13 @@ For example, isprime checks to see whether a number is prime.
      >> isprime(21)
      ans = 0
 
+```{r, comment=NA}
+# http://stackoverflow.com/questions/19767408/r-prime-number-function
+is.prime <- function(n) n == 2L || all(n %% 2L:ceiling(sqrt(n)) != 0)
+is.prime(17)
+is.prime(21)
+```
+
 The functions isscalar and isvector check whether a value is a scalar or vector; if both are false, you can assume it is a matrix (at least for now).
 
 To check whether a value you have computed is an integer, you might be tempted to use isinteger. But that would be wrong, so very wrong. isinteger checks whether a value belongs to one of the integer types (a topic we have not discussed); it doesn’t check whether a floating-point value happens to be integral.
@@ -221,6 +338,11 @@ To check whether a value you have computed is an integer, you might be tempted t
      c = 5
      >> isinteger(c)
      ans = 0
+
+```{r, comment=NA}
+(c <- hypotenuse(3, 4))
+is.integer(c)
+```
 
 To do that, we have to write our own logical function, which we’ll call isintegral:
 
@@ -231,6 +353,20 @@ To do that, we have to write our own logical function, which we’ll call isinte
                res = 0; 
           end
      end
+
+```{r, comment=NA}
+# see help for 'is.integer' and 'is.wholenumber' - same result?  TODO:  check
+
+is.integral <- function(x) {
+  if(round(x) == x) {
+    res <- 1 # TRUE
+  } else {
+    res <- 0 # FASLSE
+  }
+  res
+}
+is.integral(c)
+```
 
 This function is good enough for most applications, but remember that floating-point values are only approximately right; in some cases the approximation is an integer but the actual value is not.
 
@@ -258,11 +394,28 @@ Here are the steps we will follow to develop the program incrementally.
 
 So the first draft of this program is x = 5, which might seem silly, but if you start simple and add a little bit at a time, you will avoid a lot of debugging.
 
+```{r, comment=NA}
+find_triples <- function () {
+  x <- 5
+  cat("x = ", x, "\n")
+}
+find_triples()
+```
+
 Here’s the second draft:
 
     for a = 1:3 
         a
     end
+
+```{r, comment=NA}
+find_triples <- function() { 
+  for(a in 1:3) {
+    cat("a = ", a, "\n")
+  }
+}
+find_triples()
+```
 
 At each step, the program is testable: it produces output (or another visible effect) that you can check.
 
@@ -276,6 +429,16 @@ The third draft contains a nested loop:
                b
           end 
      end
+
+```{r, comment=NA}
+find_triples <- function() {
+  for(a in 1:3) {
+    for(b in 1:4) {
+      cat("a = ", a, "b = ", b, "\n")
+    }
+  }
+}
+```
 
 The inner loop gets executed 3 times, once for each value of a, so here’s what the output loops like (I adjusted the spacing to make the structure clear):
 
@@ -293,6 +456,10 @@ The inner loop gets executed 3 times, once for each value of a, so here’s what
            b = 3 
            b = 4
 
+```{r, comment=NA}
+find_triples()
+```
+
 The next step is to compute c for each pair of values a and b.
 
      for a = 1:3
@@ -301,6 +468,17 @@ The next step is to compute c for each pair of values a and b.
                [a, b, c] 
           end
      end
+
+```{r, comment=NA}
+find_triples <- function() {
+  for(a in 1:3) {
+    for(b in 1:4) {
+      c <- hypotenuse(a, b)
+      cat("ans = ", a, b, c, "\n") # [a, b, c] in MATLAB
+    }
+  }
+}
+```
 
 To display the values of a, b and c, I am using a feature we haven’t seen before. The bracket operator creates a new matrix which, when it is displayed, shows the three values on one line:
 
@@ -318,6 +496,10 @@ To display the values of a, b and c, I am using a feature we haven’t seen befo
      ans = 3.0000   3.0000    4.2426
      ans = 3        4         5
 
+```{r, comment=NA}
+find_triples()
+```
+
 Sharp-eyed readers will notice that we are wasting some effort here. After checking a = 1 and b = 2, there is no point in checking a = 2 and b = 1. We can eliminate the extra work by adjusting the range of the second loop:
 
     for a = 1:3
@@ -326,6 +508,18 @@ Sharp-eyed readers will notice that we are wasting some effort here. After check
     		[a, b, c] 
         end
     end
+
+```{r, comment=NA}
+find_triples <- function() {
+  for(a in 1:3) {
+    for(b in a:4) {
+      c <- hypotenuse(a, b)
+      cat("ans = ", a, b, c, "\n") # [a, b, c] in MATLAB
+    }
+  }
+}
+find_triples()
+```
 
 If you are following along, run this version to make sure it has the expected effect.
 
@@ -341,6 +535,18 @@ The next step is to check for integral values of c. This loop calls isintegral a
         end 
     end
 
+```{r, comment=NA}
+find_triples <- function() {
+  for(a in 1:3) {
+    for(b in a:4) {
+      c <- hypotenuse(a, b)
+      flag <- is.integral(c)
+      cat("ans = ", c, flag, "\n") # [a, b, c] in MATLAB
+    }
+  }
+}
+```
+
 By not displaying a and b I made it easy to scan the output to make sure that the values of c and flag look right.
 
     >> find_triples
@@ -353,6 +559,10 @@ By not displaying a and b I made it easy to scan the output to make sure that th
     ans = 4.4721         0
     ans = 4.2426         0
     ans = 5              1
+
+```{r, comment=NA}
+find_triples()
+```
 
 I chose the ranges for a and b to be small (so the amount of output is manageable), but to contain at least one Pythagorean triple. A constant challenge of debugging is to generate enough output to demonstrate that the code is working (or not) without being overwhelmed.
 
@@ -368,10 +578,28 @@ The next step is to use flag to display only the successful triples:
         end 
     end
 
+```{r, comment=NA}
+find_triples <- function() {
+  for(a in 1:3) {
+    for(b in a:4) {
+      c <- hypotenuse(a, b)
+      flag <- is.integral(c)
+      if(flag) {
+        cat("ans = ", a, b, c, "\n") # [a, b, c] in MATLAB
+      }
+    }
+  }
+}
+```
+
 Now the output is elegant and simple:
 
     >> find_triples 
     ans = 3 4 5
+
+```{r, comment=NA}
+find_triples()
+```
 
 ## 5.10 Encapsulation and generalization
 
@@ -393,9 +621,27 @@ The first draft of the function takes no input variables:
         end
     end
 
+```{r, comment=NA}
+find_triples <- function() {
+  for(a in 1:3) {
+    for(b in a:4) {
+      c <- hypotenuse(a, b)
+      flag <- is.integral(c)
+      if(flag) {
+        cat("ans = ", a, b, c, "\n") # [a, b, c] in MATLAB
+      }
+    }
+  }
+}
+```
+
 The empty parentheses in the signature are not strictly necessary, but they make it apparent that there are no input variables. Similarly, when I call the new function, I like to use parentheses to remind me that it is a function, not a script:
 
     >> find_triples()
+
+```{r, comment=NA}
+find_triples()
+```
 
 The output variable isn’t strictly necessary, either; it never gets assigned a value. But I put it there as a matter of habit, and also so my function signatures all have the same structure.
 
@@ -413,6 +659,20 @@ The next step is to generalize this function by adding input variables. The natu
         end
     end
 
+```{r, comment=NA}
+find_triples <- function(n) {
+  for(a in 1:n) {
+    for(b in a:n) {
+      c <- hypotenuse(a, b)
+      flag <- is.integral(c)
+      if(flag) {
+        cat("ans = ", a, b, c, "\n") # [a, b, c] in MATLAB
+      }
+    }
+  }
+}
+```
+
 Here are the results for the range from 1 to 15:
 
     >> find_triples(15)
@@ -421,6 +681,10 @@ Here are the results for the range from 1 to 15:
     ans = 6  8 10 
     ans = 8 15 17 
     ans = 9 12 15
+
+```{r, comment=NA}
+find_triples(15)
+```
 
 Some of these are more interesting than others. The triples 5, 12, 13 and 8, 15, 17 are “new,” but the others are just multiples of the 3,4,5 triangle we already knew.
 
@@ -432,6 +696,12 @@ When you change the signature of a function, you have to change all the places t
         res = (a.^d + b.^d) ^ (1/d);
     end
 
+```{r, comment=NA}
+hypotenuse <- function(a, b, d) {
+  res <- (a^d + b^d)^(1/d)
+}
+```
+
 When d is 2, this does the same thing it did before. There is no practical reason to generalize the function in this way; it’s just an example. Now when you run find triples, you get:
 
     >> find_triples(20)
@@ -442,6 +712,10 @@ When d is 2, this does the same thing it did before. There is no practical reaso
     
     Error in ==> find_triples at 7
                 c = hypotenuse(a, b);
+
+```{r, comment=NA, error=TRUE}
+find_triples(20)
+```
 
 So that makes it pretty easy to find the error. This is an example of a development technique that is sometimes useful: rather than search the program for all the places that use hypotenuse, you can run the program and use the error messages to guide you.
 
@@ -473,6 +747,38 @@ MATLAB provides a gcd function that computes the greatest common divisor of two 
         end
     end
 
+```{r, comment=NA}
+# revert to original definition
+hypotenuse <- function(a, b) {
+  res <- sqrt(a^2 + b^2)
+}
+
+# https://answers.yahoo.com/question/index?qid=20120125211736AA32hEy
+GCD <- function(a, b) { 
+  if(b == 0) { 
+    value <- a 
+    return(value)
+  } else { 
+    value <- GCD(b, a %% b) # '%%' in R = mod(a, b) in MATLAB
+    return(value)
+  }
+}
+
+find_triples <- function(n) {
+  for(a in 1:n) {
+    for(b in a:n) {
+      if(GCD(a, b) > 1) {
+        next # 'continue' in MALAB
+      }
+      c <- hypotenuse(a, b)
+      if(is.integral(c)) {
+        cat("ans = ", a, b, c, "\n") # [a, b, c] in MATLAB
+      }
+    }
+  }
+}
+```
+
 continue causes the program to end the current iteration immediately (without executing the rest of the body), jump to the top of the loop, and “continue” with the next iteration.
 
 In this case, since there are two loops, it might not be obvious which loop to jump to, but the rule is to jump to the inner-most loop (which is what we wanted).
@@ -490,13 +796,21 @@ Here are the results with n = 40:
     ans = 12 35 37 
     ans = 20 21 29
 
+```{r, comment=NA}
+find_triples(40)
+```
+
 There is an interesting connection between Fibonacci numbers and Pythagorean triples. If F is a Fibonacci sequence, then
 
     (F(n)F(n + 3), 2F(n + 1)F(n + 2), F^2(n + 1) + F^2(n + 2))
-     
+
 is a Pythagorean triple for all n ≥ 1.
 
 **Exercise 5.1** *Write a function named fib triple that takes an input variable n, uses fibonacci2 to compute the first n Fibonacci numbers, and then checks whether this formula produces a Pythagorean triple for each number in the sequence.*
+
+```{r, comment=NA}
+
+```
 
 ## 5.13 Mechanism and leap of faith
 
@@ -551,3 +865,7 @@ Forgetting about details is called abstraction; in the context of functions, abs
 **Exercise 5.2** *Take any of the scripts you have written so far, encapsulate the code in an appropriately-named function, and generalize the function by adding one or more input variables.*
 
 *Make the function silent and then call it from the Command Window and confirm that you can display the output value.*
+
+```{r, comment=NA}
+
+```
