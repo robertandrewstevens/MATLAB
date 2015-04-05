@@ -5,10 +5,6 @@ date: "March 3, 2015"
 output: html_document
 ---
 
-```{r, comment=NA, echo=FALSE}
-setwd("~/GitHub/MATLAB")
-```
-
 # Physical Modeling in MATLAB
 
 Allen B. Downey 
@@ -38,7 +34,7 @@ n <- -1
 A1 <- 1
 total <- 0
 for(i in 1:n) {
-  a <- A1 * 0.5^(i - 1)
+  a <- A1*0.5^(i - 1)
   total <- total + a
 }
 total
@@ -100,7 +96,7 @@ if(n < 0) {
   A1 <- 1
   total <- 0
   for(i in 1:n) {
-    a <- A1 * 0.5^(i - 1)
+    a <- A1*0.5^(i - 1)
     total <- total + a
   }
   print(ans <- total)
@@ -148,7 +144,6 @@ Don’t forget that == is the operator that tests equality, and = is the assignm
     Error: The expression to the left of the equals sign is not a valid target for an assignment.
 
 ```{r, comment=NA, error=TRUE}
-#if x <- 5 # comment out intentional error so script runs
 if(x <- 5) {} # intentional error
 ```
 
@@ -422,7 +417,6 @@ An index can be any kind of expression, but the value of the expression has to b
     ??? Subscript indices must either be real positive integers or logicals.
 
 ```{r, comment=NA, error=TRUE}
-#Y[0] # comment out intentional error so script runs
 Y[0] # intentional error
 ```
 
@@ -434,7 +428,6 @@ If the index is too big, you get this:
     ??? Index exceeds matrix dimensions.
 
 ```{r, comment=NA, error=TRUE}
-#Y[6] # comment out intentional error so script runs
 Y[6] # intentional error
 ```
 
@@ -446,7 +439,6 @@ Finally, don’t forget that the index has to be an integer:
     ??? Subscript indices must either be real positive integers or logicals.
 
 ```{r, comment=NA, error=TRUE}
-#Y[1.5] # comment out intentional error so script runs
 Y[1.5] # intentional error
 ```
 
@@ -563,7 +555,7 @@ The use of total as an accumulator is similar to what we saw in Section 3.7. Aga
 X <- 1:5
 product <- 1 # initialize
 for(i in 1:length(X)) {
-  product <- product * X[i]
+  product <- product*X[i]
 }
 product
 ```
@@ -771,7 +763,6 @@ If you understand loops and you are are comfortable with the shortcuts, feel fre
 
 ```{r, comment=NA}
 X <- 1:5
-
 total <- 0
 for(i in 1:length(X)) {
   total <- total + X[i]^2
@@ -816,7 +807,6 @@ total
 ```{r, comment=NA}
 n <- 10
 F <- rep(NA, n) # initialize
-
 F[1] <- 1
 F[2] <- 1
 for(i in 1:(n - 2)) {
@@ -829,7 +819,6 @@ for(i in 1:(n - 1)) {
   ratio[i] = F[i + 1]/F[i]
 }
 ratio
-
 plot(ratio)
 ```
 
@@ -879,7 +868,9 @@ for(i in 1:(n - 1)) {
 
 cloud(Z ~ X*Y) # plot3(X, Y, Z) in MATLAB
 
-plot3d(X, Y , Z)
+plot3d(X, Y , Z) # end result show up in X11 with Rmd
+# shows up in "Plots" window in RStudio R script
+# TODO:  explore better animations in Rmd or Shiny
 
 # comet3(X, Y, Z) in MATLAB
 # Animations in R require ImageMagik?
@@ -904,15 +895,24 @@ plot3d(X, Y , Z)
 
 ```{r, comment=NA}
 r <- 3.9
-source("logmap.R")
+n <- 50
+X <- as.numeric(rep(NA, n)) # initialize
+X[1] = 0.5
+for(j in 2:n) {
+  X[j] <- r*X[j - 1]*(1 - X[j - 1])
+}
 plot(X)
 
 rVec <- seq(2.4, 4.0, len = 100)
 yVec <- as.numeric(rep(0, length(rVec)))
-
 for(i in 1:length(rVec)) {
   r <- rVec[i]
-  source("logmap.R")
+  n <- 50
+  X <- as.numeric(rep(NA, n)) # initialize
+  X[1] = 0.5
+  for(j in 2:n) {
+    X[j] <- r*X[j - 1]*(1 - X[j - 1])
+  }
   yVec[i] <- X[n]
 }
 plot(rVec, yVec, pch = 16, col = "red")

@@ -31,7 +31,7 @@ For example, the following (increasingly familiar) script computes the sum of th
 A1 <- 1
 total <- 0
 for(i in 1:10) {
-  a <- A1 * 0.5^(i - 1)
+  a <- A1*0.5^(i - 1)
   total <- total + a
 }
 total
@@ -901,7 +901,7 @@ geoSequence <- function(A1, c, n) {
 
   total <- 0
   for(i in 1:n) {
-    a <- A1 * c^(i - 1)
+    a <- A1*c^(i - 1)
     total <- total + a
   }
   total
