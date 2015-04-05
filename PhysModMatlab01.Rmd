@@ -582,14 +582,6 @@ If you use longer variable names, you might not need explanatory comments, but t
 *Note: you can’t use Greek letters in MATLAB; when translating math expressions with Greek letters, it is common to write out the name of the letter (assuming you know it).*
 
 ```{r, comment=NA}
-# Physical Modeling in MATLAB by Allen B. Downey
-# Chapter 1:  Variables and values
-# Exercise 1.1
-# Write a MATLAB expression that evaluates the following math expression.
-# You can assume that the variables mu, sigma and x already exist.
-
-# MATLAB script ported into R
-
 mu    <- 0.8 # mean
 sigma <- 0.3 # standard deviation
 x     <- 1.0 # value of random variable from a Normal distribution with mu and sigma

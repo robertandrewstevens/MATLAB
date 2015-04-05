@@ -79,23 +79,23 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>Go back to the Command Window and type myscript (without the extension) at the prompt. MATLAB executes your script and displays the result.</p>
 <pre><code>&gt;&gt; myscript
 x = 5</code></pre>
-<pre class="r"><code>source(&quot;myscript.R&quot;, echo = TRUE)</code></pre>
-<pre><code>
-&gt; x &lt;- 5</code></pre>
+<pre class="r"><code>myscript &lt;- function() {
+  x &lt;- 5
+}
+(myscript())</code></pre>
+<pre><code>[1] 5</code></pre>
 <p>When you run a script, MATLAB executes the commands in the M-File, one after another, exactly as if you had typed them at the prompt.</p>
 <p>If something goes wrong and MATLAB can’t find your script, you will get an error message like:</p>
 <pre><code>&gt;&gt; myscript
 ??? Undefined function or variable ‘myscript’.</code></pre>
-<pre class="r"><code>source(&quot;myscript2.R&quot;, echo = TRUE)</code></pre>
-<pre><code>Warning: cannot open file 'myscript2.R': No such file or directory</code></pre>
-<pre><code>Error: cannot open the connection</code></pre>
+<pre class="r"><code>rm(list = ls())
+(myscript())</code></pre>
+<pre><code>Error: could not find function &quot;myscript&quot;</code></pre>
 <p>In this case you can either save your script again in a directory that is on the search path, or modify the search path to include the directory where you keep your scripts. You’ll have to consult the documentation for the details (sorry!).</p>
 <p>The filename can be anything you want, but you should try to choose something meaningful and memorable. You should be very careful to choose a name that is not already in use; if you do, you might accidentally replace one of MATLAB’s functions with your own. Finally, the name of the file cannot contain spaces. If you create a file named my script.m, MATLAB doesn’t complain until you try to run it:</p>
 <pre><code>&gt;&gt; my script
 ??? Undefined function or method ‘my’ for input arguments of type ‘char’.</code></pre>
-<pre class="r"><code>source(&quot;my script.R&quot;, echo = TRUE)</code></pre>
-<pre><code>Warning: cannot open file 'my script.R': No such file or directory</code></pre>
-<pre><code>Error: cannot open the connection</code></pre>
+<pre class="r"><code># (my script()) # comment out intentional error</code></pre>
 <p>The problem is that it is looking for a script named my. The problem is even worse if the first word of the filename is a function that exists. Just for fun, create a script named abs val.m and run it.</p>
 <p>Keeping track of your scripts can be a pain. To keep things simple, for now, I suggest putting all of your scripts in the default directory.</p>
 <p><strong>Exercise 2.1</strong> <em>The Fibonacci sequence, denoted F , is described by the equations F(1) = 1, F(2) = 1, and for i ≥ 3, F(i) = F(i − 1) + F(i − 2). The elements of this sequence occur naturally in many plants, particularly those with petals or scales arranged in the form of a logarithmic spiral.</em></p>
@@ -103,18 +103,13 @@ x = 5</code></pre>
 <pre><code>F(n) = [((1 + √5)/2)^n - ((1 - √5)/2)^n]/√5</code></pre>
 <p><em>Translate this expression into MATLAB and store your code in a file named fibonacci1. At the prompt, set the value of n to 10 and then run your script. The last line of your script should assign the value of Fn to ans. (The correct value of F10 is 55).</em></p>
 <pre class="r"><code>n &lt;- 10
-source(&quot;fibonacci1.R&quot;, echo = TRUE)</code></pre>
-<pre><code>
-&gt; t1 &lt;- (1 + sqrt(5))/2
 
-&gt; t2 &lt;- (1 - sqrt(5))/2
-
-&gt; diff &lt;- t1^n - t2^n
-
-&gt; ans &lt;- diff/sqrt(5)
-
-&gt; ans
-[1] 55</code></pre>
+t1 &lt;- (1 + sqrt(5))/2
+t2 &lt;- (1 - sqrt(5))/2
+diff &lt;- t1^n - t2^n
+ans &lt;- diff/sqrt(5)
+ans</code></pre>
+<pre><code>[1] 55</code></pre>
 </div>
 <div id="why-scripts" class="section level2">
 <h2>2.2 Why scripts?</h2>
@@ -147,8 +142,7 @@ x  y  z</code></pre>
 y &lt;- 7
 z &lt;- 9
 objects() # &quot;who&quot; in MATLAB</code></pre>
-<pre><code>[1] &quot;ans&quot;      &quot;diff&quot;     &quot;metadata&quot; &quot;n&quot;        &quot;t1&quot;       &quot;t2&quot;      
-[7] &quot;x&quot;        &quot;y&quot;        &quot;z&quot;       </code></pre>
+<pre><code>[1] &quot;ans&quot;  &quot;diff&quot; &quot;n&quot;    &quot;t1&quot;   &quot;t2&quot;   &quot;x&quot;    &quot;y&quot;    &quot;z&quot;   </code></pre>
 <p>The clear command removes variables.</p>
 <pre><code>&gt;&gt; clear y
 &gt;&gt; who
@@ -157,8 +151,7 @@ Your variables are:
 x  z</code></pre>
 <pre class="r"><code>rm(y) # &quot;clear y&quot; in MATLAB
 objects()</code></pre>
-<pre><code>[1] &quot;ans&quot;      &quot;diff&quot;     &quot;metadata&quot; &quot;n&quot;        &quot;t1&quot;       &quot;t2&quot;      
-[7] &quot;x&quot;        &quot;z&quot;       </code></pre>
+<pre><code>[1] &quot;ans&quot;  &quot;diff&quot; &quot;n&quot;    &quot;t1&quot;   &quot;t2&quot;   &quot;x&quot;    &quot;z&quot;   </code></pre>
 <p>To display the value of a variable, you can use the disp function.</p>
 <pre><code>&gt;&gt; disp(z) 
 9</code></pre>
@@ -181,10 +174,22 @@ z = 9</code></pre>
 Error in ==&gt; fibonacci1 at 4
 diff = t1^(n + 1) - t2^(n + 1);</code></pre>
 <pre class="r"><code>rm(n)
-source(&quot;fibonacci1.R&quot;, echo = FALSE)</code></pre>
+
+t1 &lt;- (1 + sqrt(5))/2
+t2 &lt;- (1 - sqrt(5))/2
+diff &lt;- t1^n - t2^n</code></pre>
 <pre><code>Error: object 'n' not found</code></pre>
+<pre class="r"><code>ans &lt;- diff/sqrt(5)
+ans</code></pre>
+<pre><code>[1] 55</code></pre>
 <pre class="r"><code>n &lt;- 10
-source(&quot;fibonacci1.R&quot;, echo = FALSE)</code></pre>
+
+t1 &lt;- (1 + sqrt(5))/2
+t2 &lt;- (1 - sqrt(5))/2
+diff &lt;- t1^n - t2^n
+ans &lt;- diff/sqrt(5)
+ans</code></pre>
+<pre><code>[1] 55</code></pre>
 <p>The details of this message might be different for you, depending on what’s in your script. But the general idea is that n is undefined. Notice that MATLAB tells you what line of your program the error is in, and displays the line.</p>
 <p>This information can be helpful, but beware! MATLAB is telling you where the error was discovered, not where the error is. In this case, the error is not in the script at all; it is, in a sense, in the workspace.</p>
 <p>Which brings us to the Fourth Theorem of Debugging:</p>
@@ -203,9 +208,9 @@ source(&quot;fibonacci1.R&quot;, echo = FALSE)</code></pre>
   Computes the nth Fibonacci number.
   Precondition: you must assign a value to n before running
   this script.  Postcondition: the result is stored in ans.</code></pre>
-<pre class="r"><code>help(&quot;fibanocci1.R&quot;) # help is for commands or packages</code></pre>
-<pre><code>No documentation for 'fibanocci1.R' in specified packages and libraries:
-you could try '??fibanocci1.R'</code></pre>
+<pre class="r"><code>help(&quot;fibanocci1&quot;) # help is for commands or packages</code></pre>
+<pre><code>No documentation for 'fibanocci1' in specified packages and libraries:
+you could try '??fibanocci1'</code></pre>
 <p>That way, scripts that you write behave just like predefined scripts. You can even use the doc command to see your comment in the Help Window.</p>
 </div>
 <div id="assignment-and-equality" class="section level2">
@@ -241,7 +246,11 @@ y</code></pre>
 <p><strong>Exercise 2.2</strong> <em>Write a few lines of code that swap the values of x and y. Put your code in a script called swap and test it.</em></p>
 <pre class="r"><code>x &lt;-  1 
 y &lt;- 10 
-source(&quot;swap.R&quot;)
+
+temp &lt;- x
+x &lt;- y
+y &lt;- temp
+
 x</code></pre>
 <pre><code>[1] 10</code></pre>
 <pre class="r"><code>y</code></pre>
@@ -261,7 +270,7 @@ x</code></pre>
 <p>In practice, there are two problems with incremental development:</p>
 <ul>
 <li><p>Sometimes you have to write extra code to generate visible output that you can check. This extra code is called scaffolding because you use it to build the program and then remove it when you are done. But time you save on debugging is almost always worth the time you spend on scaffolding.</p></li>
-<li><p>When you are getting started, it is usually not obvious how to choose the steps that get from x=5 to the program you are trying to write. There is an extended example in Section 5.7.</p></li>
+<li><p>When you are getting started, it is usually not obvious how to choose the steps that get from x = 5 to the program you are trying to write. There is an extended example in Section 5.7.</p></li>
 </ul>
 <p>If you find yourself writing more than a few lines of code before you start testing, and you are spending a lot of time debugging, you should try incremental development.</p>
 </div>
@@ -313,60 +322,82 @@ ans = 0.5000</code></pre>
 <pre class="r"><code>a &lt;- 150 # initial number of cars in Albany
 b &lt;- 150 # initial number of cars in Boston
 
-source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 146
-[1] 154</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 144
-[1] 156</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 142
-[1] 158</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 140
-[1] 160</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 138
-[1] 162</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 136
-[1] 164</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 134
-[1] 166</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 132
-[1] 168</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 130
-[1] 170</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 129
-[1] 171</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 128
-[1] 172</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 127
-[1] 173</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 126
-[1] 174</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 125
-[1] 175</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 124
-[1] 176</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 123
-[1] 177</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 122
-[1] 178</code></pre>
-<pre class="r"><code>source(&quot;carUpdate.R&quot;)</code></pre>
-<pre><code>[1] 121
-[1] 179</code></pre>
+aRate &lt;- 0.05 # Rate of cars in Albany dropped off in Boston
+bRate &lt;- 0.03 # Rate of cars in Boston dropped off in Albany
+
+# aMove = Number of cars moved from Albany to Boston
+# bMove = Number of cars moved from Boston to Albany
+
+# iteration 1
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 146</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 154</code></pre>
+<pre class="r"><code># iteration 2
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 144</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 156</code></pre>
+<pre class="r"><code># iteration 3
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 142</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 158</code></pre>
+<pre class="r"><code># iteration 4
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 140</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 160</code></pre>
+<pre class="r"><code># iteration 5
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 138</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 162</code></pre>
+<pre class="r"><code># iteration 6
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 136</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 164</code></pre>
+<pre class="r"><code># iteration 7
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 134</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 166</code></pre>
+<pre class="r"><code># iteration 8
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 132</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 168</code></pre>
+<pre class="r"><code># iteration 9
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 130</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 170</code></pre>
+<pre class="r"><code># iteration 10
+aMove &lt;- round(aRate*a) 
+bMove &lt;- round(bRate*b) 
+(a &lt;- a - aMove + bMove) # Number of cars remaining in Albany</code></pre>
+<pre><code>[1] 129</code></pre>
+<pre class="r"><code>(b &lt;- b - bMove + aMove) # Number of cars remaining in Boston</code></pre>
+<pre><code>[1] 171</code></pre>
 </div>
 </div>
 

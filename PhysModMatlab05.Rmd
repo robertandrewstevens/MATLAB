@@ -806,10 +806,34 @@ There is an interesting connection between Fibonacci numbers and Pythagorean tri
 
 is a Pythagorean triple for all n ≥ 1.
 
-**Exercise 5.1** *Write a function named fib triple that takes an input variable n, uses fibonacci2 to compute the first n Fibonacci numbers, and then checks whether this formula produces a Pythagorean triple for each number in the sequence.*
+**Exercise 5.1** *Write a function named fib_triple that takes an input variable n, uses fibonacci2 to compute the first n Fibonacci numbers, and then checks whether this formula produces a Pythagorean triple for each number in the sequence.*
 
 ```{r, comment=NA}
+fibonacci2 <- function(n) {
+  # Computes the nth Fibonacci number.
+  # Precondition: you must assign a value to n before running this
+  # script. Assume that n is greater than 2.
+  # Postcondition: assign the 10th element to ans.
 
+  prev1 <- 1
+  prev2 <- 1
+  total <- 0
+  for(i in 3:n) {
+    print(total <-  prev1 + prev2)
+    prev2 <- prev1
+    prev1 <- total
+  }
+  ans <- total
+}
+fibonacci2(7)
+
+fib_triple <- function(n) {
+  for(i in 3:n) {
+    sequence <- fibonacci2(i)
+    find_triples(sequence)
+  }
+}
+fib_triple(7)
 ```
 
 ## 5.13 Mechanism and leap of faith
@@ -867,5 +891,20 @@ Forgetting about details is called abstraction; in the context of functions, abs
 *Make the function silent and then call it from the Command Window and confirm that you can display the output value.*
 
 ```{r, comment=NA}
+geoSequence <- function(A1, c, n) {
+  # Geometric sequence
+  # Precondition: inputs
+  #   A1 = starting value
+  #   c  = constant
+  #   n  = Number of iterations
+  # Postcondition: sum of geometric sequence
 
+  total <- 0
+  for(i in 1:n) {
+    a <- A1 * c^(i - 1)
+    total <- total + a
+  }
+  total
+}
+geoSequence(1, 0.5, 22)
 ```
