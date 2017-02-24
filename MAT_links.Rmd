@@ -1,0 +1,13 @@
+---
+title: "MAT_links"
+author: "Robert A. Stevens"
+date: "February 20, 2017"
+output: html_document
+---
+
+# MATLAB Links
+
+https://github.com/NelsonUpenn/PMLS-MATLAB-Guide
+
+MLguide1-0.pdf: Nelson & Dodson's "Student's Guide to Physical Modeling with MATLAB." Other items include Errata, code samples, and discussion.
+
