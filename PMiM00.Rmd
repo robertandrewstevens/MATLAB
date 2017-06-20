@@ -1,10 +1,15 @@
-Physical Modeling in MATLABR
+---
+title: "PMiM00"
+author: "Robert A. Stevens"
+date: "6/19/2017"
+output: html_document
+---
 
-Allen B. Downey 
+*Physical Modeling in MATLAB* by Allen B. Downey 
 
 Version 1.1.8
 
-Preface
+# Preface
 
 Most books that use MATLAB are aimed at readers who know how to program. This book is for people who have never programmed before.
 
@@ -24,30 +29,30 @@ If you have suggestions and corrections, please send them to downey@allendowney.
 
 Allen B. Downey, Needham, MA
  
-Contents
+# Contents
 
-Preface
+0. Preface
 
-1 Variables and values
+1. Variables and values
 
-2 Scripts
+2. Scripts
 
-3 Loops
+3. Loops
 
-4 Vectors
+4. Vectors
 
-5 Functions
+5. Functions
 
-6 Zero-finding 
+6. Zero-finding 
 
-7 Functions of vectors 
+7. Functions of vectors 
 
-8 Ordinary Differential Equations 
+8. Ordinary Differential Equations 
 
-9 Systems of ODEs 
+9. Systems of ODEs 
 
-10 Second-order systems 
+10. Second-order systems 
 
-11 Optimization and Interpolation 
+11. Optimization and Interpolation 
 
-12 Vectors as vectors
+12. Vectors as vectors
