@@ -1,0 +1,337 @@
+
+ 
+Chapter 4 Vectors
+4.1 Checking preconditions
+Some of the loops in the previous chapter don’t work if the value of n isn’t set correctly before the loop runs. For example, this loop computes the sum of the first n elements of a geometric sequence:
+A1 = 1;
+total = 0;
+for i=1:n
+    a = A1 * 0.5^(i-1);
+    total = total + a;
+end
+ans = total
+It works for any positive value of n, but what if n is negative? In that case, you
+get:
+total = 0
+Why? Because the expression 1:-1 means “all the numbers from 1 to -1, count- ing up by 1.” It’s not immediately obvious what that should mean, but MAT- LAB’s interpretation is that there aren’t any numbers that fit that description, so the result is
+>> 1:-1
+ans = Empty matrix: 1-by-0
+If the matrix is empty, you might expect it to be “0-by-0,” but there you have it. In any case, if you loop over an empty range, the loop never runs at all, which is why in this example the value of total is zero for any negative value of n.
+34 Vectors
+If you are sure that you will never make a mistake, and that the preconditions of your functions will always be satisfied, then you don’t have to check. But for the rest of us, it is dangerous to write a script, like this one, that quietly produces the wrong answer (or at least a meaningless answer) if the input value is negative. A better alternative is to use an if statement.
+4.2 if
+The if statement allows you to check for certain conditions and execute state- ments if the conditions are met. In the previous example, we could write:
+if n<0
+ans = NaN end
+The syntax is similar to a for loop. The first line specifies the condition we are interested in; in this case we are asking if n is negative. If it is, MATLAB executes the body of the statement, which is the indented sequence of statements between the if and the end.
+MATLAB doesn’t require you to indent the body of an if statement, but it makes your code more readable, so you should do it, and don’t make me tell you again.
+In this example, the “right” thing to do if n is negative is to set ans = NaN, which is a standard way to indicate that the result is undefined (not a number).
+If the condition is not satisfied, the statements in the body are not executed. Sometimes there are alternative statements to execute when the condition is false. In that case you can extend the if statement with an else clause.
+The complete version of the previous example might look like this:
+if n<0
+    ans = NaN
+else
+A1 = 1;
+    total = 0;
+    for i=1:n
+        a = A1 * 0.5^(i-1);
+        total = total + a;
+    end
+    ans = total
+end
+Statements like if and for that contain other statements are called compound statements. All compound statements end with, well, end.
+In this example, one of the statements in the else clause is a for loop. Putting one compound statement inside another is legal and common, and sometimes called nesting.
+ 
+4.3 Relational operators 35
+4.3 Relational operators
+The operators that compare values, like < and > are called relational operators because they test the relationship between two values. The result of a relational operator is one of the logical values: either 1, which represents “true,” or 0, which represents “false.”
+Relational operators often appear in if statements, but you can also evaluate them at the prompt:
+>> x = 5;
+>> x < 10
+ans = 1
+You can assign a logical value to a variable:
+>> flag = x > 10
+flag = 0
+A variable that contains a logical value is often called a flag because it flags the status of some condition.
+The other relational operators are <= and >=, which are self-explanatory, ==, for “equal,” and ~=, for “not equal.” (In some logic notations, the tilde is the symbol for “not.”)
+Don’t forget that == is the operator that tests equality, and = is the assignment operator. If you try to use = in an if statement, you get a syntax error:
+if x=5
+??? if x=5
+        |
+Error: The expression to the left of the equals sign is not a valid
+target for an assignment.
+MATLAB thinks you are making an assignment to a variable named if x!
+4.4 Logical operators
+To test if a number falls in an interval, you might be tempted to write something like 0 < x < 10, but that would be wrong, so very wrong. Unfortunately, in many cases, you will get the right answer for the wrong reason. For example:
+>> x = 5;
+>> 0 < x < 10            % right for the wrong reason
+ans = 1
+But don’t be fooled!
+ 
+36 Vectors
+>> x = 17
+>> 0 < x < 10            % just plain wrong
+ans = 1
+The problem is that MATLAB is evaluating the operators from left to right, so first it checks if 0<x. It is, so the result is 1. Then it compares the logical value 1 (not the value of x) to 10. Since 1<10, the result is true, even though x is not in the interval.
+For beginning programmers, this is an evil, evil bug!
+One way around this problem is to use a nested if statement to check the two conditions separately:
+ans = 0 if 0<x
+if x<10 ans = 1
+end end
+But it is more concise to use the AND operator, &&, to combine the conditions. >> x = 5;
+>> 0<x && x<10
+ans = 1
+>> x = 17;
+>> 0<x && x<10
+ans = 0
+The result of AND is true if both of the operands are true. The OR operator, ||, is true if either or both of the operands are true.
+4.5 Vectors
+The values we have seen so far are all single numbers, which are called scalars to contrast them with vectors and matrices, which are collections of numbers.
+A vector in MATLAB is similar to a sequence in mathematics; it is a set of numbers that correspond to positive integers. What we called a “range” in the previous chapter was actually a vector.
+In general, anything you can do with a scalar, you can also do with a vector. You can assign a vector value to a variable:
+ 
+4.6 Vector arithmetic 37
+>> X = 1:5 X=12345
+Variables that contain vectors are often capital letters. That’s just a convention; MATLAB doesn’t require it, but for beginning programmers it is a useful way to remember what is a scalar and what is a vector.
+Just as with sequences, the numbers that make up the vector are called ele- ments.
+4.6 Vector arithmetic
+You can perform arithmetic with vectors, too. If you add a scalar to a vector, MATLAB increments each element of the vector:
+>> Y = X+5
+Y=6 7 8 9 10
+The result is a new vector; the original value of X is not changed.
+If you add two vectors, MATLAB adds the corresponding elements of each
+vector and creates a new vector that contains the sums:
+>> Z = X+Y
+Z=7 9 11 13 15
+But adding vectors only works if the operands are the same size. Otherwise:
+>> W = 1:3 W=123
+>> X+W
+??? Error using ==> plus
+Matrix dimensions must agree.
+The error message in this case is confusing, because we are thinking of these values as vectors, not matrices. The problem is a slight mismatch between math vocabulary and MATLAB vocabulary.
+4.7 Everything is a matrix
+In math (specifically in linear algebra) a vector is a one-dimensional sequence of values and a matrix is two-dimensional (and, if you want to think of it that way, a scalar is zero-dimensional). In MATLAB, everything is a matrix.
+ 
+38 Vectors
+You can see this if you use the whos command to display the variables in the workspace. whos is similar to who except that it also displays the size and type of each variable.
+First I’ll make one of each kind of value:
+>> scalar = 5
+scalar = 5
+>> vector = 1:5
+vector=1 2 3 4 5 >> matrix = ones(2,3)
+matrix =
+111 111
+ones is a function that builds a new matrix with the given number of rows and columns, and sets all the elements to 1. Now let’s see what we’ve got.
+ >> whos
+  Name         Size
+  scalar       1x1
+  vector       1x5
+  matrix       2x3
+Bytes Class
+    8  double array
+   40  double array
+   32  double array
+According to MATLAB, everything is a double array: “double” is another name for double-precision floating-point numbers, and “array” is another name for a matrix.
+The only difference is the size, which is specified by the number of rows and columns. The thing we called scalar is, according to MATLAB, a matrix with one row and one column. Our vector is really a matrix with one row and 5 columns. And, of course, matrix is a matrix.
+The point of all this is that you can think of your values as scalars, vectors, and matrices, and I think you should, as long as you remember that MATLAB thinks everything is a matrix.
+Here’s another example where the error message only makes sense if you know what is happening under the hood:
+>> X = 1:5 X=12345
+4.8 Indices 39
+>> Y = 1:5 Y=12345
+>> Z = X*Y
+??? Error using ==> mtimes
+Inner matrix dimensions must agree.
+First of all, mtimes is the MATLAB function that performs matrix multipli- cation. The reason the “inner matrix dimensions must agree” is that the way matrix multiplication is defined in linear algebra, the number of rows in X has to equal the number of columns in Y (those are the inner dimensions).
+If you don’t know linear algebra, this doesn’t make much sense. When you saw X*Y you probably expected it to multiply each the the elements of X by the corresponding element of Y and put the results into a new vector. That operation is called elementwise multiplication, and the operator that performs it is .*:
+>> X .* Y
+ans=1 4 9 16 25
+We’ll get back to the elementwise operators later; you can forget about them for now.
+4.8 Indices
+You can select elements of a vector with parentheses:
+>> Y = 6:10
+Y=6 7 8 9 10
+>> Y(1)
+ans = 6
+>> Y(5)
+ans = 10
+This means that the first element of Y is 6 and the fifth element is 10. The number in parentheses is called the index because it indicates which element of the vector you want.
+The index can be any kind of expression.
+>> i = 1;
+ 
+40 Vectors
+>> Y(i+1)
+ans = 7
+Loops and vectors go together like the storm and rain. For example, this loop displays the elements of Y.
+for i=1:5
+     Y(i)
+end
+Each time through the loop we use a different value of i as an index into Y.
+A limitation of this example is that we had to know the number of elements in Y. We can make it more general by using the length function, which returns the number of elements in a vector:
+for i=1:length(Y)
+     Y(i)
+end
+There. Now that will work for a vector of any length.
+4.9 Indexing errors
+An index can be any kind of expression, but the value of the expression has to be a positive integer, and it has to be less than or equal to the length of the vector. If it’s zero or negative, you get this:
+>> Y(0)
+??? Subscript indices must either be real positive integers or
+logicals.
+“Subscript indices” is MATLAB’s longfangled way to say “indices.” “Real pos- itive integers” means that complex numbers are out. And you can forget about “logicals” for now.
+If the index is too big, you get this:
+>> Y(6)
+??? Index exceeds matrix dimensions.
+There’s the “m” word again, but other than that, this message is pretty clear. Finally, don’t forget that the index has to be an integer:
+>> Y(1.5)
+??? Subscript indices must either be real positive integers or
+logicals.
+ 
+4.10 Vectors and sequences 41
+4.10 Vectors and sequences
+Vectors and sequences go together like ice cream and apple pie. For example, another way to evaluate the Fibonacci sequence is by storing successive values in a vector. Again, the definition of the Fibonacci sequence is F1 = 1, F2 = 1, and Fi = Fi−1 + Fi−2 for i ≥ 3. In MATLAB, that looks like
+F(1) = 1
+F(2) = 1
+for i=3:n
+    F(i) = F(i-1) + F(i-2)
+end
+ans = F(n)
+Notice that I am using a capital letter for the vector F and lower-case letters for the scalars i and n. At the end, the script extracts the final element of F and stores it in ans, since the result of this script is supposed to be the nth Fibonacci number, not the whole sequence.
+If you had any trouble with Exercise 3.5, you have to appreciate the simplicity of this version. The MATLAB syntax is similar to the math notation, which makes it easier to check correctness. The only drawbacks are
+• You have to be careful with the range of the loop. In this version, the loop runs from 3 to n, and each time we assign a value to the ith element. It would also work to “shift” the index over by two, running the loop from 1 to n-2:
+     F(1) = 1
+     F(2) = 1
+     for i=1:n-2
+         F(i+2) = F(i+1) + F(i)
+     end
+ans = F(n)
+Either version is fine, but you have to choose one approach and be con- sistent. If you combine elements of both, you will get confused. I prefer the version that has F(i) on the left side of the assignment, so that each time through the loop it assigns the ith element.
+• If you really only want the nth Fibonacci number, then storing the whole sequence wastes some storage space. But if wasting space makes your code easier to write and debug, that’s probably ok.
+Exercise 4.1 Write a loop that computes the first n elements of the geometric sequence Ai+1 = Ai/2 with A1 = 1. Notice that the math notation puts Ai+1 on the left side of the equality. When you translate to MATLAB, you may want to shift the index.
+ 
+42 Vectors
+4.11 Plotting vectors
+Plotting and vectors go together like the moon and June, whatever that means. If you call plot with a single vector as an argument, MATLAB plots the indices on the x-axis and the elements on the y-axis. To plot the Fibonacci numbers we computed in the previous section:
+plot(F)
+This display is often useful for debugging, especially if your vectors are big enough that displaying the elements on the screen is unwieldy.
+If you call plot with two vectors as arguments, MATLAB plots the second one as a function of the first; that is, it treats the first vector as a sequence of x values and the second as corresponding y value and plots a sequence of (x,y) points.
+X = 1:5
+Y = 6:10
+plot(X, Y)
+By default, MATLAB draws a blue line, but you can override that setting with the same kind of string we saw in Section 3.5. For example, the string ’ro-’ tells MATLAB to plot a red circle at each data point; the hyphen means the points should be connected with a line.
+In this example, I stuck with the convention of naming the first argument X (since it is plotted on the x-axis) and the second Y. There is nothing special about these names; you could just as well plot X as a function of Y. MATLAB always treats the first vector as the “independent” variable, and the second as the “dependent” variable (if those terms are familiar to you).
+4.12 Reduce
+A frequent use of loops is to run through the elements of an array and add them up, or multiply them together, or compute the sum of their squares, etc. This kind of operation is called reduce, because it reduces a vector with multiple elements down to a single scalar.
+For example, this loop adds up the elements of a vector named X (which we assume has been defined).
+total = 0
+for i=1:length(X)
+    total = total + X(i)
+end
+ans = total
+The use of total as an accumulator is similar to what we saw in Section 3.7. Again, we use the length function to find the upper bound of the range, so this
+ 
+4.13 Apply 43
+loop will work regardless of the length of X. Each time through the loop, we add in the ith element of X, so at the end of the loop total contains the sum of the elements.
+Exercise 4.2 Write a similar loop that multiplies all the elements of a vector together. You might want to call the accumulator product, and you might want to think about the initial value you give it before the loop.
+4.13 Apply
+Another common use of a loop is to run through the elements of a vector, perform some operation on the elements, and create a new vector with the results. This kind of operation is called apply, because you apply the operation to each element in the vector.
+For example, the following loop computes a vector Y that contains the squares of the elements of X (assuming, again, that X is already defined).
+for i=1:length(X)
+    Y(i) = X(i)^2
+end
+Exercise 4.3 Write a loop that computes a vector Y that contains the sines of
+the elements of X. To test your loop, write a script that
+1. Uses linspace (see the documentation) to assign to X a vector with 100
+elements running from 0 to 2π.
+2. Uses your loop to store the sines in Y.
+3. Plots the elements of Y as a function of the elements of X.
+4.14 Search
+Yet another use of loops is to search the elements of a vector and return the index of the value you are looking for (or the first value that has a particular property). For example, if a vector contains the computed altitude of a falling object, you might want to know the index where the object touches down (assuming that the ground is at altitude 0).
+To create some fake data, we’ll use an extended version of the colon operator:
+X = 10:-1:-10
+The values in this range run from 10 to -10, with a step size of -1. The step size is the interval between elements of the range.
+The following loop finds the index of the element 0 in X:
+ 
+44 Vectors
+for i=1:length(X)
+    if X(i) == 0
+ans = i end
+end
+One funny thing about this loop is that it keeps going after it finds what it is looking for. That might be what you want; if the target value appears more than one, this loop provides the index of the last one.
+But if you want the index of the first one (or you know that there is only one), you can save some unnecessary looping by using the break statement.
+for i=1:length(X)
+    if X(i) == 0
+ans = i
+break end
+end
+break does pretty much what it sounds like. It ends the loop and proceeds immediately to the next statement after the loop (in this case, there isn’t one, so the script ends).
+This example demonstrates the basic idea of a search, but it also demonstrates a dangerous use of the if statement. Remember that floating-point values are often only approximately right. That means that if you look for a perfect match, you might not find it. For example, try this:
+X = linspace(1,2)
+for i=1:length(X)
+    Y(i) = sin(X(i))
+end
+plot(X, Y)
+You can see in the plot that the value of sinx goes through 0.9 in this range, but if you search for the index where Y(i) == 0.9, you will come up empty.
+for i=1:length(Y)
+    if Y(i) == 0.9
+ans = i
+break end
+end
+The condition is never true, so the body of the if statement is never executed.
+Even though the plot shows a continuous line, don’t forget that X and Y are sequences of discrete (and usually approximate) values. As a rule, you should (almost) never use the == operator to compare floating-point values. There are a number of ways to get around this limitation; we will get to them later.
+ 
+4.15 Spoiling the fun 45
+Exercise 4.4 Write a loop that finds the index of the first negative number in a vector and stores it in ans. If there are no negative numbers, it should set ans to -1 (which is not a legal index, so it is a good way to indicate the special case).
+4.15 Spoiling the fun
+Experienced MATLAB programmers would never write the kind of loops in this chapter, because MATLAB provides simpler and faster ways to perform many reduce, filter and search operations.
+For example, the sum function computes the sum of the elements in a vector and prod computes the product.
+Many apply operations can be done with elementwise operators. The following statement is more concise than the loop in Section 4.13
+Y = X .^ 2
+Also, most built-in MATLAB functions work with vectors:
+X = linspace(0, 2*pi)
+Y = sin(X)
+plot(X, Y)
+Finally, the find function can perform search operations, but understanding it requires a couple of concepts we haven’t got to, so for now you are better off on your own.
+I started with simple loops because I wanted to demonstrate the basic concepts and give you a chance to practice. At some point you will probably have to write a loop for which there is no MATLAB shortcut, but you have to work your way up from somewhere.
+If you understand loops and you are are comfortable with the shortcuts, feel free to use them! Otherwise, you can always write out the loop.
+Exercise 4.5 Write an expression that computes the sum of the squares of the elements of a vector.
+4.16 Glossary
+compound: A statement, like if and for, that contains other statements in an indented body.
+nesting: Putting one compound statement in the body of another.
+relational operator: An operator that compares two values and generates a logical value as a result.
+ 
+46 Vectors
+logical value: A value that represents either “true” or “false”. MATLAB uses the values 1 and 0, respectively.
+flag: A variable that contains a logical value, often used to store the status of some condition.
+scalar: A single value.
+vector: A sequence of values.
+matrix: A two-dimensional collection of values (also called “array” in some MATLAB documentation).
+index: An integer value used to indicate one of the values in a vector or matrix (also called subscript in some MATLAB documentation).
+element: One of the values in a vector or matrix.
+elementwise: An operation that acts on the individual elements of a vector or
+matrix (unlike some linear algebra operations).
+reduce: A way of processing the elements of a vector and generating a single value; for example, the sum of the elements.
+apply: A way of processing a vector by performing some operation on each of the elements, producing a vector that contains the results.
+search: A way of processing a vector by examining the elements in order until one is found that has the desired property.
+4.17 Exercises
+Exercise 4.6 The ratio of consecutive Fibonacci numbers, Fn+1/Fn, converges to a constant value as n increases. Write a script that computes a vector with the first n elements of a Fibonacci sequence (assuming that the variable n is defined), and then computes a new vector that contains the ratios of consecutive Fibonacci numbers. Plot this vector to see if it seems to converge. What value does it converge on?
+Exercise 4.7 A certain famous system of differential equations can be approx- imated by a system of difference equations that looks like this:
+ xi+1 = yi+1 = zi+1 =
+xi +σ(yi −xi)dt
+yi +[xi(r−zi)−yi]dt zi + (xiyi − bzi) dt
+(4.1) (4.2) (4.3)
+4.17 Exercises 47
+• Write a script that computes the first 10 elements of the sequences X, Y and Z and stores them in vectors named X, Y and Z.
+UsetheinitialvaluesX1 =1,Y1 =2andZ1 =3,withvaluesσ=10, b = 8/3 and r = 28, and with time step dt = 0.01.
+• Read the documentation for plot3 and comet3 and plot the results in 3 dimensions.
+• Once the code is working, use semi-colons to suppress the output and then run the program with sequence length 100, 1000 and 10000.
+• Run the program again with different starting conditions. What effect does it have on the result?
+• Run the program with different values for σ, b and r and see if you can get a sense of how each variable affects the system.
+Exercise 4.8 The logistic map is often cited as an example of how complex, chaotic behaviour can arise from simple non-linear dynamical equations [some of this description is adapted from the Wikipedia page on the logistic map]. It was popularized in a seminal 1976 paper by the biologist Robert May.
+It has been used to model the biomass of a species in the presence of limiting factors such as food supply and disease. In this case, there are two processes at work: (1) A reproductive process increases the biomass of the species in propor- tion to the current population. (2) A starvation process causes the biomass to decrease at a rate proportional to the carrying capacity of the environment less the current population.
+Mathematically this can be written as
+Xi+1 = rXi(1 − Xi)
+where Xi is a number between zero and one that represents the biomass at year i, and r is a positive number that represents a combined rate for reproduction and starvation.
+• Write a script named logmap that computes the first 50 elements of X with r=3.9 and X1=0.5, where r is the parameter of the logistic map and X1 is the initial population.
+• Plot the results for a range of values of r from 2.4 to 4.0. How does the behavior of the system change as you vary r.
+• One way to characterize the effect of r is to make a plot with r on the x-axis and biomass on the y axis, and to show, for each value of r, the values of biomass that occur in steady state. See if you can figure out how to generate this plot.
+ 
+48 Vectors
