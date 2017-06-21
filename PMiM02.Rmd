@@ -1,6 +1,21 @@
-Chapter 2: Scripts
+---
+title: "PMiM02"
+author: "Robert A. Stevens"
+date: "6/20/2017"
+output: html_document
+---
 
-2.1 M-files
+```{r, comment=NA}
+
+```
+
+*Physical Modeling in MATLAB* by Allen B. Downey 
+
+Version 1.1.8
+
+# Chapter 2: Scripts
+
+## 2.1 M-files
 
 So far we have typed all of our programs “at the prompt,” which is fine if you are not writing more than a few lines. Beyond that, you will want to store your program in a script and then execute the script.
 
@@ -10,7 +25,9 @@ You can create and edit scripts with any text editor or word processor, but the 
 
 Type the following code in the editor
 
+```
 x = 5
+```
 
 and then press the (outdated) floppy disk icon, or select Save from the File menu. Either way, a dialog box appears where you can choose the file name and the directory where it should go. Change the name to myscript.m and leave the directory unchanged.
 
@@ -18,47 +35,53 @@ By default, MATLAB will store your script in a directory that is on the search p
 
 Go back to the Command Window and type myscript (without the extension) at the prompt. MATLAB executes your script and displays the result.
 
+```
 >> myscript
-x=5
+x = 5
+```
 
 When you run a script, MATLAB executes the commands in the M-File, one after another, exactly as if you had typed them at the prompt.
 
 If something goes wrong and MATLAB can’t find your script, you will get an error message like:
 
+```
 >> myscript
 ??? Undefined function or variable 'myscript'.
+```
 
 In this case you can either save your script again in a directory that is on the search path, or modify the search path to include the directory where you keep your scripts. You’ll have to consult the documentation for the details (sorry!).
 
 The filename can be anything you want, but you should try to choose something meaningful and memorable. You should be very careful to choose a name that is not already in use; if you do, you might accidentally replace one of MATLAB’s functions with your own. Finally, the name of the file cannot contain spaces. If you create a file named my script.m, MATLAB doesn’t complain until you try to run it:
 
+```
 >> my script
 ??? Undefined function or method 'my' for input arguments
 of type 'char'.
+```
 
 The problem is that it is looking for a script named “my”. The problem is even worse if the first word of the filename is a function that exists. Just for fun, create a script named abs val.m and run it.
 
 Keeping track of your scripts can be a pain. To keep things simple, for now, I suggest putting all of your scripts in the default directory.
 
-Exercise 2.1 The Fibonacci sequence, denoted F, is described by the equations F[1] = 1, F[2] = 1, and for i ≥ 3, F[i] = F[i − 1] + F[i − 2]. The elements of this sequence occur naturally in many plants, particularly those with petals or scales arranged in the form of a logarithmic spiral.
+**Exercise 2.1** The Fibonacci sequence, denoted F, is described by the equations F[1] = 1, F[2] = 1, and for i ≥ 3, F[i] = F[i − 1] + F[i − 2]. The elements of this sequence occur naturally in many plants, particularly those with petals or scales arranged in the form of a logarithmic spiral.
 
 The following expression computes the nth Fibonacci number: 
 
-F[n] = (((1 + sqrt(5))/2)^n - ((1 − sqrt(5))/2)^n)/sqrt(5). (2.1)
+    F[n] = (((1 + sqrt(5))/2)^n - ((1 − sqrt(5))/2)^n)/sqrt(5)  (2.1)
 
-Translate this expression into MATLAB and store your code in a file named fibonacci1. At the prompt, set the value of n to 10 and then run your script. The last line of your script should assign the value of Fn to ans. (The correct value of F[10] is 55).
+Translate this expression into MATLAB and store your code in a file named fibonacci1. At the prompt, set the value of n to 10 and then run your script. The last line of your script should assign the value of F[n] to ans. (The correct value of F[10] is 55).
 
-2.2 Why scripts?
+## 2.2 Why scripts?
 
 The most common reasons to use scripts are:
 
-• When you are writing more than a couple of lines of code, it might take a few tries to get everything right. Putting your code in a script makes it easier to edit than typing it at the prompt.
+- When you are writing more than a couple of lines of code, it might take a few tries to get everything right. Putting your code in a script makes it easier to edit than typing it at the prompt.
 
 On the other hand, it can be a pain to switch back and forth between the Command Window and the Editor. Try to arrange your windows so you can see the Editor and the Command Window at the same time, and use the Tab key or the mouse to switch between them.
 
-• If you choose good names for your scripts, you will be able to remember which script does what, and you might be able to reuse a script from one project to the next.
+- If you choose good names for your scripts, you will be able to remember which script does what, and you might be able to reuse a script from one project to the next.
 
-• If you run a script repeatedly, it is faster to type the name of the script than to retype the code!
+- If you run a script repeatedly, it is faster to type the name of the script than to retype the code!
 
 Unfortunately, the great power of scripts comes with great responsibility, which is that you have to make sure that the code you are running is the code you think you are running.
 
@@ -70,10 +93,11 @@ Either way, if the code you are running is not the code you are looking at, you 
 
 You must always be 100% sure that the code you are running is the code you think you are running.
 
-2.3 The workspace
+## 2.3 The workspace
 
 The variables you create are stored in the workspace, which is a set of variables and their values. The who command prints the names of the variables in the workspace.
 
+```
 >> x=5;
 >> y=7;
 >> z=9;
@@ -82,40 +106,48 @@ The variables you create are stored in the workspace, which is a set of variable
 Your variables are: 
 
 x  y  z
- 
+```
 
 The clear command removes variables. 
 
+```
 >> clear y
 >> who
 
 Your variables are:
 
 x. z
+```
 
 To display the value of a variable, you can use the disp function.
 
+```
 >> disp(z) 
 9
+```
 
 But it’s easier to just type the variable name.
 
+```
 >> z 
 z = 9
+```
 
 (Strictly speaking, the name of a variable is an expression, so evaluating it should assign a value to ans, but MATLAB seems to handle this as a special case.)
 
-2.4 More errors
+## 2.4 More errors
 
 Again, when you try something new, you should make a few mistakes on purpose so you’ll recognize them later.
 
 The most common error with scripts is to run a script without creating the necessary variables. For example, fibonacci1 requires you to assign a value to n. If you don’t:
 
+```
 >> fibonacci1
 ??? Undefined function or variable "n".
 
 Error in ==> fibonacci1 at 4
 diff = t1^(n+1) - t2^(n+1);
+```
 
 The details of this message might be different for you, depending on what’s in your script. But the general idea is that n is undefined. Notice that MATLAB tells you what line of your program the error is in, and displays the line.
 
@@ -123,46 +155,54 @@ This information can be helpful, but beware! MATLAB is telling you where the err
 
 Which brings us to the Fourth Theorem of Debugging:
 
-Error messages tell you where the problem was discovered, not where it was caused.
+    Error messages tell you where the problem was discovered, not where it was caused.
 
 The object of the game is to find the cause and fix it—not just to make the error message go away.
 
-2.5 Pre-conditions and post-conditions
+## 2.5 Pre-conditions and post-conditions
 
 Every script should contain a comment that explains what it does, and what the requirements are for the workspace. For example, I might put something like this at the beginning of fibonacci1:
 
+```
 % Computes the nth Fibonacci number.
 % Precondition: you must assign a value to n before running
 % this script.  Postcondition: the result is stored in ans.
+```
 
 A precondition is something that must be true, when the script starts, in order for it to work correctly. A postcondition is something that will be true when the script completes.
 
 If there is a comment at the beginning of a script, MATLAB assumes it is the documentation for the script, so if you type help fibonacci1, you get the contents of the comment (without the percent signs).
 
+```
 >> help fibonacci1
   Computes the nth Fibonacci number.
   Precondition: you must assign a value to n before running
   this script.  Postcondition: the result is stored in ans.
+```
 
 That way, scripts that you write behave just like predefined scripts. You can even use the doc command to see your comment in the Help Window.
 
-2.6 Assignment and equality
+## 2.6 Assignment and equality
 
 In mathematics the equals sign means that the two sides of the equation have the same value. In MATLAB an assignment statement looks like a mathematical equality, but it’s not.
 
 One difference is that the sides of an assignment statement are not interchangeable. The right side can be any legal expression, but the left side has to be a variable, which is called the target of the assignment. So this is legal:
 
+```
 >> y = 1; 
->> x = y+1 
+>> x = y + 1 
 x = 2
+```
 
 But this is not:
 
+```
 >> y + 1 = x
 ??? y+1 = x
         |
 Error: The expression to the left of the equals sign is not a valid
 target for an assignment.
+```
 
 In this case the error message is pretty helpful, as long as you know what a “target” is.
 
@@ -170,17 +210,19 @@ Another difference is that an assignment statement is only temporary, in the fol
 
 A third difference is that a mathematical equality is a statement that may or may not be true. For example, y = y + 1 is a statement that happens to be false for all real values of y. In MATLAB, y = y + 1 is a sensible and useful assignment statement. It reads the current value of y, adds one, and replaces the old value with the new value.
 
+```
 >> y = 1; 
 >> y = y + 1 
 y = 2
+```
 
-When you read MATLAB code, you might find it helpful to pronounce the equals sign “gets” rather than “equals.” So x = y+1 is pronounced “x gets the value of y plus one.”
+When you read MATLAB code, you might find it helpful to pronounce the equals sign “gets” rather than “equals.” So "x = y + 1"" is pronounced “x gets the value of y plus one.”
 
 To test your understanding of assignment statements, try this exercise:
 
-Exercise 2.2 Write a few lines of code that swap the values of x and y. Put your code in a script called swap and test it.
+**Exercise 2.2** Write a few lines of code that swap the values of x and y. Put your code in a script called swap and test it.
 
-2.7 Incremental development
+## 2.7 Incremental development
 
 When you start writing scripts that are more than a few lines, you might find yourself spending more and more time debugging. The more code you write before you start debugging, the harder it is to find the problem.
 
@@ -200,13 +242,13 @@ The best kind of debugging is the kind you don’t have to do.
 
 In practice, there are two problems with incremental development:
 
-• Sometimes you have to write extra code to generate visible output that you can check. This extra code is called scaffolding because you use it to build the program and then remove it when you are done. But time you save on debugging is almost always worth the time you spend on scaffolding.
+- Sometimes you have to write extra code to generate visible output that you can check. This extra code is called scaffolding because you use it to build the program and then remove it when you are done. But time you save on debugging is almost always worth the time you spend on scaffolding.
 
-• When you are getting started, it is usually not obvious how to choose the steps that get from x = 5 to the program you are trying to write. There is an extended example in Section 5.7.
+- When you are getting started, it is usually not obvious how to choose the steps that get from x = 5 to the program you are trying to write. There is an extended example in Section 5.7.
 
 If you find yourself writing more than a few lines of code before you start testing, and you are spending a lot of time debugging, you should try incremental development.
 
-2.8 Unit testing
+## 2.8 Unit testing
 
 In large software projects, unit testing is the process of testing software components in isolation before putting them together.
 
@@ -216,50 +258,56 @@ For example, suppose you know that x is the sine of some angle and you want to f
 
 Since we know sin 0 = 0, we could try
 
+```
 >> asin(0)
 ans = 0
+```
 
 which is correct. Also, we know that the sine of 90 degrees is 1, so if we try asin(1), we expect the answer to be 90, right?
 
+```
 >> asin(1)
 ans = 1.5708
+```
 
 Oops. We forgot that the trig functions in MATLAB work in radians, not degrees. So the correct answer is π/2, which we can confirm by dividing through by pi:
 
+```
 >> asin(1) / pi
 ans = 0.5000
+```
 
 With this kind of unit testing, you are not really checking for errors in MATLAB, you are checking your understanding. If you make an error because you are confused about how MATLAB works, it might take a long time to find, because when you look at the code, it looks right.
 
 Which brings us to the Sixth Theorem of Debugging:
 
-The worst bugs aren’t in your code; they are in your head.
+    The worst bugs aren’t in your code; they are in your head.
 
-2.9 Glossary
+## 2.9 Glossary
 
-M-file: A file that contains a MATLAB program.
+**M-file:** A file that contains a MATLAB program.
 
-script: An M-file that contains a sequence of MATLAB commands.
+**script:** An M-file that contains a sequence of MATLAB commands.
 
-search path: The list of directories where MATLAB looks for M-files.
+**search path:** The list of directories where MATLAB looks for M-files.
 
-workspace: A set of variables and their values.
+**workspace:** A set of variables and their values.
 
-precondition: Something that must be true when the script starts, in order for it to work correctly.
+**precondition:** Something that must be true when the script starts, in order for it to work correctly.
 
-postcondition: Something that will be true when the script completes.
+**postcondition:** Something that will be true when the script completes.
 
-target: The variable on the left side of an assignment statement.
+**target:** The variable on the left side of an assignment statement.
 
-incremental development: A way of programming by making a series of small, testable changes.
+**incremental development:** A way of programming by making a series of small, testable changes.
 
-scaffolding: Code you write to help you program or debug, but which is not part of the finished program.
+**scaffolding:** Code you write to help you program or debug, but which is not part of the finished program.
 
-unit testing: A process of testing software by testing each component in isolation.
+**unit testing:** A process of testing software by testing each component in isolation.
 
-2.10 Exercises
+## 2.10 Exercises
 
-Exercise 2.3 Imagine that you are the owner of a car rental company with two locations, Albany and Boston. Some of your customers do “one-way rentals,” picking up a car in Albany and returning it in Boston, or the other way around. Over time, you have observed that each week 5% of the cars in Albany are dropped off in Boston, and 3% of the cars in Boston get dropped off in Albany. At the beginning of the year, there are 150 cars at each location.
+**Exercise 2.3** Imagine that you are the owner of a car rental company with two locations, Albany and Boston. Some of your customers do “one-way rentals,” picking up a car in Albany and returning it in Boston, or the other way around. Over time, you have observed that each week 5% of the cars in Albany are dropped off in Boston, and 3% of the cars in Boston get dropped off in Albany. At the beginning of the year, there are 150 cars at each location.
 
 Write a script called car update that updates the number of cars in each location from one week to the next. The precondition is that the variables a and b contain the number of cars in each location at the beginning of the week. The postcondition is that a and b have been modified to reflect the number of cars that moved.
 
