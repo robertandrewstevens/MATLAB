@@ -1,18 +1,33 @@
-Chapter 8: Ordinary Differential Equations
+---
+title: "PMiM08"
+author: "Robert A. Stevens"
+date: "6/26/2017"
+output: html_document
+---
 
-8.1 Differential equations
+```{r, comment=NA}
+
+```
+
+*Physical Modeling in MATLAB* by Allen B. Downey 
+
+Version 1.1.8
+
+# Chapter 8: Ordinary Differential Equations
+
+## 8.1 Differential equations
 
 A differential equation (DE) is an equation that describes the derivatives of an unknown function. “Solving a DE” means finding a function whose derivatives satisfy the equation.
 
 For example, when bacteria grow in particularly bacteria-friendly conditions, the rate of growth at any point in time is proportional to the current population. What we might like to know is the population as a function of time. Toward that end, let’s define f to be a function that maps from time, t, to population y. We don’t know what it is, but we can write a differential equation that describes it:
 
-df/dt = a*f
+    df/dt = a*f
 
 where a is a constant that characterizes how quickly the population increases. 
 
 Notice that both sides of the equation are functions. To say that two functions are equal is to say that their values are equal at all times. In other words: 
 
-∀t : df(t)/dt = a*f(t)
+    ∀t : df(t)/dt = a*f(t)
 
 This is an ordinary differential equation (ODE) because all the derivatives involved are taken with respect to the same variable. If the equation related derivatives with respect to different variables (partial derivatives), it would be a partial differential equation.
 
@@ -22,7 +37,7 @@ This equation is linear because each term involves t, f or df/dt raised to the f
 
 Linear, first order ODEs can be solved analytically; that is, we can express the solution as a function of t. This particular ODE has an infinite number of solutions, but they all have this form:
 
-f(t) = b*exp(a*t)
+    f(t) = b*exp(a*t)
 
 For any value of b, this function satisfies the ODE. If you don’t believe me, take its derivative and check.
 
@@ -30,32 +45,32 @@ If we know the population of bacteria at a particular point in time, we can use 
 
 For example, if we know that f(0) = 5 billion cells, then we can write
 
-f(0) = 5 = b*exp(a*0)
+    f(0) = 5 = b*exp(a*0)
 
 and solve for b, which is 5. That determines what we wanted to know: 
 
-f(t) = 5*exp(a*t)
+    f(t) = 5*exp(a*t)
 
 The extra bit of information that determines b is called the initial condition (although it isn’t always specified at t = 0).
 
 Unfortunately, most interesting physical systems are described by nonlinear DEs, most of which can’t be solved analytically. The alternative is to solve them numerically.
 
-8.2 Euler’s method
+## 8.2 Euler’s method
 
 The simplest numerical method for ODEs is Euler’s method. Here’s a test to see if you are as smart as Euler. Let’s say that you arrive at time t and measure the current population, y, and the rate of change, r. What do you think the population will be after some period of time ∆t has elapsed?
 
-If you said y + r∆t, congratulations! You just invented Euler’s method (but you’re still not as smart as Euler).
+If you said y + r*∆t, congratulations! You just invented Euler’s method (but you’re still not as smart as Euler).
 
 This estimate is based on the assumption that r is constant, but in general it’s not, so we only expect the estimate to be good if r changes slowly and ∆t is small.
 
 But let’s assume (for now) that the ODE we are interested in can be written so that
 
-df(t)/dt = g(t, y)
+    df(t)/dt = g(t, y)
 
 where g is some function that maps (t, y) onto r; that is, given the time and current population, it computes the rate of change. Then we can advance from one point in time to the next using these equations:
 
-T[n + 1] = T[n] + ∆t  (8.1) 
-F[n + 1] = F[n] + g(t, y)*∆t  (8.2)
+    T[n + 1] = T[n] + ∆t  (8.1) 
+    F[n + 1] = F[n] + g(t, y)*∆t  (8.2)
 
 Here {T[i]} is a sequence of times where we estimate the value of f, and {F[i]} is the sequence of estimates. For each index i, F[i] is an estimate of f(T[i]). The interval ∆t is called the time step.
 
@@ -65,10 +80,11 @@ If the rate doesn’t change too fast and the time step isn’t too big, Euler�
 
 Euler’s method is first order, which means that each time you cut the time step in half, you expect the estimation error to drop by half. With a second-order method, you expect the error to drop by a factor of 4; third-order drops by 8, etc. The price of higher order methods is that they have to evaluate g more times per time step.
 
-8.3 Another note on notation
+## 8.3 Another note on notation
 
 There’s a lot of math notation in this chapter so I want to pause to review what we have so far. Here are the variables, their meanings, and their types:
 
+```
 Name  Meaning                          Type
 t     time                             scalar variable
 ∆t    time step                        scalar constant
@@ -83,6 +99,7 @@ g     A “rate function,” derived from  function t, y → r
 T     a sequence of times, t, where    sequence
       we estimate f(t)
 F     a sequence of estimates for f(t) sequence
+```
 
 So f is a function that computes the population as a function of time, f(t) is the function evaluated at a particular time, and if we assign f(t) to a variable, we usually call that variable y.
 
@@ -92,7 +109,7 @@ df/dt is the first derivative of f, and it maps from t to a rate. If we assign d
 
 It is easy to get df/dt confused with g, but notice that they are not even the same type. g is more general: it can compute the rate of change for any (hypothetical) population at any time; df/dt is more specific: it is the actual rate of change at time t, given that the population is f(t).
 
-8.4 ode45
+## 8.4 ode45
 
 A limitation of Euler’s method is that the time step is constant from one iteration to the next. But some parts of the solution are harder to estimate than others; if the time step is small enough to get the hard parts right, it is doing more work than necessary on the easy parts. The ideal solution is to adjust the time step as you go along. Methods that do that are called adaptive, and one of the best adaptive methods is the Dormand-Prince pair of Runge-Kutta formulas. You don’t have to know what that means, because the nice people at Mathworks have implemented it in a function called ode45. The ode stands for “ordinary differential equation [solver];” the 45 indicates that it uses a combination of 4th and 5th order formulas.
 
@@ -100,11 +117,11 @@ In order to use ode45, you have to write a MATLAB function that evaluates g as a
 
 As an example, suppose that the rate of population growth for rats depends on the current population and the availability of food, which varies over the course of the year. The governing equation might be something like
 
-df(t)/dt = a*f(t)*[1 + sin(ω*t)]
+    df(t)/dt = a*f(t)*[1 + sin(ω*t)]
 
 where t is time in days and f(t) is the population at time t.
 
-a and ω are parameters. A parameter is a value that quantifies a physical aspect of the scenario being modeled. For example, in Exercise 6.2 we used parameters rho and r to quantify the density and radius of a duck. Parameters are often constants, but in some models they vary in time.
+a and ω are parameters. A parameter is a value that quantifies a physical aspect of the scenario being modeled. For example, in **Exercise 6.2** we used parameters rho and r to quantify the density and radius of a duck. Parameters are often constants, but in some models they vary in time.
 
 In this example, a characterizes the reproductive rate, and ω is the frequency of a periodic function that describes the effect of varying food supply on reproduction.
 
@@ -112,33 +129,41 @@ This equation specifies a relationship between a function and its derivative. In
 
 The first step is to introduce a variable, y, as another name for f(t) 
 
-df(t)/dt = a*y*[1 + sin(ω*t)]
+    df(t)/dt = a*y*[1 + sin(ω*t)]
 
 This equation means that if we are given t and y, we can compute df/dt(t), which is the rate of change of f. The next step is to express that computation as a function called g:
 
-g(t, y) = a*y*[1 + sin(ω*t)]
+    g(t, y) = a*y*[1 + sin(ω*t)]
 
-Writing the function this way is useful because we can use it with Euler’s method or ode45 to estimate values of f . All we have to do is write a MATLAB function that evaluates g. Here’s what that looks like using the values a = 0.01 and ω = 2π/365 (one cycle per year):
+Writing the function this way is useful because we can use it with Euler’s method or ode45 to estimate values of f . All we have to do is write a MATLAB function that evaluates g. Here’s what that looks like using the values a = 0.01 and ω = 2*π/365 (one cycle per year):
 
+```
 function res = rats(t, y)
     a = 0.01;
     omega = 2 * pi / 365;
     res = a * y * (1 + sin(omega * t));
 end
+```
 
 You can test this function from the Command Window by calling it with different values of t and y; the result is the rate of change (in units of rats per day):
 
+```
 >> r = rats(0, 2)
 r = 0.0200
+```
 
 So if there are two rats on January 1, we expect them to reproduce at a rate that would produce 2 more rats per hundred days. But if we come back in April, the rate has almost doubled:
 
+```
 >> r = rats(120, 2)
 r = 0.0376
+```
 
 Since the rate is constantly changing, it is not easy to predict the future rat population, but that is exactly what ode45 does. Here’s how you would use it:
 
+```
 >> ode45(@rats, [0, 365], 2)
+```
 
 The first argument is a handle for the function that computes g. The second argument is the interval we are interested in, one year. The third argument is the initial population, f(0) = 2.
 
@@ -146,30 +171,36 @@ When you call ode45 without assigning the result to a variable, MATLAB displays 
 
 The x-axis shows time from 0 to 365 days; the y-axis shows the rat population, which starts at 2 and grows to almost 80. The rate of growth is slow in the winter and summer, and faster in the spring and fall, but it also accelerates as the population grows.
 
-8.5 Multiple output variables
+## 8.5 Multiple output variables
 
 ode45 is one of many MATLAB functions that return more than one output variable. The syntax for calling it and saving the results is
 
+```
 >> [T, Y] = ode45(@rats, [0, 365], 2);
+```
 
 The first return value is assigned to T; the second is assigned to Y. Each element of T is a time, t, where ode45 estimated the population; each element of Y is an estimate of f(t).
 
 If you assign the output values to variables, ode45 doesn’t draw the figure; you have to do it yourself:
 
+```
 >> plot(T, Y, 'bo-')
+```
 
 If you plot the elements of T, you’ll see that the space between the points is not quite even. They are closer together at the beginning of the interval and farther apart at the end.
 
 To see the population at the end of the year, you can display the last element from each vector:
 
+```
 >> [T(end), Y(end)]
 ans = 365.0000   76.9530
+```
 
 end is a special word in MATLAB; when it appears as an index, it means “the index of the last element.” You can use it in an expression, so Y(end - 1) is the second-to-last element of Y.
 
 How much does the final population change if you double the initial population? How much does it change if you double the interval to two years? How much does it change if you double the value of a?
 
-8.6 Analytic or numerical?
+## 8.6 Analytic or numerical?
 
 When you solve an ODE analytically, the result is a function, f, that allows you to compute the population, f(t), for any value of t. When you solve an ODE numerically, you get two vectors. You can think of these vectors as a discrete approximation of the continuous function f: “discrete” because it is only defined for certain values of t, and “approximate” because each value Fi is only an estimate of the true value f(t).
 
@@ -177,31 +208,37 @@ So those are the limitations of numerical solutions. The primary advantage is th
 
 If you are curious to know more about how ode45 works, you can modify rats to display the points, (t, y), where ode45 evaluates g. Here is a simple version:
 
+```
 function res = rats(t, y)
     plot(t, y, 'bo')
     a = 0.01;
     omega = 2 * pi / 365;
     res = a * y * (1 + sin(omega * t));
 end
+```
 
 Each time rats is called, it plots one data point; in order to see all of the data points, you have to use hold on.
 
+```
 >> clf; hold on
 >> [T, Y] = ode45(@rats, [0, 10], 2);
+```
 
 This figure shows part of the output, zoomed in on the range from Day 100 to 170:
 
 The circles show the points where ode45 called rats. The lines through the circles show the slope (rate of change) calculated at each point. The rectangles show the locations of the estimates (Ti, Fi). Notice that ode45 typically evaluates g several times for each estimate. This allows it to improve the estimates, for one thing, but also to detect places where the errors are increasing so it can decrease the time step (or the other way around).
 
-8.7 What can go wrong?
+## 8.7 What can go wrong?
 
 Don’t forget the @ on the function handle. If you leave it out, MATLAB treats the first argument as a function call, and calls rats without providing arguments.
 
+```
 >> ode45(rats, [0,365], 2)
 ??? Input argument "y" is undefined.
 
 Error in ==> rats at 4
     res = a * y * (1 + sin(omega * t));
+```
 
 Again, the error message is confusing, because it looks like the problem is in rats. You’ve been warned!
 
@@ -209,32 +246,39 @@ Also, remember that the function you write will be called by ode45, which means 
 
 If you are working with a rate function like this:
 
-g(t, y) = a*y 
+    g(t, y) = a*y 
 
 You might be tempted to write this:
 
+```
 function res = rate_func(y)        % WRONG
     a = 0.1
     res = a * y 
 end
+```
 
 But that would be wrong. So very wrong. Why? Because when ode45 calls rate func, it provides two arguments. If you only take one input variable, you’ll get an error. So you have to write a function that takes t as an input variable, even if you don’t use it.
 
+```
 function res = rate_func(t, y)     % RIGHT
     a = 0.1
     res = a * y 
 end
+```
 
 Another common error is to write a function that doesn’t make an assignment to the output variable. If you write something like this:
 
+```
 function res = rats(t, y)
     a = 0.01;
     omega = 2 * pi / 365;
     r=a*y*(1+sin(omega*t)) %WRONG 
 end
+```
 
 And then call it from ode45, you get
 
+```
 >> ode45(@rats, [0,365], 2)
 ??? Output argument "res" (and maybe others) not assigned during
 call to "/home/downey/rats.m (rats)".
@@ -248,11 +292,13 @@ f0 = feval(ode,t0,y0,args{:});   % ODE15I sets args{1} to yp0.
 Error in ==> ode45 at 173
 [neq, tspan, ntspan, next, t0, tfinal, tdir, y0, f0, odeArgs,
 odeFcn, ...
+```
 
 This might be a scary message, but if you read the first line and ignore the rest, you’ll get the idea.
 
 Yet another mistake that people make with ode45 is leaving out the brackets on the second argument. In that case, MATLAB thinks there are four arguments, and you get
 
+```
 >> ode45(@rats, 0, 365, 2)
 ??? Error using ==> funfun/private/odearguments
 When the first argument to ode45 is a function handle, the
@@ -261,16 +307,17 @@ tspan argument must have at least two elements.
 Error in ==> ode45 at 173
 [neq, tspan, ntspan, next, t0, tfinal, tdir, y0, f0, odeArgs,
 odeFcn, ...
+```
 
 Again, if you read the first line, you should be able to figure out the problem (tspan stands for “time span”, which we have been calling the interval).
 
-8.8 Stiffness
+## 8.8 Stiffness
 
 There is yet another problem you might encounter, but if it makes you feel better, it might not be your fault: the problem you are trying to solve might be stiff [1].
 
 I won’t give a technical explanation of stiffness here, except to say that for some problems (over some intervals with some initial conditions) the time step needed to control the error is very small, which means that the computation takes a long time. Here’s one example:
 
-df/dt = f^2 − f^3
+    df/dt = f^2 − f^3
 
 If you solve this ODE with the initial condition f(0) = δ over the interval from 0 to 2/δ, with δ = 0.01, you should see something like this:
 
@@ -280,35 +327,35 @@ In this case, the problem is easy to fix: instead of ode45 you can use ode23s, a
 
 In general, if you find that ode45 is taking a long time, you might want to try one of the stiff solvers. It won’t always solve the problem, but if the problem is stiffness, the improvement can be striking.
 
-Exercise 8.1 Write a rate function for this ODE and use ode45 to solve it with the given initial condition and interval. Start with δ = 0.1 and decrease it by multiples of 10. If you get tired of waiting for a computation to complete, you can press the Stop button in the Figure window or press Control-C in the Command Window.
+**Exercise 8.1** Write a rate function for this ODE and use ode45 to solve it with the given initial condition and interval. Start with δ = 0.1 and decrease it by multiples of 10. If you get tired of waiting for a computation to complete, you can press the Stop button in the Figure window or press Control-C in the Command Window.
 
 Now replace ode45 with ode23s and try again!
 
-8.9 Glossary
+## 8.9 Glossary
 
-differential equation (DE): An equation that relates the derivatives of an unknown function.
+**differential equation (DE):** An equation that relates the derivatives of an unknown function.
 
-ordinary DE: A DE in which all derivatives are taken with respect to the same variable.
+**ordinary DE:** A DE in which all derivatives are taken with respect to the same variable.
 
-partial DE: A DE that includes derivatives with respect to more than one variable
+**partial DE:** A DE that includes derivatives with respect to more than one variable
 
-first order (ODE): A DE that includes only first derivatives.
+**first order (ODE):** A DE that includes only first derivatives.
 
-linear: A DE that includes no products or powers of the function and its derivatives.
+**linear:** A DE that includes no products or powers of the function and its derivatives.
 
-time step: The interval in time between successive estimates in the numerical solution of a DE.
+**time step:** The interval in time between successive estimates in the numerical solution of a DE.
 
-first order (numerical method): A method whose error is expected to halve when the time step is halved.
+**first order (numerical method):** A method whose error is expected to halve when the time step is halved.
 
-adaptive: A method that adjusts the time step to control error.
+**adaptive:** A method that adjusts the time step to control error.
 
-stiffness: A characteristic of some ODEs that makes some ODE solvers run slowly (or generate bad estimates). Some ODE solvers, like ode23s, are designed to work on stiff problems.
+**stiffness:** A characteristic of some ODEs that makes some ODE solvers run slowly (or generate bad estimates). Some ODE solvers, like ode23s, are designed to work on stiff problems.
 
-parameter: A value that appears in a model to quantify some physical aspect of the scenario being modeled.
+**parameter:** A value that appears in a model to quantify some physical aspect of the scenario being modeled.
 
-8.10 Exercises
+## 8.10 Exercises
 
-Exercise 8.2 Suppose that you are given an 8 ounce cup of coffee at 90 ◦C and a 1 ounce container of cream at room temperature, which is 20 ◦C. You have learned from bitter experience that the hottest coffee you can drink comfortably is 60 ◦C.
+**Exercise 8.2** Suppose that you are given an 8 ounce cup of coffee at 90 ◦C and a 1 ounce container of cream at room temperature, which is 20 ◦C. You have learned from bitter experience that the hottest coffee you can drink comfortably is 60 ◦C.
 
 Assuming that you take cream in your coffee, and that you would like to start drinking as soon as possible, are you better off adding the cream immediately or waiting? And if you should wait, then how long?
 
@@ -316,35 +363,35 @@ To answer this question, you have to model the cooling process of a hot liquid i
 
 As a simplification, we can use Newton’s Law of Cooling[2]:
 
-df/dt = −r*(f − e)
+    df/dt = −r*(f − e)
 
 where f is the temperature of the coffee as a function of time and df/dt is its time derivative; e is the temperature of the environment, which is a constant in this case, and r is a parameter (also constant) that characterizes the rate of heat transfer.
 
 It would be easy to estimate r for a given coffee cup by making a few measurements over time. Let’s assume that that has been done and r has been found to be 0.001 in units of inverse seconds, 1/s.
 
-• Using mathematical notation, write the rate function, g, as a function of y, where y is the temperature of the coffee at a particular point in time.
+- Using mathematical notation, write the rate function, g, as a function of y, where y is the temperature of the coffee at a particular point in time.
 
-• Create an M-file named coffee and write a function called coffee that takes no input variables and returns no output value. Put a simple statement like x = 5 in the body of the function and invoke coffee() from the Command Window.
+- Create an M-file named coffee and write a function called coffee that takes no input variables and returns no output value. Put a simple statement like x = 5 in the body of the function and invoke coffee() from the Command Window.
 
-• Add a function called rate func that takes t and y and computes g(t, y). Notice that in this case g does not actually depend on t; nevertheless, your function has to take t as the first input argument in order to work with ode45.
+- Add a function called rate func that takes t and y and computes g(t, y). Notice that in this case g does not actually depend on t; nevertheless, your function has to take t as the first input argument in order to work with ode45.
 
 Test your function by adding a line like rate func(0,90) to coffee, the call coffee from the Command Window.
 
-• Once you get rate func(0,90) working, modify coffee to use ode45 to compute the temperature of the coffee (ignoring the cream) for 60 minutes. Confirm that the coffee cools quickly at first, then more slowly, and reaches room temperature (approximately) after about an hour.
+- Once you get rate func(0,90) working, modify coffee to use ode45 to compute the temperature of the coffee (ignoring the cream) for 60 minutes. Confirm that the coffee cools quickly at first, then more slowly, and reaches room temperature (approximately) after about an hour.
 
-• Write a function called mix func that computes the final temperature of a mixture of two liquids. It should take the volumes and temperatures of the liquids as parameters.
+- Write a function called mix func that computes the final temperature of a mixture of two liquids. It should take the volumes and temperatures of the liquids as parameters.
 
-In general, the final temperature of a mixture depends on the specific heat of the two substances [3]. But if we make the simplifying assumption that coffee and cream have the same density and specific heat, then the final temperature is (v1y1 + v2y2)/(v1 + v2), where v1 and v2 are the volumes of the liquids, and y1 and y2 are their temperatures.
+In general, the final temperature of a mixture depends on the specific heat of the two substances [3]. But if we make the simplifying assumption that coffee and cream have the same density and specific heat, then the final temperature is (v1\*y1 + v2\*y2)/(v1 + v2), where v1 and v2 are the volumes of the liquids, and y1 and y2 are their temperatures.
 
 Add code to coffee to test mix func.
 
-• Use mix func and ode45 to compute the time until the coffee is drinkable if you add the cream immediately.
+- Use mix func and ode45 to compute the time until the coffee is drinkable if you add the cream immediately.
 
-• Modify coffee so it takes an input variable t that determines how many seconds the coffee is allowed to cool before adding the cream, and returns the temperature of the coffee after mixing.
+- Modify coffee so it takes an input variable t that determines how many seconds the coffee is allowed to cool before adding the cream, and returns the temperature of the coffee after mixing.
 
-• Use fzero to find the time t that causes the temperature of the coffee after mixing to be 60 ◦C.
+- Use fzero to find the time t that causes the temperature of the coffee after mixing to be 60 ◦C.
 
-• What do these results tell you about the answer to the original question? Is the answer what you expected? What simplifying assumptions does this answer depend on? Which of them do you think has the biggest effect? Do you think it is big enough to affect the outcome? Overall, how confident are you that this model can give a definitive answer to this question? What might you do to improve it?
+- What do these results tell you about the answer to the original question? Is the answer what you expected? What simplifying assumptions does this answer depend on? Which of them do you think has the biggest effect? Do you think it is big enough to affect the outcome? Overall, how confident are you that this model can give a definitive answer to this question? What might you do to improve it?
 
 [1] The following discussion is based partly on an article from Mathworks available at http://www.mathworks.com/company/newsletters/news_notes/clevescorner/may03_cleve.html
 
