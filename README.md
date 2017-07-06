@@ -1,36 +1,34 @@
 MATLAB
 ======
 
-MATLAB scripts from
-
 *Physical Modeling in MATLAB*
 
 by Allen B. Downey
 
-Version 1.1.6
+Version 1.1.8
 
-Chapters
+00\. Preface
 
-1 Variables and values  
+01\. Variables and values
 
-2 Scripts  
+02\. Scripts
 
-3 Loops  
+03\. Loops
 
-4 Vectors  
+04\. Vectors
 
-5 Functions  
+05\. Functions
 
-6 Zero-finding  
+06\. Zero-finding 
 
-7 Functions of vectors  
+07\. Functions of vectors 
 
-8 Ordinary Differential Equations  
+08\. Ordinary Differential Equations 
 
-9 Systems of ODEs  
+09\. Systems of ODEs 
 
-10 Second-order systems  
+10\. Second-order systems 
 
-11 Optimization and Interpolation  
+11\. Optimization and Interpolation 
 
-12 Vectors as vectors  
+12\. Vectors as vectors
