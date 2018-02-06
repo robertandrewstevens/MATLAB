@@ -1,0 +1,1 @@
+% http://datascience-enthusiast.com/Miscellaneous/Jupyter_R_Python_Julia_Octave.htmlt=-10:0.01:10;x=16*(power(sin(t),3));y=(13*cos(t))-(5*cos(2*t))-(2*cos(3*t))-(cos(4*t));plot(x,y)title("Heart with Octave", 'Color','k','fontsize',18)

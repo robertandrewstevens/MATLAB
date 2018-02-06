@@ -29,6 +29,10 @@ Type the following code in the editor
 x = 5
 ```
 
+```{r, comment=NA}
+x <- 5
+```
+
 and then press the (outdated) floppy disk icon, or select Save from the File menu. Either way, a dialog box appears where you can choose the file name and the directory where it should go. Change the name to myscript.m and leave the directory unchanged.
 
 By default, MATLAB will store your script in a directory that is on the search path, which is the list of directories MATLAB searches for scripts.
@@ -40,6 +44,13 @@ Go back to the Command Window and type myscript (without the extension) at the p
 x = 5
 ```
 
+```{r, comment=NA}
+myscript <- function() {
+  x <- 5
+}
+(myscript())
+```
+
 When you run a script, MATLAB executes the commands in the M-File, one after another, exactly as if you had typed them at the prompt.
 
 If something goes wrong and MATLAB can’t find your script, you will get an error message like:
@@ -47,6 +58,11 @@ If something goes wrong and MATLAB can’t find your script, you will get an err
 ```
 >> myscript
 ??? Undefined function or variable 'myscript'.
+```
+
+```{r, comment=NA, error=TRUE}
+rm(list = ls())
+(myscript())
 ```
 
 In this case you can either save your script again in a directory that is on the search path, or modify the search path to include the directory where you keep your scripts. You’ll have to consult the documentation for the details (sorry!).
@@ -57,6 +73,10 @@ The filename can be anything you want, but you should try to choose something me
 >> my script
 ??? Undefined function or method 'my' for input arguments
 of type 'char'.
+```
+
+```{r, comment=NA, error=TRUE}
+# (my script()) # comment out intentional error
 ```
 
 The problem is that it is looking for a script named “my”. The problem is even worse if the first word of the filename is a function that exists. Just for fun, create a script named abs val.m and run it.
@@ -70,6 +90,16 @@ The following expression computes the nth Fibonacci number:
     F[n] = (((1 + sqrt(5))/2)^n - ((1 − sqrt(5))/2)^n)/sqrt(5)  (2.1)
 
 Translate this expression into MATLAB and store your code in a file named fibonacci1. At the prompt, set the value of n to 10 and then run your script. The last line of your script should assign the value of F[n] to ans. (The correct value of F[10] is 55).
+
+```{r, comment=NA}
+n <- 10
+
+t1 <- (1 + sqrt(5))/2
+t2 <- (1 - sqrt(5))/2
+diff <- t1^n - t2^n
+ans <- diff/sqrt(5)
+ans
+```
 
 ## 2.2 Why scripts?
 
@@ -98,14 +128,21 @@ You must always be 100% sure that the code you are running is the code you think
 The variables you create are stored in the workspace, which is a set of variables and their values. The who command prints the names of the variables in the workspace.
 
 ```
->> x=5;
->> y=7;
->> z=9;
+>> x = 5;
+>> y = 7;
+>> z = 9;
 >> who
 
 Your variables are: 
 
 x  y  z
+```
+
+```{r, comment=NA}
+x <- 5
+y <- 7
+z <- 9
+objects() # "who" in MATLAB
 ```
 
 The clear command removes variables. 
@@ -116,7 +153,12 @@ The clear command removes variables.
 
 Your variables are:
 
-x. z
+x z
+```
+
+```{r, comment=NA}
+rm(y) # "clear y" in MATLAB
+objects()
 ```
 
 To display the value of a variable, you can use the disp function.
@@ -126,11 +168,19 @@ To display the value of a variable, you can use the disp function.
 9
 ```
 
+```{r, comment=NA}
+print(z) # "disp(z)" in MATLAB
+```
+
 But it’s easier to just type the variable name.
 
 ```
 >> z 
 z = 9
+```
+
+```{r, comment=NA}
+z
 ```
 
 (Strictly speaking, the name of a variable is an expression, so evaluating it should assign a value to ans, but MATLAB seems to handle this as a special case.)

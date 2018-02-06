@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r, comment=NA}
-
+setwd("~/GitHub/MATLAB")
 ```
 
 *Physical Modeling in MATLAB* by Allen B. Downey 
@@ -124,9 +124,20 @@ i = 5
 
 As this example shows, you can run a for loop from the command line, but it’s much more common to put it in a script.
 
-**Exercise 3.1** Create a script named car loop that uses a for loop to run car update 52 times. Remember that before you run car update, you have to assign values to a and b. For this exercise, start with the values a = 150 and b = 150.
+**Exercise 3.1** Create a script named "car_loop"" that uses a for loop to run car update 52 times. Remember that before you run car update, you have to assign values to a and b. For this exercise, start with the values a = 150 and b = 150.
 
 If everything goes smoothly, your script will display a long stream of numbers on the screen. But it is probably too long to fit, and even if it fit, it would be hard to interpret. A graph would be much better!
+
+```{r, comment=NA}
+# Use a for loop to run "car_update.R" 52 times
+
+a <- 150 # initial number of cars in Albany
+b <- 150 # initial number of cars in Boston
+
+for(i in 1:52) {
+  source("car_update.R")
+}
+```
 
 ## 3.5 plotting
 
@@ -164,11 +175,26 @@ Try this:
 
 You should see a figure with two points. MATLAB scales the plot automatically so that the axes run from the lowest value in the plot to the highest. So in this example the points are plotted in the corners.
 
-**Exercise 3.2** Modify car loop so that each time through the loop it plots the value of a versus the value of i.
+**Exercise 3.2** Modify "car_loop"" so that each time through the loop it plots the value of a versus the value of i.
 
 Once you get that working, modify it so it plots the values of a with red circles and the values of b with blue diamonds.
 
 One more thing: if you use hold on to prevent MATLAB from clearing the figure, you might want to clear the figure yourself, from time to time, with the command clf.
+
+```{r, comment=NA}
+# Use a for loop to run car_update 52 times
+
+a <- 150 # initial number of cars in Albany
+b <- 150 # initial number of cars in Boston
+
+plot(c(0, 52), c(0, 200), xlab = "Week", ylab = "Count", type = "n")
+
+for(i in 1:52) {
+  source("car_update.R")
+  points(i, a, col = "red", pch = 1)
+  points(i, b, col = "blue", pch = 18)
+}
+```
 
 ## 3.6 Sequences
 
