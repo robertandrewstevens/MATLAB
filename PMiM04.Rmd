@@ -5,8 +5,19 @@ date: "6/21/2017"
 output: html_document
 ---
 
-```{r, comment=NA}
+```{r, echo=FALSE}
+setwd("~/GitHub/MATLAB")
+knitr::opts_chunk$set(
+  comment=NA,
+  engine.path = list(
+    python = '/usr/local/bin/python3',
+    octave = '/Applications/Octave.app/Contents/Resources/usr/Cellar/octave/4.0.3/bin/octave'
+  )
+)
 
+#from math import *
+#import numpy as np
+#import pylab as pl
 ```
 
 *Physical Modeling in MATLAB* by Allen B. Downey 
@@ -29,10 +40,57 @@ end
 ans = total
 ```
 
+```{octave}
+n = -1
+
+A1 = 1;
+total = 0;
+for i = 1:n
+    a = A1 * 0.5^(i - 1);
+    total = total + a;
+end
+ans = total
+```
+
+```{r}
+n <- -1
+
+A1 <- 1
+total <- 0
+for(i in 1:n) {
+  a <- A1 * 0.5^(i - 1)
+  total <- total + a
+}
+total
+```
+
+```{python}
+n = -1
+
+A1 = 1.0
+total = 0.0
+for i in range(1, n + 1):
+    a = A1 * 0.5**(i - 1)
+    total = total + a
+print "ans =", total
+```
+
 It works for any positive value of n, but what if n is negative? In that case, you get:
 
 ```
 total = 0
+```
+
+```{octave}
+
+```
+
+```{r}
+
+```
+
+```{python}
+
 ```
 
 Why? Because the expression "1:-1" means “all the numbers from 1 to -1, counting up by 1.” It’s not immediately obvious what that should mean, but MATLAB’s interpretation is that there aren’t any numbers that fit that description, so the result is
@@ -40,6 +98,21 @@ Why? Because the expression "1:-1" means “all the numbers from 1 to -1, counti
 ```
 >> 1:-1
 ans = Empty matrix: 1-by-0
+```
+
+```{octave}
+1:-1
+```
+
+```{r}
+1:-1
+```
+
+```{python}
+import numpy as np
+
+print range(1, -1 -1, -1) # 1:-1 in R and MATLAB
+print np.arange(1, -1 -1, -1) # 1:-1 in R and MATLAB
 ```
 
 If the matrix is empty, you might expect it to be “0-by-0,” but there you have it. In any case, if you loop over an empty range, the loop never runs at all, which is why in this example the value of total is zero for any negative value of n.
@@ -54,6 +127,23 @@ The if statement allows you to check for certain conditions and execute statemen
 if n < 0
     ans = NaN 
 end
+```
+```{octave}
+if n < 0
+    ans = NaN
+end
+```
+
+```{r}
+if(n < 0) {
+  print(ans <- NA)
+}
+```
+
+```{python}
+if n < 0:
+    ans = np.nan
+    print "ans =", ans
 ```
 
 The syntax is similar to a for loop. The first line specifies the condition we are interested in; in this case we are asking if n is negative. If it is, MATLAB executes the body of the statement, which is the indented sequence of statements between the if and the end.
@@ -80,6 +170,47 @@ A1 = 1;
 end
 ```
 
+```{octave}
+if n < 0
+    ans = NaN
+else
+    A1 = 1;
+    total = 0;
+    for i = 1:n
+        a = A1 * 0.5^(i - 1);
+        total = total + a;
+    end
+    ans = total
+end
+```
+
+```{r}
+if(n < 0) {
+  print(ans <- NA)
+} else {
+  A1 <- 1
+  total <- 0
+  for(i in 1:n) {
+  a <- A1 * 0.5^(i - 1)
+  total <- total + a
+  }
+  print(ans <- total)
+}
+```
+
+```{python}
+if n < 0:
+    ans = np.nan
+    print "ans =", ans
+else:
+    A1 = 1.0
+    total = 0.0
+    for i in range(1, n + 1):
+        a = A1 * 0.5**(i - 1)
+        total = total + a
+    print "ans =", total
+```
+
 Statements like if and for that contain other statements are called compound statements. All compound statements end with, well, end.
 
 In this example, one of the statements in the else clause is a for loop. Putting one compound statement inside another is legal and common, and sometimes called nesting.
@@ -96,12 +227,41 @@ Relational operators often appear in if statements, but you can also evaluate th
 ans = 1
 ```
 
+```{octave}
+x = 5;
+x < 10
+```
+
+```{r}
+x <- 5
+x < 10
+```
+
+```{python}
+x = 5
+print "x =", x
+print "x < 10?", x < 10
+```
+
 You can assign a logical value to a variable:
 
 ```
 >> flag = x > 10
 
 flag = 0
+```
+
+```{octave}
+flag = x > 10
+```
+
+```{r}
+(flag <- x > 10)
+```
+
+```{python}
+flag = x > 10
+print "flag =", flag
 ```
 
 A variable that contains a logical value is often called a flag because it flags the status of some condition.
@@ -118,6 +278,18 @@ Error: The expression to the left of the equals sign is not a valid
 target for an assignment.
 ```
 
+```{octave}
+if x = 5 % comment out intentional error so script runs
+```
+
+```{r}
+if(x = 5) # comment out intentional error so script runs
+```
+
+```{python}
+if x = 5: # comment out intentional error so script runs
+```
+
 MATLAB thinks you are making an assignment to a variable named if x!
 
 ## 4.4 Logical operators
@@ -130,6 +302,22 @@ To test if a number falls in an interval, you might be tempted to write somethin
 ans = 1
 ```
 
+```{octave}
+x = 5;
+0 < x < 10 % right for the wrong reason
+```
+
+```{r}
+x <- 5
+0 < x < 10 # right for the wrong reason
+```
+
+```{python}
+x = 5
+print "x =", x
+print "0 < x < 10?", 0 < x < 10 # right for the wrong reason
+```
+
 But don’t be fooled!
 
 ```
@@ -137,6 +325,22 @@ But don’t be fooled!
 >> 0 < x < 10            % just plain wrong
 
 ans = 1
+```
+
+```{octave}
+x = 17
+0 < x < 10 % just plain wrong
+```
+
+```{r}
+x <- 17
+0 < x < 10 # just plain wrong
+```
+
+```{python}
+x = 17
+print "x =", x
+print "0 < x < 10?", 0 < x < 10 # just plain wrong
 ```
 
 The problem is that MATLAB is evaluating the operators from left to right, so first it checks if 0 < x. It is, so the result is 1. Then it compares the logical value 1 (not the value of x) to 10. Since 1 < 10, the result is true, even though x is not in the interval.
@@ -154,6 +358,33 @@ if 0 < x
 end
 ```
 
+```{octave}
+ans = 0
+if 0 < x
+    if x < 10
+        ans = 1
+    end
+end
+```
+
+```{r}
+ans <- 0
+if(0 < x) {
+  if(x < 10) {
+    ans <- 1
+  }
+}
+ans
+```
+
+```{python}
+ans = 0
+if 0 < x:
+    if x < 10:
+        ans = 1
+print "ans =", ans
+```
+
 But it is more concise to use the AND operator, “&&”, to combine the conditions. 
 
 ```
@@ -166,6 +397,32 @@ ans = 1
 >> 0 < x && x < 10
 
 ans = 0
+```
+
+```{octave}
+x = 5;
+0 < x && x < 10
+
+x = 17;
+0 < x && x < 10
+```
+
+```{r}
+x <- 5
+0 < x && x < 10
+
+x <- 17
+0 < x && x < 10
+```
+
+```{python}
+x = 5
+print "x =", x
+print "0 < x && x < 10?", 0 < x and x < 10
+
+x = 17
+print "x =", x
+print "0 < x && x < 10?", 0 < x and x < 10
 ```
 
 The result of AND is true if both of the operands are true. The OR operator, ||, is true if either or both of the operands are true.
@@ -184,6 +441,21 @@ In general, anything you can do with a scalar, you can also do with a vector. Yo
 X = 1 2 3 4 5
 ```
 
+```{octave}
+X = 1:5
+```
+
+```{r}
+(X <- 1:5)
+```
+
+```{python}
+import numpy as np
+
+X = np.arange(1, 5 + 1, 1) # (X <- 1:5) in R and X = 1:5 MATLAB
+print "X =", X
+```
+
 Variables that contain vectors are often capital letters. That’s just a convention; MATLAB doesn’t require it, but for beginning programmers it is a useful way to remember what is a scalar and what is a vector.
 
 Just as with sequences, the numbers that make up the vector are called elements.
@@ -198,6 +470,19 @@ You can perform arithmetic with vectors, too. If you add a scalar to a vector, M
 Y = 6 7 8 9 10
 ```
 
+```{octave}
+Y = X + 5
+```
+
+```{r}
+(Y <- X + 5)
+```
+
+```{python}
+Y = X + 5
+print "Y =", Y
+```
+
 The result is a new vector; the original value of X is not changed.
 
 If you add two vectors, MATLAB adds the corresponding elements of each
@@ -206,6 +491,19 @@ vector and creates a new vector that contains the sums:
 ```
 >> Z = X + Y
 Z = 7 9 11 13 15
+```
+
+```{octave}
+Z = X + Y
+```
+
+```{r}
+(Z <- X + Y)
+```
+
+```{python}
+Z = X + Y
+print "Z =", Z
 ```
 
 But adding vectors only works if the operands are the same size. Otherwise:
@@ -218,6 +516,29 @@ W = 1 2 3
 >> X + W
 ??? Error using ==> plus
 Matrix dimensions must agree.
+```
+
+```{octave}
+W = 1:3
+
+X + W % comment out intentional error so script runs
+```
+
+```{r}
+(W <- 1:3)
+
+X + W # gives an error in MATLAB, but recycles values in R and gives a warning
+```
+
+```{python}
+import numpy as np
+
+W = np.arange(1, 3 + 1, 1) # (W <- 1:3) in R and W = 1:3 MATLAB
+print "W =", W
+
+X + W gives an error in MATLAB, but recycles values in R and gives a warning
+print "X + W =", X + W # commented out - in Python gives 
+# "ValueError: operands could not be broadcast together with shapes (5) (3)"
 ```
 
 The error message in this case is confusing, because we are thinking of these values as vectors, not matrices. The problem is a slight mismatch between math vocabulary and MATLAB vocabulary.
@@ -246,6 +567,37 @@ matrix =
      1  1  1
 ```
 
+```{octave}
+scalar = 5
+
+vector = 1:5
+
+matrix = ones(2,3)
+```
+
+```{r}
+(scalar <- 5)
+
+(vector <- 1:5)
+
+(matrix <- matrix(1, nrow = 2, ncol = 3)) # ones(2, 3) in MATLAB
+```
+
+```{python}
+import numpy as np
+
+scalar = 5
+print "scalar =", scalar
+
+vector = np.arange(1, 5 + 1, 1) # (vector <- 1:5) in R
+print "vector =", vector
+
+# matrix = ones(2, 3) in MATLAB
+# matrix <- matrix(1, nrow = 2, ncol = 3)) in R
+matrix = np.ones((2, 3))
+print "matrix =", matrix
+```
+
 ones is a function that builds a new matrix with the given number of rows and columns, and sets all the elements to 1. Now let’s see what we’ve got.
 
 ```
@@ -254,6 +606,22 @@ ones is a function that builds a new matrix with the given number of rows and co
   scalar       1x1      8  double array
   vector       1x5     40  double array
   matrix       2x3     32  double array
+```
+
+```{octave}
+whos
+```
+
+```{r}
+ls.str() # whos in MATLAB
+```
+
+```{python}
+# want equivalent of 'whos' in MATLAB and 'ls.str()' in R
+# "who" in MATLAB or objects() in R
+print "Your variables are:"
+print [var for var in dir() if not (var.startswith('_') or var == 'var')]
+print ""
 ```
 
 According to MATLAB, everything is a double array: “double” is another name for double-precision floating-point numbers, and “array” is another name for a matrix.
@@ -278,6 +646,37 @@ Y = 1 2 3 4 5
 Inner matrix dimensions must agree.
 ```
 
+```{octave}
+X = 1:5
+
+Y = 1:5
+
+Z = X*Y % comment out intentional error so script runs
+```
+
+```{r}
+(X <- 1:5)
+
+(Y <- 1:5)
+
+(Z <- X %*% Y) # gives an error in MATLAB
+```
+
+```{python}
+import numpy as np
+
+X = np.arange(1, 5 + 1, 1) # (X <- 1:5) in R
+print "X =", X
+
+Y = np.arange(1, 5 + 1, 1) # (Y = 1:5) in R
+print "Y =", Y
+
+# (Z = X %*% Y) in R - gives an error in MATLAB
+# X .* Y works in MATAB
+Z = X*Y
+print "Z =", Z
+```
+
 First of all, mtimes is the MATLAB function that performs matrix multiplication. The reason the “inner matrix dimensions must agree” is that the way matrix multiplication is defined in linear algebra, the number of rows in X has to equal the number of columns in Y (those are the inner dimensions).
 
 If you don’t know linear algebra, this doesn’t make much sense. When you saw X\*Y you probably expected it to multiply each the the elements of X by the corresponding element of Y and put the results into a new vector. That operation is called elementwise multiplication, and the operator that performs it is .\*:
@@ -286,6 +685,18 @@ If you don’t know linear algebra, this doesn’t make much sense. When you saw
 >> X .* Y
 
 ans = 1 4 9 16 25
+```
+
+```{octave}
+X .* Y
+```
+
+```{r}
+X * Y # X .* Y in MATAB
+```
+
+```{python}
+
 ```
 
 We’ll get back to the element-wise operators later; you can forget about them for now.
@@ -308,6 +719,28 @@ ans = 6
 ans = 10
 ```
 
+```{octave}
+Y = 6:10
+Y(1)
+Y(5)
+```
+
+```{r}
+(Y <- 6:10)
+Y[1]
+Y[5]
+```
+
+```{python}
+import numpy as np
+
+Y = np.arange(6, 10 + 1, 1) # (Y = 6:10) in R
+print "Y =", Y
+
+print "Y[0] =", Y[0]
+print "Y[4] =", Y[4]
+```
+
 This means that the first element of Y is 6 and the fifth element is 10. The number in parentheses is called the index because it indicates which element of the vector you want.
 
 The index can be any kind of expression.
@@ -320,12 +753,48 @@ The index can be any kind of expression.
 ans = 7
 ```
 
+```{octave}
+i = 1;
+
+Y(i + 1)
+```
+
+```{r}
+i <- 1
+
+Y[i + 1]
+```
+
+```{python}
+i = 1
+print "i =", i
+print "Y[i + 1] =", Y[i + 1]
+```
+
 Loops and vectors go together like the storm and rain. For example, this loop displays the elements of Y.
 
 ```
 for i = 1:5
      Y(i)
 end
+```
+
+```{octave}
+for i =  1:5
+    Y(i)
+end
+```
+
+```{r}
+for(i in 1:5) {
+  print(Y[i])
+}
+```
+
+```{python}
+for i in range(0, 5):
+    print "i =", i,
+    print "Y[i] =", Y[i]
 ```
 
 Each time through the loop we use a different value of i as an index into Y.
@@ -336,6 +805,24 @@ A limitation of this example is that we had to know the number of elements in Y.
 for i = 1:length(Y)
      Y(i)
 end
+```
+
+```{octave}
+for i = 1:length(Y)
+    Y(i)
+end
+```
+
+```{r}
+for(i in 1:length(Y)) {
+  print(Y[i])
+}
+```
+
+```{python}
+for i in range(0, len(Y)):
+    print "i =", i,
+    print "Y[i] =", Y[i]
 ```
 
 There. Now that will work for a vector of any length.
@@ -350,6 +837,18 @@ An index can be any kind of expression, but the value of the expression has to b
 logicals.
 ```
 
+```{octave}
+Y(0) % comment out intentional error so script runs
+```
+
+```{r}
+Y[0] # comment out intentional error so script runs
+```
+
+```{python}
+Y[0] # comment out intentional error so script runs
+```
+
 “Subscript indices” is MATLAB’s long-fangled way to say “indices.” “Real positive integers” means that complex numbers are out. And you can forget about “logicals” for now.
 
 If the index is too big, you get this:
@@ -357,6 +856,18 @@ If the index is too big, you get this:
 ```
 >> Y(6)
 ??? Index exceeds matrix dimensions.
+```
+
+```{octave}
+Y(6) % comment out intentional error so script runs
+```
+
+```{r}
+Y[6] # comment out intentional error so script runs
+```
+
+```{python}
+Y[6] # comment out intentional error so script runs
 ```
 
 There’s the “m” word again, but other than that, this message is pretty clear. 
@@ -367,6 +878,18 @@ Finally, don’t forget that the index has to be an integer:
 >> Y(1.5)
 ??? Subscript indices must either be real positive integers or
 logicals.
+```
+
+```{octave}
+Y(1.5) % comment out intentional error so script runs
+```
+
+```{r}
+Y[1.5] # comment out intentional error so script runs
+```
+
+```{python}
+Y[1.5] # comment out intentional error so script runs
 ```
 
 ## 4.10 Vectors and sequences
@@ -380,6 +903,37 @@ for i=3:n
     F(i) = F(i - 1) + F(i - 2)
 end
 ans = F(n)
+```
+
+```{octave}
+n = 10;
+F(1) = 1;
+F(2) = 1;
+for i = 3:n
+    F(i) = F(i - 1) + F(i - 2);
+end
+ans = F(n)
+```
+
+```{r}
+n <- 10
+F[1] <- 1
+F[2] <- 1
+for(i in 3:n) {
+  F[i] <- F[i - 1] + F[i - 2]
+}
+print(F[n])
+```
+
+```{python}
+n = 10
+
+F = [] # initialize
+F.append(1) # in F[1] = 1 in R; F(1) in MATLAB
+F.append(1) # in F[2] = 1 in R; F(2) in MATLAB
+for i in range(2, n):
+    F.append(F[i - 1] + F[i - 2])
+print "ans =", F[n - 1]
 ```
 
 Notice that I am using a capital letter for the vector F and lower-case letters for the scalars i and n. At the end, the script extracts the final element of F and stores it in ans, since the result of this script is supposed to be the nth Fibonacci number, not the whole sequence.
@@ -397,17 +951,94 @@ end
 ans = F(n)
 ```
 
+```{octave}
+F(1) = 1;
+F(2) = 1;
+for i = 1:n - 2
+    F(i + 2) = F(i + 1) + F(i);
+end
+ans = F(n)
+```
+
+```{r}
+F[1] <- 1
+F[2] <- 1
+for(i in 1:(n - 2)) {
+  F[i + 2] <- F[i + 1] + F[i]
+}
+print(F[n])
+```
+
+```{python}
+F = [] # initialize
+F.append(1) # in F[1] = 1 in R; F(1) in MATLAB
+F.append(1) # in F[2] = 1 in R; F(2) in MATLAB
+for i in range(0, n - 1):
+    F.append(F[i + 1] + F[i])
+print "ans =", F[n - 1]
+```
+
 Either version is fine, but you have to choose one approach and be consistent. If you combine elements of both, you will get confused. I prefer the version that has F(i) on the left side of the assignment, so that each time through the loop it assigns the i-th element.
 
 - If you really only want the nth Fibonacci number, then storing the whole sequence wastes some storage space. But if wasting space makes your code easier to write and debug, that’s probably ok.
 
 **Exercise 4.1** Write a loop that computes the first n elements of the geometric sequence A[i + 1] = A[i]/2 with A[1] = 1. Notice that the math notation puts A[i + 1] on the left side of the equality. When you translate to MATLAB, you may want to shift the index.
 
+```{octave}
+echo on
+
+n = 10;
+
+A(1) = 1;
+for i = 1:n - 1
+    A(i + 1) = A(i)/2;
+end
+A
+
+echo off
+```
+
+```{r}
+n <- 10
+
+A <- rep(0, n) # initialize
+A[1] <- 1
+for(i in 1:(n - 1)) {
+  A[i + 1] <- A[i]/2
+}
+A
+```
+
+```{python}
+n = 10
+
+A = [] # initialize
+A.append(1.0)
+for i in range(0, n - 1):
+    A.append(A[i]/2.0)
+print "A =", A
+```
+
 ## 4.11 Plotting vectors
 
 Plotting and vectors go together like the moon and June, whatever that means. If you call plot with a single vector as an argument, MATLAB plots the indices on the x-axis and the elements on the y-axis. To plot the Fibonacci numbers we computed in the previous section:
 
     plot(F)
+
+```{octave}
+plot(F)
+```
+
+```{r}
+plot(F)
+```
+
+```{python}
+import pylab as pl
+
+pl.plot(F, 'o')
+pl.show()
+```
 
 This display is often useful for debugging, especially if your vectors are big enough that displaying the elements on the screen is unwieldy.
 
@@ -417,6 +1048,28 @@ If you call plot with two vectors as arguments, MATLAB plots the second one as a
 X = 1:5
 Y = 6:10
 plot(X, Y)
+```
+
+```{octave}
+X = 1:5
+Y = 6:10
+plot(X, Y)
+```
+
+```{r}
+X <- 1:5
+Y <- 6:10
+plot(X, Y)
+```
+
+```{python}
+import numpy as np
+import pylab as pl
+
+X = np.arange(1, 5 + 1, 1) # 1:5 in MATLAB and R
+Y = np.arange(6, 10 + 1, 1) # 6:10 in MATLAB and R
+pl.plot(X, Y, 'o')
+pl.show()
 ```
 
 By default, MATLAB draws a blue line, but you can override that setting with the same kind of string we saw in Section 3.5. For example, the string ’ro-’ tells MATLAB to plot a red circle at each data point; the hyphen means the points should be connected with a line.
@@ -437,9 +1090,67 @@ end
 ans = total
 ```
 
+```{octave}
+total = 0;
+for i = 1:length(X)
+    total = total + X(i);
+end
+ans = total
+```
+
+```{r}
+total <- 0
+for(i in 1:length(X)) {
+  total <- total + X[i]
+}
+total
+```
+
+```{python}
+total = 0
+for i in range(0, len(X)):
+    total = total + X[i]
+print "ans =", total
+```
+
 The use of total as an accumulator is similar to what we saw in Section 3.7. Again, we use the length function to find the upper bound of the range, so this loop will work regardless of the length of X. Each time through the loop, we add in the i-th element of X, so at the end of the loop total contains the sum of the elements.
 
 **Exercise 4.2** Write a similar loop that multiplies all the elements of a vector together. You might want to call the accumulator product, and you might want to think about the initial value you give it before the loop.
+
+```{octave}
+echo on
+
+X = 1:5;
+
+product = 1
+for i = 1:length(X)
+    product = product * X(i)
+end
+ans = product
+
+echo off
+```
+
+```{r}
+X <- 1:5
+
+product = 1
+for(i in 1:length(X)) {
+  product <- product*X[i]
+}
+product
+```
+
+```{python}
+import numpy as np
+
+X = np.arange(1, 5 + 1, 1) # X <- 1:5 in R; X = 1:5 in MATLAB
+
+product = 1
+for i in range(0, len(X)):
+    product = product * X[i]
+print "product =", product
+```
 
 ## 4.13 Apply
 
@@ -453,6 +1164,33 @@ for i = 1:length(X)
 end
 ```
 
+```{octave}
+X = 1:5 % redefine so example runs as intended (?)
+for i = 1:length(X)
+    Y(i) = X(i)^2;
+end
+Y
+```
+
+```{r}
+X <- 1:5 # redefine so example runs as intended (?)
+for(i in 1:length(X)) {
+  Y[i] <- X[i]^2
+}
+Y
+```
+
+```{python}
+import numpy as np
+
+# redefine X so example runs as intended (?)
+X = np.arange(1, 5 + 1, 1) # 1:5 in MATLAB and R
+Y = [] # initialize
+for i in range(0, len(X)):
+    Y.append(X[i]**2)
+print "Y =", Y
+```
+
 **Exercise 4.3** Write a loop that computes a vector Y that contains the sines of
 the elements of X. To test your loop, write a script that
 
@@ -462,6 +1200,45 @@ the elements of X. To test your loop, write a script that
 
 3. Plots the elements of Y as a function of the elements of X.
 
+```{octave}
+%echo on
+
+X = linspace(0, 2);
+
+for i = 1:length(X)
+    Y(i) = sin(X(i));
+end
+plot(X, Y);
+
+%echo off
+```
+
+```{r}
+X <- seq(0, 2, len = 100) # X = linspace(0, 2) in MATLAB
+Y <- rep(0, length(X)) # initialize
+
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+```
+
+```{python}
+from math import *
+import numpy as np
+import pylab as pl
+
+# X = linspace(0, 2) in MATLAB
+# X <- seq(0, 2, len = 100) in R
+X = np.linspace(0, 2, num = 100) # simlar to MATLAB
+Y = [] # initialize
+
+for i in range(0, len(X)):
+    Y.append(sin(X[i]))
+pl.plot(X, Y, 'o')
+pl.show()
+```
+
 ## 4.14 Search
 
 Yet another use of loops is to search the elements of a vector and return the index of the value you are looking for (or the first value that has a particular property). For example, if a vector contains the computed altitude of a falling object, you might want to know the index where the object touches down (assuming that the ground is at altitude 0).
@@ -469,6 +1246,22 @@ Yet another use of loops is to search the elements of a vector and return the in
 To create some fake data, we’ll use an extended version of the colon operator:
 
     X = 10:-1:-10
+
+```{octave}
+X = 10:-1:-10
+```
+
+```{r}
+(X <- seq(from = 10, to = -10, by = -1)) # X = 10:-1:-10 in MATLAB
+```
+
+```{python}
+import numpy as np
+
+# X = 10:-1:-10 in MATLAB
+# (X = seq(from = 10, to = -10, by = -1)) in R
+X = np.arange(10, -10 - 1, -1)
+```
 
 The values in this range run from 10 to -10, with a step size of -1. The step size is the interval between elements of the range.
 
@@ -480,6 +1273,30 @@ for i = 1:length(X)
         ans = i 
     end
 end
+```
+
+```{octave}
+for i = 1:length(X)
+    if X(i) == 0
+        ans = i
+    end
+end
+```
+
+```{r}
+for(i in 1:length(X)) {
+  if(X[i] == 0) {
+    ans <- i
+  }
+}
+ans
+```
+
+```{python}
+for i in range(0, len(X)):
+    if X[i] == 0:
+        ans = i
+print "ans =", ans
 ```
 
 One funny thing about this loop is that it keeps going after it finds what it is looking for. That might be what you want; if the target value appears more than one, this loop provides the index of the last one.
@@ -495,6 +1312,33 @@ for i = 1:length(X)
 end
 ```
 
+```{octave}
+for i = 1:length(X)
+    if X(i) == 0
+        ans = i
+        break
+    end
+end
+```
+
+```{r}
+for(i in 1:length(X)) {
+  if(X[i] == 0) {
+    ans <- i
+    break
+  }
+}
+ans
+```
+
+```{python}
+for i in range(0, len(X)):
+    if X[i] == 0:
+        ans = i
+        break
+print "ans =", ans
+```
+
 break does pretty much what it sounds like. It ends the loop and proceeds immediately to the next statement after the loop (in this case, there isn’t one, so the script ends).
 
 This example demonstrates the basic idea of a search, but it also demonstrates a dangerous use of the if statement. Remember that floating-point values are often only approximately right. That means that if you look for a perfect match, you might not find it. For example, try this:
@@ -505,6 +1349,38 @@ for i = 1:length(X)
     Y(i) = sin(X(i))
 end
 plot(X, Y)
+```
+
+```{octave}
+X = linspace(1, 2);
+echo off
+for i = 1:length(X)
+    Y(i) = sin(X(i));
+end
+echo on
+plot(X, Y)
+```
+
+```{r}
+X <- seq(from = 1, to = 2, len = 100) # X = linspace(1, 2) in MATLAB
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+```
+
+```{python}
+import numpy as np
+import pylab as pl
+
+# X = linspace(1, 2) in MATLAB
+# X = seq(from = 1, to = 2, len = 100) in R 
+X = np.linspace(1, 2, num = 100) # similar to MATLAB
+Y = [] # initialize
+for i in range(0, len(X)):
+    Y.append(sin(X[i]))
+pl.plot(X, Y, 'o')
+pl.show()
 ```
 
 You can see in the plot that the value of sinx goes through 0.9 in this range, but if you search for the index where Y(i) == 0.9, you will come up empty.
@@ -518,11 +1394,149 @@ for i = 1:length(Y)
 end
 ```
 
+```{octave}
+echo off
+for i = 1:length(Y)
+    if Y(i) == 0.9
+        ans = i
+        break
+    end
+end
+echo on
+```
+
+```{r}
+for(i in 1:length(Y)) {
+  if(Y[i] == 0.9) {
+    ans <- i
+    break
+  }
+}
+ans
+
+Y[11:13] # R finds a match at i = 11 and Y = 0.891..., but MATLAB does not - why?
+```
+
+```{python}
+for i in range(0, len(Y)):
+    if Y[i] == 0.9:
+        ans = i
+        break
+print "ans =", ans
+```
+
 The condition is never true, so the body of the if statement is never executed.
 
 Even though the plot shows a continuous line, don’t forget that X and Y are sequences of discrete (and usually approximate) values. As a rule, you should (almost) never use the “==“ operator to compare floating-point values. There are a number of ways to get around this limitation; we will get to them later.
 
 **Exercise 4.4** Write a loop that finds the index of the first negative number in a vector and stores it in ans. If there are no negative numbers, it should set ans to -1 (which is not a legal index, so it is a good way to indicate the special case).
+
+```{octave}
+%echo on
+
+X = linspace(0, 2*pi);
+for i= 1:length(X)
+    Y(i) = sin(X(i));
+end
+plot(X, Y);
+
+ans = -1;
+for i = 1:length(Y)
+    if Y(i) < 0
+        ans = i;
+        break;
+    end
+end
+ans
+
+X = linspace(0, pi); % check when no negative numbers
+for i= 1:length(X)
+    Y(i) = sin(X(i));
+end
+plot(X, Y);
+
+ans = -1;
+for i = 1:length(Y)
+    if Y(i) < 0
+        ans = i;
+        break;
+    end
+end
+ans
+
+%echo off
+```
+
+```{r}
+X <- seq(0, 2*pi, len = 100)
+Y <- rep(NA, length(X))
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+
+ans <- -1
+for(i in 1:length(Y)) {
+  if(Y[i] < 0) {
+    ans <- i
+    break
+  }
+}
+ans
+
+X <- seq(0, pi, len = 100) # check when no negative numbers
+Y <- rep(NA, length(X))
+for(i in 1:length(X)) {
+  Y[i] <- sin(X[i])
+}
+plot(X, Y)
+
+ans <- -1
+for(i in 1:length(Y)) {
+  if(Y[i] < 0) {
+    ans <- i
+    break
+  }
+}
+ans
+```
+
+```{python}
+from math import *
+import numpy as np
+import pylab as pl
+
+# X <- seq(0, 2*pi, len = 100) in R
+X = np.linspace(0.0, 2.0*pi, num = 100) # simlar to MATLAB
+Y = [] # initialize
+
+for i in range(0, len(X)):
+    Y.append(sin(X[i]))
+pl.plot(X, Y, 'o')
+pl.show()
+
+ans = -1
+for i in range(0, len(Y)):
+    if Y[i] < 0:
+        ans = i
+        break
+print "ans =", ans
+ 
+X = np.linspace(0.0, pi, num = 100) # check when no negative numbers
+Y = [] # initialize
+
+for i in range(0, len(X)):
+    Y.append(sin(X[i]))
+pl.plot(X, Y, 'o')
+pl.show()
+
+ans = -1
+for i in range(0, len(Y)):
+    if Y[i] < 0:
+        ans = i
+        break
+print "ans =", ans
+```
 
 ## 4.15 Spoiling the fun
 
@@ -534,12 +1548,58 @@ Many apply operations can be done with element-wise operators. The following sta
 
     Y = X .^ 2
 
+```{octave}
+X = 1:5 % redefine so example runs as intended (?)
+Y = X .^ 2
+```
+
+```{r}
+(X <- 1:5) # redefine so example runs as intended (?)
+(Y <- X^2) # Y = X .^ 2 in MATLAB
+```
+
+```{python}
+import numpy as np
+
+# redefine so example runs as intended (?)
+X = np.arange(1, 5 + 1, 1) # 1:5 in MATLAB and R
+print "X =", X
+Y = X**2 # (Y = X^2) in R and Y = X .^ 2 in MATLAB
+print "Y =", Y
+```
+
 Also, most built-in MATLAB functions work with vectors:
 
 ```
 X = linspace(0, 2*pi)
 Y = sin(X)
 plot(X, Y)
+```
+
+```{octave}
+X = linspace(0, 2*pi);
+Y = sin(X);
+plot(X, Y)
+```
+
+```{r}
+X <- seq(0, 2*pi, len = 100) # X = linspace(0, 2*pi) in MATLAB
+Y <- sin(X)
+plot(X, Y)
+```
+
+```{python}
+import numpy as np
+import pylab as pl
+
+# X = linspace(0, 2*pi) in MATLAB
+# X = seq(0, 2*pi, len = 100) in R
+#X = np.linspace(0, 2*pi, num = 100) # simlar to MATLAB
+X = np.arange(0, 2.0*pi, 2.0*pi/100.0)
+# http://www.utdallas.edu/~jwz120030/Teaching/GradSciCtg/PythonDemos/Vectorization.py
+Y = np.sin(X)
+pl.plot(X, Y, 'o')
+pl.show()
 ```
 
 Finally, the find function can perform search operations, but understanding it requires a couple of concepts we haven’t got to, so for now you are better off on your own.
@@ -549,6 +1609,41 @@ I started with simple loops because I wanted to demonstrate the basic concepts a
 If you understand loops and you are are comfortable with the shortcuts, feel free to use them! Otherwise, you can always write out the loop.
 
 **Exercise 4.5** Write an expression that computes the sum of the squares of the elements of a vector.
+
+```{octave}
+echo on
+
+X = 1:5
+
+total = 0
+for i = 1:length(X)
+    total = total + X(i)^2
+end
+ans = total
+
+echo off
+```
+
+```{r}
+X <- 1:5
+
+total <- 0
+for(i in 1:length(X)) {
+  total <- total + X[i]^2
+}
+total
+```
+
+```{python}
+import numpy as np
+
+X = np.arange(1, 5 + 1, 1) # X <- 1:5 in R; X = 1:5 in MATLAB
+
+total = 0
+for i in range(0, len(X)):
+    total = total + X[i]**2
+print "total =", total
+```
 
 ## 4.16 Glossary
 
@@ -584,10 +1679,73 @@ If you understand loops and you are are comfortable with the shortcuts, feel fre
 
 **Exercise 4.6** The ratio of consecutive Fibonacci numbers, F[n + 1]/F[n], converges to a constant value as n increases. Write a script that computes a vector with the first n elements of a Fibonacci sequence (assuming that the variable n is defined), and then computes a new vector that contains the ratios of consecutive Fibonacci numbers. Plot this vector to see if it seems to converge. What value does it converge on?
 
+```{octave}
+echo on
+
+n = 10;
+
+F(1) = 1;
+F(2) = 1;
+for i = 1:n - 2
+    F(i + 2) = F(i + 1) + F(i);
+end
+F
+
+for i = 1:n - 1
+    ratio(i) = F(i + 1)/F(i);
+end
+ratio
+
+plot(ratio);
+
+echo off
+```
+
+```{r}
+n <- 10
+F <- rep(NA, n) # initialize
+
+F[1] <- 1
+F[2] <- 1
+for(i in 1:(n - 2)) {
+  F[i + 2] <- F[i + 1] + F[i]
+}
+F
+
+ratio <- rep(NA, n - 1) # initialize
+for(i in 1:(n - 1)) {
+  ratio[i] = F[i + 1]/F[i]
+}
+ratio
+
+plot(ratio)
+```
+
+```{python}
+import pylab as pl
+
+n = 10
+F = [] # initialize
+
+F.append(1.0) # F[1] <- 1 in R
+F.append(1.0) # F[2] <- 1 in R
+for i in range(0, n - 2):
+    F.append(F[i + 1] + F[i])
+print "F =", F
+
+ratio = [] # initialize
+for i in range(0, n - 1):
+    ratio.append(F[i + 1]/F[i])
+print "Fi+1/Fi =", ratio
+
+pl.plot(ratio, 'o')
+pl.show()
+```
+
 **Exercise 4.7** A certain famous system of differential equations can be approximated by a system of difference equations that looks like this:
 
     x[i + 1] = x[i] + σ(y[i] − x[i])dt  (4.1) 
-    y[i + 1] = y[i] + (x[i](r − z[i]) − y[i])dt  (4.2) 
+    y[i + 1] = y[i] + (x[i]*(r − z[i]) − y[i])dt  (4.2) 
     z[i + 1] = z[i] + (x[i]*y[i] − b*z[i])dt  (4.3)
 
 - Write a script that computes the first 10 elements of the sequences X, Y and Z and stores them in vectors named X, Y and Z. Use the initial values X[1] = 1, Y[1] = 2 and Z[1] = 3, with values σ = 10, b = 8/3 and r = 28, and with time step dt = 0.01.
@@ -600,13 +1758,126 @@ If you understand loops and you are are comfortable with the shortcuts, feel fre
 
 - Run the program with different values for σ, b and r and see if you can get a sense of how each variable affects the system.
 
+```{octave}
+echo on
+
+%n = 10;
+%n = 100;
+%n = 1000;
+n = 10000;
+
+X(1) = 1;
+Y(1) = 2;
+Z(1) = 3;
+
+s = 15; %5; %10;
+b = 16/7; %8/3;
+r = 7; %14; %28;
+dt = 0.01;
+
+for i = 1:n - 1
+    X(i + 1) = X(i) + s*(Y(i) - X(i))*dt;
+    Y(i + 1) = Y(i) + (X(i)*(r - Z(i)) - Y(i))*dt;
+    Z(i + 1) = Z(i) + (X(i)*Y(i) - b*Z(i))*dt;
+end
+
+figure(1)
+plot3(X, Y, Z)
+hold on 
+
+figure(2)
+comet3(X, Y, Z)
+hold off
+
+echo off
+```
+
+```{r}
+library("lattice") # for "cloud"
+library("rgl") # for "plot3d"
+
+#n <- 10
+#n <- 100
+#n <- 1000
+n <- 10000
+
+X <- as.numeric(rep(NA, n)) # initialize
+Y <- as.numeric(rep(NA, n)) # initialize
+Z <- as.numeric(rep(NA, n)) # initialize
+
+X[1] <- 1
+Y[1] <- 2
+Z[1] <- 3
+
+s <- 10
+b <- 8/3
+r <- 28
+dt <- 0.01
+
+for(i in 1:(n - 1)) {
+  X[i + 1] = X[i] + s*(Y[i] - X[i])*dt
+  Y[i + 1] = Y[i] + (X[i]*(r - Z[i]) - Y[i])*dt
+  Z[i + 1] = Z[i] + (X[i]*Y[i] - b*Z[i])*dt
+}
+
+cloud(Z ~ X*Y) # plot3(X, Y, Z) in MATLAB
+
+plot3d(X, Y , Z)
+
+# comet3(X, Y, Z) in MATLAB
+# Animations in R require ImageMagik?
+# And code is very complicated, so delay until later
+```
+
+```{python}
+import pylab as pl
+
+#n = 10
+#n = 100
+#n = 1000
+n = 10000
+
+X = [] # initialize
+Y = [] # initialize
+Z = [] # initialize
+
+X.append(1.0)
+Y.append(2.0)
+Z.append(3.0)
+
+s = 10.0
+b = 8.0/3.0
+r = 28.0
+dt = 0.01
+
+for i in range(0, n):
+    X.append(X[i] + s*(Y[i] - X[i])*dt)
+    Y.append(Y[i] + (X[i]*(r - Z[i]) - Y[i])*dt)
+    Z.append(Z[i] + (X[i]*Y[i] - b*Z[i])*dt)
+
+#cloud(Z ~ X*Y) # plot3(X, Y, Z) in MATLAB
+
+# http://stackoverflow.com/questions/9164950/python-matplotlib-plot3d-with-a-color-for-4d
+x, y, z = X, Y, Z
+fig = pl.figure()
+from mpl_toolkits.mplot3d import Axes3D
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x, y, z)
+pl.show()
+
+#plot3d(X, Y , Z) in R (allows rotation of axes)
+
+# comet3(X, Y, Z) in MATLAB
+# Can't find an analogous function in Python
+```
+
 **Exercise 4.8** The logistic map is often cited as an example of how complex, chaotic behavior can arise from simple non-linear dynamical equations [some of this description is adapted from the Wikipedia page on the logistic map]. It was popularized in a seminal 1976 paper by the biologist Robert May.
 
 It has been used to model the biomass of a species in the presence of limiting factors such as food supply and disease. In this case, there are two processes at work: (1) A reproductive process increases the biomass of the species in proportion to the current population. (2) A starvation process causes the biomass to decrease at a rate proportional to the carrying capacity of the environment less the current population.
 
 Mathematically this can be written as
 
-    X[i + 1] = r*X[i](1 − X[i])
+    X[i + 1] = r*X[i]*(1 − X[i])
 
 where X[i] is a number between zero and one that represents the biomass at year i, and r is a positive number that represents a combined rate for reproduction and starvation.
 
@@ -615,3 +1886,61 @@ where X[i] is a number between zero and one that represents the biomass at year 
 - Plot the results for a range of values of r from 2.4 to 4.0. How does the behavior of the system change as you vary r.
 
 - One way to characterize the effect of r is to make a plot with r on the x-axis and biomass on the y axis, and to show, for each value of r, the values of biomass that occur in steady state. See if you can figure out how to generate this plot.
+
+```{octave}
+%echo on
+
+%r = 3.9;
+%logmap;
+%plot(X)
+
+rVec = linspace(2.4, 4.0)
+hold on
+for i = 1:length(rVec)
+    r = rVec(i)
+    logmap;
+    plot(r, X(50), 'ro');
+end
+hold off
+
+%echo off
+```
+
+```{r}
+r <- 3.9
+source("logmap.R")
+plot(X)
+
+rVec <- seq(2.4, 4.0, len = 100)
+yVec <- as.numeric(rep(0, length(rVec)))
+
+for(i in 1:length(rVec)) {
+  r <- rVec[i]
+  source("logmap.R")
+  yVec[i] <- X[n]
+}
+plot(rVec, yVec, pch = 16, col = "red")
+```
+
+```{python}
+import sys
+import pylab as pl
+import numpy as np
+
+sys.argv = ['logmap.py','r']
+
+r = 3.9
+execfile("logmap.py")
+pl.plot(X, 'o')
+pl.show()
+
+rVec = np.linspace(2.4, 4.0, num = 100) # rVec <- seq(2.4, 4.0, len = 100) in R
+yVec = []
+
+for i in range(0, len(rVec)):
+    r = rVec[i]
+    execfile("logmap.py")
+    yVec.append(X[n - 1])
+pl.plot(rVec, yVec, 'ro')
+pl.show()
+```

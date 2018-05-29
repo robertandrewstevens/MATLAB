@@ -38,13 +38,19 @@ The simplest kind of command is a mathematical expression, which is made up of o
 
 If you type an expression and then press Enter (or Return), MATLAB evaluates the expression and prints the result.
 
+*Octave code*
+
 ```{octave}
 2 + 1
 ```
 
+*R code*
+
 ```{r}
 2 + 1
 ```
+
+*Pyton code*
 
 ```{python}
 print(2 + 1)
@@ -54,13 +60,19 @@ Just to be clear: in the example above, MATLAB printed ">>"; I typed "2 + 1" and
 
 An expression can contain any number of operators and operands. You don’t have to put spaces between them; some people do and some people don’t.
 
+*Octave code*
+
 ```{octave}
 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9
 ```
 
+*R code*
+
 ```{r}
 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9
 ```
+
+*Pyton code*
 
 ```{python}
 print(1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9)
@@ -70,13 +82,19 @@ Speaking of spaces, you might have noticed that MATLAB puts some space between "
 
 The other arithmetic operators are pretty much what you would expect. Subtraction is denoted by a minus sign, "-"; multiplication by an asterisk, "*" (sometimes pronounced “splat”); division by a forward slash "/".
 
+*Octave code*
+
 ```{octave}
 2*3 - 4/5
 ```
 
+*R code*
+
 ```{r}
 2*3 - 4/5
 ```
+
+*Pyton code*
 
 ```{python}
 print(2*3 - 4/5)
@@ -84,13 +102,19 @@ print(2*3 - 4/5)
 
 The order of operations is what you would expect from basic algebra: multiplication and division happen before addition and subtraction. If you want to override the order of operations, you can use parentheses.
 
+*Octave code*
+
 ```{octave}
 2*(3 - 4)/5
 ```
 
+*R code*
+
 ```{r}
 2*(3 - 4)/5
 ```
+
+*Pyton code*
 
 ```{python}
 print(2*(3 - 4)/5)
@@ -106,13 +130,19 @@ It is worth spending time to make your code pretty; it will save you time debugg
 
 The other common operator is exponentiation, which uses the "^" symbol, sometimes pronounced “carat” or “hat”. So 2 raised to the 16th power is
 
+*Octave code*
+
 ```{octave}
 2^16
 ```
 
+*R code*
+
 ```{r}
 2^16
 ```
+
+*Pyton code*
 
 ```{python}
 print(2**16)
@@ -124,13 +154,19 @@ As in basic algebra, exponentiation happens before multiplication and division, 
 
 MATLAB knows how to compute pretty much every math function you’ve heard of. It knows all the trigonometric functions; here’s how you use them:
 
+*Octave code*
+
 ```{octave}
 sin(1)
 ```
 
+*R code*
+
 ```{r}
 sin(1)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -142,13 +178,19 @@ This command is an example of a function call. The name of the function is sin, 
 
 Some functions take more than one argument, in which case they are separated by commas. For example, atan2 computes the inverse tangent, which is the angle in radians between the positive x-axis and the point with the given y and x coordinates.
 
+*Octave code*
+
 ```{octave}
 atan2(1, 1)
 ```
 
+*R code*
+
 ```{r}
 atan2(1, 1)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -160,13 +202,19 @@ If that bit of trigonometry isn’t familiar to you, don’t worry about it. It�
 
 MATLAB also provides exponential functions, like exp, which computes e raised to the given power. So exp(1) is just e.
 
+*Octave code*
+
 ```{octave}
 exp(1)
 ```
 
+*R code*
+
 ```{r}
 exp(1)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -176,13 +224,19 @@ print(e)
 
 The inverse of exp is log, which computes the logarithm base e: 
 
+*Octave code*
+
 ```{octave}
 log(exp(3))
 ```
 
+*R code*
+
 ```{r}
 log(exp(3))
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -194,13 +248,19 @@ This example also demonstrates that function calls can be nested; that is, you c
 
 More generally, you can use a function call as an operand in an expression.
 
+*Octave code*
+
 ```{octave}
 sqrt(sin(0.5)^2 + cos(0.5)^2)
 ```
 
+*R code*
+
 ```{r}
 sqrt(sin(0.5)^2 + cos(0.5)^2)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -219,13 +279,19 @@ MATLAB comes with two forms of online documentation, help and doc.
 The help command works from the Command Window; just type help followed
 by the name of a command.
 
+*Octave code*
+
 ```{octave}
 help sin
 ```
 
+*R code*
+
 ```{r}
 help(sin)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -237,13 +303,19 @@ Unfortunately, this documentation is not beginner-friendly.
 
 One gotcha is that the name of the function appears in the help page in capital letters, but if you type it like that in MATLAB, you get an error:
 
+*Octave code*
+
 ```{octave, error=TRUE}
 SIN(1)
 ```
 
-```{r, comment=NA, error=TRUE}
+*R code*
+
+```{r, error=TRUE}
 SIN(1)
 ```
+
+*Pyton code*
 
 ```{python, error=TRUE}
 from math import *
@@ -259,15 +331,21 @@ The doc pages are usually better. If you type doc sin, a browser appears with mo
 
 One of the features that makes MATLAB more powerful than a calculator is the ability to give a name to a value. A named value is called a variable.
 
-MATLAB comes with a few predefined variables. For example [1], the name pi refers to the mathematical quantity π, which is approximately
+MATLAB comes with a few predefined variables. For example [1], the name "pi" refers to the mathematical quantity $\pi$, which is approximately
+
+*Octave code*
 
 ```{octave}
 pi
 ```
 
+*R code*
+
 ```{r}
 pi
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -279,13 +357,19 @@ And if you do anything with complex numbers, you might find it convenient that b
 
 You can use a variable name anywhere you can use a number; for example, as an operand in an expression:
 
+*Octave code*
+
 ```{octave}
 pi*3^2
 ```
 
+*R code*
+
 ```{r}
 pi*3^2
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -295,15 +379,21 @@ print(pi*3**2)
 
 or as an argument to a function:
 
+*Octave code*
+
 ```{octave}
 sin(pi/2)
 exp(i*pi)
 ```
 
+*R code*
+
 ```{r}
 sin(pi/2)
 exp(1i*pi)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -315,20 +405,26 @@ print(cmath.exp(cmath.sqrt(-1)*pi))
 
 As the second example shows, many MATLAB functions work with complex numbers. This example demonstrates Euler’s Equality: 
 
-    exp(i*π) = −1
+$e^{i\pi} = -1$
 
 Whenever you evaluate an expression, MATLAB assigns the result to a variable named ans. You can use ans in a subsequent calculation as shorthand for "the value of the previous expression".
+
+*Octave code*
 
 ```{octave}
 3^2 + 4^2
 sqrt(ans)
 ```
 
+*R code*
+
 ```{r}
 ans <- 3^2 + 4^2
 ans
 sqrt(ans)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -344,14 +440,20 @@ But keep in mind that the value of ans changes every time you evaluate an expres
 
 You can create your own variables, and give them values, with an assignment statement. The assignment operator is the equals sign, "=".
 
+*Octave code*
+
 ```{octave}
 x = 6*7
 ```
+
+*R code*
 
 ```{r}
 x <- 6*7
 x
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -364,7 +466,9 @@ This example creates a new variable named x and assigns it the value of the expr
 
 In every assignment statement, the left side has to be a legal variable name. The right side can be any expression, including function calls.
 
-Almost any sequence of lower and upper case letters is a legal variable name. Some punctuation is also legal, but the underscore,\_, is the only commonly-used non-letter. Numbers are fine, but not at the beginning. Spaces are not allowed. Variable names are “case sensitive”, so x and X are different variables.
+Almost any sequence of lower and upper case letters is a legal variable name. Some punctuation is also legal, but the underscore,\_, is the only commonly-used non-letter. Numbers are fine, but not at the beginning. Spaces are not allowed. Variable names are “case sensitive”, so "x"" and "X"" are different variables.
+
+*Octave code*
 
 ```{octave}
 fibonacci0 = 1;
@@ -372,12 +476,16 @@ LENGTH = 10;
 first_name = 'allen'
 ```
 
+*R code*
+
 ```{r}
 fibanocci0 <- 1
 LENGTH <- 10
 first_name <- 'allen'
 first_name
 ```
+
+*Pyton code*
 
 ```{python}
 fibanocci0 = 1
@@ -387,6 +495,7 @@ print(first_name)
 ```
 
 The first two examples demonstrate the use of the semi-colon, which suppresses the output from a command. In this case MATLAB creates the variables and assigns them values, but displays nothing.
+
 The third example demonstrates that not everything in MATLAB is a number. A sequence of characters in single quotes is a string.
 
 Although i, j and pi are predefined, you are free to reassign them. It is common to use i and j for other purposes, but it is probably not a good idea to change the value of pi!
@@ -397,14 +506,20 @@ The most common reasons to use variables are
 
 - To avoid recomputing a value that is used repeatedly. For example, if you are performing computations involving e, you might want to compute it once and save the result.
 
+*Octave code*
+
 ```{octave}
 e = exp(1)
 ```
+
+*R code*
 
 ```{r}
 e <- exp(1)
 e
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -415,10 +530,14 @@ print(exp1)
 
 - To make the connection between the code and the underlying mathematics more apparent. If you are computing the area of a circle, you might want to use a variable named r:
 
+*Octave code*
+
 ```{octave}
 r = 3
 area = pi*r^2
 ```
+
+*R code*
 
 ```{r}
 r <- 3
@@ -426,6 +545,8 @@ r
 area <- pi*r^2
 area
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -438,8 +559,9 @@ print(area)
 
 That way your code resembles the familiar formula π*r^2.
 
-- To break a long computation into a sequence of steps. Suppose you are
-evaluating a big, hairy expression like this:
+- To break a long computation into a sequence of steps. Suppose you are evaluating a big, hairy expression like this:
+
+*Octave code*
 
 ```{octave}
 theta = 0; % define to avoid error message
@@ -450,6 +572,8 @@ x     = 1; % define to avoid error message
 ans = ((x - theta)*sqrt(2*pi)*sigma)^-1*exp(-1/2*(log(x - theta) - zeta)^2/sigma^2)
 ```
 
+*R code*
+
 ```{r}
 theta <- 0 # define to avoid error message
 sigma <- 1 # define to avoid error message
@@ -459,6 +583,8 @@ x     <- 1 # define to avoid error message
 ans <- ((x - theta)*sqrt(2*pi)*sigma)^-1*exp(-1/2*(log(x - theta) - zeta)^2/sigma^2)
 ans
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -476,6 +602,8 @@ You can use an ellipsis to break the expression into multiple lines. Just type .
 
 But often it is better to break the computation into a sequence of steps and assign intermediate results to variables.
 
+*Octave code*
+
 ```{octave}
 theta = 0; % define to avoid error message
 sigma = 1; % define to avoid error message
@@ -489,6 +617,8 @@ exponent = -1/2*temp^2
 ans = exp(exponent)/denom
 ```
 
+*R code*
+
 ```{r}
 shiftx <- x - theta
 demon <- shiftx*sqrt(2*pi)*sigma
@@ -497,6 +627,8 @@ exponent <- -1/2*temp^2
 ans <- exp(exponent)/demon
 ans
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -524,6 +656,8 @@ When you make deliberate errors, you get to see what the error messages look lik
 
 A common error for beginning programmers is leaving out the * for multiplication.
 
+*Octave code*
+
 ```{octave, error=TRUE}
 r = 2
 area = pi r^2 % intentional error
@@ -533,6 +667,8 @@ area = pi r^2 % intentional error
 r = 2
 area = pi*r^2 % corrected
 ```
+
+*R code*
 
 ```{r, error=TRUE}
 r <- 2
@@ -545,6 +681,8 @@ r <- 2
 area <- pi*r^2  # corrected
 area
 ```
+
+*Pyton code*
 
 ```{python, error=TRUE}
 from math import *
@@ -566,6 +704,8 @@ The error message indicates that, after seeing the operand pi, MATLAB was “exp
 
 Another common error is to leave out the parentheses around the arguments of a function. For example, in math notation, it is common to write something like sin π, but not in MATLAB.
 
+*Octave code*
+
 ```{octave, error=TRUE}
 sin pi % intentional error
 ```
@@ -574,6 +714,8 @@ sin pi % intentional error
 sin(pi) % corected "sin pi"
 ```
 
+*R code*
+
 ```{r, error=TRUE}
 sin pi # intentional error
 ```
@@ -581,6 +723,8 @@ sin pi # intentional error
 ```{r}
 sin(pi) # corected "sin pi"
 ```
+
+*Pyton code*
 
 ```{python, error=TRUE}
 from math import *
@@ -596,6 +740,8 @@ print(sin(pi)) # corected "sin pi"
 
 The problem is that when you leave out the parentheses, MATLAB treats the argument as a string (rather than as an expression). In this case the sin function generates a reasonable error message, but in other cases the results can be baffling. For example, what do you think is going on here?
 
+*Octave code*
+
 ```{octave, error=TRUE}
 abs pi % intentional error
 ```
@@ -604,6 +750,8 @@ abs pi % intentional error
 abs(pi) % corrected "abs pi"
 ```
 
+*R code*
+
 ```{r, error=TRUE}
 abs pi # intentional error
 ```
@@ -611,6 +759,8 @@ abs pi # intentional error
 ```{r}
 abs(pi) # corrected "abs pi"
 ```
+
+*Pyton code*
 
 ```{python, error=TRUE}
 from math import *
@@ -634,13 +784,13 @@ Beginning programmers hate error messages and do everything they can to make the
 
 Here’s another common rookie error. If you were translating the following mathematical expression into MATLAB:
 
-``` 
-1/(2*sqrt(π))
-```
+$\frac{1}{2\sqrt\pi}$
 
 You might be tempted to write something like this:
 
-```{octave, error=TRUE}
+*Octave code*
+
+```{octave}
 1/2*sqrt(pi) % intentional error
 ```
 
@@ -648,13 +798,17 @@ You might be tempted to write something like this:
 1/(2*sqrt(pi)) % corrected
 ```
 
-```{r, error=TRUE}
+*R code*
+
+```{r}
 1/2*sqrt(pi)   # intentional error
 ```
 
 ```{r}
 1/(2*sqrt(pi)) # corrected
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -676,13 +830,19 @@ In mathematics, there are several kinds of numbers: integer, real, rational, irr
 
 You might have noticed that MATLAB expresses values in decimal notation. So, for example, the rational number 1/3 is represented by the floating-point value
 
+*Octave code*
+
 ```{octave}
 1/3
 ```
 
+*R code*
+
 ```{r}
 1/3
 ```
+
+*Pyton code*
 
 ```{python}
 #from math import *
@@ -692,14 +852,20 @@ print(1.0/3.0)
 
 which is only approximately correct. It’s not quite as bad as it seems; MATLAB uses more digits than it shows by default. You can change the format to see the other digits.
 
+*Octave code*
+
 ```{octave}
 format long
 1/3
 ```
 
+*R code*
+
 ```{r}
 print(1/3, digits = 14) # instead of "format long" in MATLAB
 ```
+
+*Pyton code*
 
 ```{python}
 #from math import *
@@ -712,13 +878,19 @@ Internally, MATLAB uses the IEEE double-precision floating-point format, which p
 
 Very large and very small values are displayed in scientific notation.
 
+*Octave code*
+
 ```{octave}
 factorial(100)
 ```
 
+*R code*
+
 ```{r}
 factorial(100)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -730,14 +902,20 @@ The e in this notation is not the transcendental number known as e; it is just a
 
 You can enter numbers using the same notation.
 
+*Octave code*
+
 ```{octave}
 speed_of_light = 3.0e8
 ```
+
+*R code*
 
 ```{r}
 speed_of_light <- 3.0e8
 speed_of_light
 ```
+
+*Pyton code*
 
 ```{python}
 speed_of_light = 3.0e8
@@ -746,15 +924,21 @@ print(speed_of_light)
 
 Although MATLAB can handle large numbers, there is a limit. The predefined variables realmax and realmin contain the largest and smallest numbers that MATLAB can handle [2].
 
+*Octave code*
+
 ```{octave}
 realmax
 realmin
 ```
 
+*R code*
+
 ```{r}
-.Machine$double.xmax
-.Machine$double.xmin
+.Machine$double.xmax # "realmax" in MATLAB
+.Machine$double.xmin # "realmin" in MATLAB
 ```
+
+*Pyton code*
 
 ```{python}
 print(1.797693e+308) # value from R - higher in Python?
@@ -763,15 +947,21 @@ print(2.225074e-308) # value from R - higher in Python?
 
 If the result of a computation is too big, MATLAB “rounds up” to infinity.
 
+*Octave code*
+
 ```{octave}
 factorial(170)
 factorial(171)
 ```
 
+*R code*
+
 ```{r}
 factorial(170)
 factorial(171)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -782,13 +972,19 @@ print(factorial(171)) # not the max value like MATLAB and R
 
 Division by zero also returns Inf, but in this case MATLAB gives you a warning because division by zero is usually considered undefined.
 
+*Octave code*
+
 ```{octave}
 1/0
 ```
 
+*R code*
+
 ```{r}
 1/0
 ```
+
+*Pyton code*
 
 ```{python, error=TRUE}
 print(1/0)
@@ -798,13 +994,19 @@ A warning is like an error message without teeth; the computation is allowed to 
 
 For operations that are truly undefined, MATLAB returns NaN, which stands for “not a number”.
 
+*Octave code*
+
 ```{octave}
 0/0
 ```
 
+*R code*
+
 ```{r}
 0/0
 ```
+
+*Pyton code*
 
 ```{python, error=TRUE}
 print(0/0)
@@ -814,14 +1016,20 @@ print(0/0)
 
 Along with the commands that make up a program, it is useful to include comments that provide additional information about the program. The percent symbol % separates the comments from the code.
 
+*Octave code*
+
 ```{octave}
 speed_of_light = 3.0e8 % meters per second
 ```
+
+*R code*
 
 ```{r}
 speed_of_light <- 3.0e8 # meters per second
 speed_of_light
 ```
+
+*Pyton code*
 
 ```{python}
 speed_of_light = 3.0e8 # meters per second
@@ -834,14 +1042,20 @@ Comments have no effect on the execution of the program. They are there for huma
 
 Avoid comments that are redundant with the code:
 
+*Octave code*
+
 ```{octave}
 x = 5 % assign the value 5 to x (avoid this type of comment)
 ```
+
+*R code*
 
 ```{r}
 x <- 5 # assign the value 5 to x (avoid this type of comment)
 x
 ```
+
+*Pyton code*
 
 ```{python}
 x = 5 # assign the value 5 to x (avoid this type of comment)
@@ -850,17 +1064,23 @@ print(x)
 
 Good comments provide additional information that is not in the code, like units in the example above, or the meaning of a variable:
 
+*Octave code*
+
 ```{octave}
 p =   0;   % position from the origin in meters
 v = 100;   % velocity in meters/second
 a =  -9.8; % acceleration of gravity in meters/second^2
 ```
 
+*R code*
+
 ```{r}
 p <-   0   # postion from the origin in meters
 v <- 100   # velocity in meters / second
 a <-  -9.8 # acceleration of gravity in meters / second^2
 ```
+
+*Pyton code*
 
 ```{python}
 p =   0   # postion from the origin in meters
@@ -916,9 +1136,11 @@ If you use longer variable names, you might not need explanatory comments, but t
 
 **Exercise 1.1** Write a MATLAB expression that evaluates the following math expression. You can assume that the variables mu, sigma and x already exist.
 
-    exp(−((x − μ)/(σ*sqrt(2))^2/(σ*sqrt(2*π))  (1.1)
+$\frac{e^{-\left(\frac{x-\mu}{\sigma\sqrt{2}}\right)^2}}{\sigma\sqrt{2\pi}}$
 
 Note: you can’t use Greek letters in MATLAB; when translating math expressions with Greek letters, it is common to write out the name of the letter (assuming you know it).
+
+*Octave code*
 
 ```{octave}
 mu    = 0.8; % mean
@@ -941,6 +1163,8 @@ x     = 1.0; % value of random variable from a Normal distribution with mu and s
 normpdf(x, mu, sigma)
 ```
 
+*R code*
+
 ```{r}
 mu    <- 0.8 # mean
 sigma <- 0.3 # standard deviation
@@ -962,6 +1186,8 @@ x     <- 1.0 # value of random variable from a Normal distribution with mu and s
 
 dnorm(x, mu, sigma)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *

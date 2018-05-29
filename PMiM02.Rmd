@@ -52,13 +52,12 @@ By default, MATLAB will store your script in a directory that is on the search p
 
 Go back to the Command Window and type myscript (without the extension) at the prompt. MATLAB executes your script and displays the result.
 
-```
->> myscript
-x = 5
-```
-
 ```{octave}
+function res = myscript() 
+    x = 5
+end
 
+myscript()
 ```
 
 ```{r}
@@ -83,13 +82,8 @@ When you run a script, MATLAB executes the commands in the M-File, one after ano
 
 If something goes wrong and MATLAB can’t find your script, you will get an error message like:
 
-```
->> myscript
-??? Undefined function or variable 'myscript'.
-```
-
-```{octave}
-
+```{octave, error=TRUE}
+myscript
 ```
 
 ```{r, error=TRUE}
@@ -97,30 +91,24 @@ rm(list = ls())
 (myscript())
 ```
 
-```{python}
-
+```{python, error=TRUE}
+myscript
 ```
 
 In this case you can either save your script again in a directory that is on the search path, or modify the search path to include the directory where you keep your scripts. You’ll have to consult the documentation for the details (sorry!).
 
-The filename can be anything you want, but you should try to choose something meaningful and memorable. You should be very careful to choose a name that is not already in use; if you do, you might accidentally replace one of MATLAB’s functions with your own. Finally, the name of the file cannot contain spaces. If you create a file named my script.m, MATLAB doesn’t complain until you try to run it:
+The filename can be anything you want, but you should try to choose something meaningful and memorable. You should be very careful to choose a name that is not already in use; if you do, you might accidentally replace one of MATLAB’s functions with your own. Finally, the name of the file cannot contain spaces. If you create a file named 'my script.m', MATLAB doesn’t complain until you try to run it:
 
-```
->> my script
-??? Undefined function or method 'my' for input arguments
-of type 'char'.
-```
-
-```{octave}
-
+```{octave, error=TRUE}
+my script
 ```
 
 ```{r, error=TRUE}
 (my script()) # intentional error
 ```
 
-```{python}
-
+```{python, error=TRUE}
+print(my script)
 ```
 
 The problem is that it is looking for a script named “my”. The problem is even worse if the first word of the filename is a function that exists. Just for fun, create a script named abs val.m and run it.
@@ -139,7 +127,7 @@ Translate this expression into MATLAB and store your code in a file named fibona
 
 - Precondition: you must assign a value to n before running this script
 
-- Postcondition: the result is stored in ans
+- Postcondition: the result is stored in 'ans'
 
 ```{octave}
 n = 10;
@@ -198,19 +186,11 @@ You must always be 100% sure that the code you are running is the code you think
 
 The variables you create are stored in the workspace, which is a set of variables and their values. The who command prints the names of the variables in the workspace.
 
-```
->> x = 5;
->> y = 7;
->> z = 9;
->> who
-
-Your variables are: 
-
-x  y  z
-```
-
 ```{octave}
-
+x = 5;
+y = 7;
+z = 9;
+who
 ```
 
 ```{r}
@@ -221,22 +201,22 @@ objects() # "who" in MATLAB
 ```
 
 ```{python}
+x = 5
+y = 7
+z = 9
 
+# "who" in MATLAB or objects() in R
+# http://www.gossamer-threads.com/lists/python/python/565579
+
+print("Your variables are:")
+print([var for var in dir() if not (var.startswith('_') or var == 'var')])
 ```
 
 The clear command removes variables. 
 
-```
->> clear y
->> who
-
-Your variables are:
-
-x z
-```
-
 ```{octave}
-
+clear y
+who
 ```
 
 ```{r}
@@ -245,18 +225,21 @@ objects()
 ```
 
 ```{python}
+x = 5
+y = 7
+z = 9
 
+# http://grokbase.com/t/python/tutor/07adweedqr/variables-in-workspace
+del(y) # "clear y" in MATLAB or rm(y)  in R
+
+print("Your variables are:")
+print([var for var in dir() if not (var.startswith('_') or var == 'var')])
 ```
 
 To display the value of a variable, you can use the disp function.
 
-```
->> disp(z) 
-9
-```
-
 ```{octave}
-
+disp(z) 
 ```
 
 ```{r}
@@ -264,18 +247,15 @@ print(z) # "disp(z)" in MATLAB
 ```
 
 ```{python}
+z = 9
 
+print(z) # "disp(z)" in MATLAB
 ```
 
 But it’s easier to just type the variable name.
 
-```
->> z 
-z = 9
-```
-
 ```{octave}
-
+z 
 ```
 
 ```{r}
@@ -283,7 +263,9 @@ z
 ```
 
 ```{python}
+z = 9
 
+print(z)
 ```
 
 (Strictly speaking, the name of a variable is an expression, so evaluating it should assign a value to ans, but MATLAB seems to handle this as a special case.)
@@ -294,16 +276,29 @@ Again, when you try something new, you should make a few mistakes on purpose so 
 
 The most common error with scripts is to run a script without creating the necessary variables. For example, fibonacci1 requires you to assign a value to n. If you don’t:
 
-```
->> fibonacci1
-??? Undefined function or variable "n".
+```{octave, error=TRUE}
+% "fibanocci1" from Exercise 2.1
 
-Error in ==> fibonacci1 at 4
-diff = t1^(n+1) - t2^(n+1);
+fibonacci1
 ```
 
 ```{octave}
+% "fibanocci1" from Exercise 2.1
 
+n = 10
+fibonacci1
+```
+
+```{r, error=TRUE}
+# "fibanocci1" from Exercise 2.1
+source("fibanocci1.R", echo = TRUE)
+```
+
+```{r}
+n <- 10
+
+# "fibanocci1" from Exercise 2.1
+source("fibanocci1.R", echo = TRUE)
 ```
 
 ```{r, error=TRUE}
@@ -314,7 +309,9 @@ t2 <- (1 - sqrt(5))/2
 diff <- t1^n - t2^n
 ans <- diff/sqrt(5)
 ans
+```
 
+```{r, error=TRUE}
 n <- 10
 
 t1 <- (1 + sqrt(5))/2
@@ -324,8 +321,18 @@ ans <- diff/sqrt(5)
 ans
 ```
 
-```{python}
+```{python, error=TRUE}
+# "fibanocci1" from Exercise 2.1
 
+fibanocci1 # intentional error
+```
+
+```{python, error=TRUE}
+n = 10
+# http://stackoverflow.com/questions/5788891/execfile-with-argument-in-python-shell
+import sys
+sys.argv = ['fibanocci1.py','n']
+execfile('fibanocci1.py')
 ```
 
 The details of this message might be different for you, depending on what’s in your script. But the general idea is that n is undefined. Notice that MATLAB tells you what line of your program the error is in, and displays the line.
@@ -352,23 +359,17 @@ A precondition is something that must be true, when the script starts, in order 
 
 If there is a comment at the beginning of a script, MATLAB assumes it is the documentation for the script, so if you type help fibonacci1, you get the contents of the comment (without the percent signs).
 
-```
->> help fibonacci1
-  Computes the nth Fibonacci number.
-  Precondition: you must assign a value to n before running
-  this script.  Postcondition: the result is stored in ans.
-```
-
 ```{octave}
-
+help fibonacci1
 ```
 
 ```{r, error=TRUE}
 help("fibanocci1") # help is for commands or packages
 ```
 
-```{python}
-
+```{python, error=TRUE}
+help("fibanocci1.R") # comment out - 'help' is for commands or packages in R
+doc fibanocci1 # comment out - 'doc' is for internal fucntions in Python
 ```
 
 That way, scripts that you write behave just like predefined scripts. You can even use the doc command to see your comment in the Help Window.
@@ -379,14 +380,9 @@ In mathematics the equals sign means that the two sides of the equation have the
 
 One difference is that the sides of an assignment statement are not interchangeable. The right side can be any legal expression, but the left side has to be a variable, which is called the target of the assignment. So this is legal:
 
-```
->> y = 1; 
->> x = y + 1 
-x = 2
-```
-
 ```{octave}
-
+y = 1; 
+x = y + 1 
 ```
 
 ```{r}
@@ -396,29 +392,23 @@ x
 ```
 
 ```{python}
-
+y = 1
+x = y + 1
+print(x)
 ```
 
 But this is not:
 
-```
->> y + 1 = x
-??? y+1 = x
-        |
-Error: The expression to the left of the equals sign is not a valid
-target for an assignment.
-```
-
-```{octave}
-
+```{octave, error=TRUE}
+y + 1 = x % intentional error
 ```
 
 ```{r, error=TRUE}
 y + 1 <- x # intentional error
 ```
 
-```{python}
-
+```{python, error=TRUE}
+y + 1 = x # intentional error
 ```
 
 In this case the error message is pretty helpful, as long as you know what a “target” is.
@@ -427,14 +417,9 @@ Another difference is that an assignment statement is only temporary, in the fol
 
 A third difference is that a mathematical equality is a statement that may or may not be true. For example, y = y + 1 is a statement that happens to be false for all real values of y. In MATLAB, y = y + 1 is a sensible and useful assignment statement. It reads the current value of y, adds one, and replaces the old value with the new value.
 
-```
->> y = 1; 
->> y = y + 1 
-y = 2
-```
-
 ```{octave}
-
+y = 1; 
+y = y + 1 
 ```
 
 ```{r}
@@ -444,7 +429,9 @@ y
 ```
 
 ```{python}
-
+y = 1
+y = y + 1
+print(y)
 ```
 
 When you read MATLAB code, you might find it helpful to pronounce the equals sign “gets” rather than “equals.” So "x = y + 1"" is pronounced “x gets the value of y plus one.”
@@ -540,13 +527,8 @@ For example, suppose you know that x is the sine of some angle and you want to f
 
 Since we know sin 0 = 0, we could try
 
-```
->> asin(0)
-ans = 0
-```
-
 ```{octave}
-
+asin(0)
 ```
 
 ```{r, comment=NA}
@@ -554,18 +536,15 @@ asin(0)
 ```
 
 ```{python}
+from math import *
 
+print(asin(0))
 ```
 
 which is correct. Also, we know that the sine of 90 degrees is 1, so if we try asin(1), we expect the answer to be 90, right?
 
-```
->> asin(1)
-ans = 1.5708
-```
-
 ```{octave}
-
+asin(1)
 ```
 
 ```{r}
@@ -573,18 +552,15 @@ asin(1)
 ```
 
 ```{python}
+from math import *
 
+print(asin(1))
 ```
 
 Oops. We forgot that the trig functions in MATLAB work in radians, not degrees. So the correct answer is π/2, which we can confirm by dividing through by pi:
 
-```
->> asin(1) / pi
-ans = 0.5000
-```
-
 ```{octave}
-
+asin(1)/pi
 ```
 
 ```{r}
@@ -592,7 +568,9 @@ asin(1)/pi
 ```
 
 ```{python}
+from math import *
 
+print(asin(1)/pi)
 ```
 
 With this kind of unit testing, you are not really checking for errors in MATLAB, you are checking your understanding. If you make an error because you are confused about how MATLAB works, it might take a long time to find, because when you look at the code, it looks right.
@@ -627,7 +605,7 @@ Which brings us to the Sixth Theorem of Debugging:
 
 **Exercise 2.3** Imagine that you are the owner of a car rental company with two locations, Albany and Boston. Some of your customers do “one-way rentals,” picking up a car in Albany and returning it in Boston, or the other way around. Over time, you have observed that each week 5% of the cars in Albany are dropped off in Boston, and 3% of the cars in Boston get dropped off in Albany. At the beginning of the year, there are 150 cars at each location.
 
-Write a script called car update that updates the number of cars in each location from one week to the next. The precondition is that the variables a and b contain the number of cars in each location at the beginning of the week. The postcondition is that a and b have been modified to reflect the number of cars that moved.
+Write a script called "car_update" that updates the number of cars in each location from one week to the next. The precondition is that the variables a and b contain the number of cars in each location at the beginning of the week. The postcondition is that a and b have been modified to reflect the number of cars that moved.
 
 To test your program, initialize a and b at the prompt and then execute the script. The script should display the updated values of a and b, but not any intermediate variables.
 
@@ -644,6 +622,8 @@ In the next chapter we will see how to execute your script automatically, and ho
 - Postcondition:  a and b have been modified to reflect the number of cars that moved.
 
 ```{octave}
+% "carUpdate"
+
 aRate = 0.05; % Rate of cars in Albany dropped off in Boston
 bRate = 0.03; % Rate of cars in Boston dropped off in Albany
 
@@ -652,9 +632,33 @@ bMove = round(bRate * b); % Number of cars moved from Boston to Albany
 
 a = a - aMove + bMove % Number of cars remaining in Albany
 b = b - bMove + aMove % Number of cars remaining in Boston
+
+a = 150 % initial number of cars in Albany
+b = 150 % initial number of cars in Boston
+
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
+carUpdate
 ```
 
 ```{octave}
+% "car_update"
+
 aRate = 0.05; % Rate of cars in Albany dropped off in Boston
 bRate = 0.03; % Rate of cars in Boston dropped off in Albany
 
@@ -665,6 +669,8 @@ b = b + atob % Number of cars remaining in Boston
 ```
 
 ```{r}
+# "carUpdate"
+
 aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
 bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
 
@@ -676,9 +682,33 @@ b <- b - bMove + aMove # Number of cars remaining in Boston
 
 print(a)
 print(b)
+
+a <- 150 # initial number of cars in Albany
+b <- 150 # initial number of cars in Boston
+
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+source("carUpdate.R")
+
 ```
 
 ```{r}
+# "car_update"
 aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
 bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
 
@@ -760,6 +790,7 @@ bMove <- round(bRate*b)
 ```
 
 ```{python}
+# "carUpdate"
 aRate = 0.05 # Rate of cars in Albany dropped off in Boston
 bRate = 0.03 # Rate of cars in Boston dropped off in Albany
 
@@ -771,9 +802,37 @@ b = b - bMove + aMove # Number of cars remaining in Boston
 
 print "a = ", a
 print "b = ", b
+
+import sys
+
+a = 150 # initial number of cars in Albany
+b = 150 # initial number of cars in Boston
+
+sys.argv = ['carUpdate.py', 'a', 'b']
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
+execfile('carUpdate.py')
 ```
 
 ```{python}
+# "car_update"
+
 aRate = 0.05 # Rate of cars in Albany dropped off in Boston
 bRate = 0.03 # Rate of cars in Boston dropped off in Albany
 
