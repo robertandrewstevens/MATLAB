@@ -622,6 +622,88 @@ In the next chapter we will see how to execute your script automatically, and ho
 - Postcondition:  a and b have been modified to reflect the number of cars that moved.
 
 ```{octave}
+
+```
+
+```{r}
+a <- 150 # initial number of cars in Albany
+b <- 150 # initial number of cars in Boston
+
+aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
+bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
+
+# aMove = Number of cars moved from Albany to Boston
+# bMove = Number of cars moved from Boston to Albany
+
+# iteration 1
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 2
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 3
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 4
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 5
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 6
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 7
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 8
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 9
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+
+# iteration 10
+aMove <- round(aRate*a) 
+bMove <- round(bRate*b) 
+(a <- a - aMove + bMove) # Number of cars remaining in Albany
+(b <- b - bMove + aMove) # Number of cars remaining in Boston
+```
+
+
+```{python}
+
+```
+
+These are for Chapter 3?
+
+```{octave}
 % "carUpdate"
 
 aRate = 0.05; % Rate of cars in Albany dropped off in Boston
@@ -718,76 +800,6 @@ print(a <- a - atob) # Number of cars remaining in Albany
 print(b <- b + atob) # Number of cars remaining in Boston
 ```
 
-```{r}
-a <- 150 # initial number of cars in Albany
-b <- 150 # initial number of cars in Boston
-
-aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
-bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
-
-# aMove = Number of cars moved from Albany to Boston
-# bMove = Number of cars moved from Boston to Albany
-
-# iteration 1
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 2
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 3
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 4
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 5
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 6
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 7
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 8
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 9
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-
-# iteration 10
-aMove <- round(aRate*a) 
-bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-```
 
 ```{python}
 # "carUpdate"

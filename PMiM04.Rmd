@@ -1888,6 +1888,18 @@ where X[i] is a number between zero and one that represents the biomass at year 
 - One way to characterize the effect of r is to make a plot with r on the x-axis and biomass on the y axis, and to show, for each value of r, the values of biomass that occur in steady state. See if you can figure out how to generate this plot.
 
 ```{octave}
+% logmap.m
+% Computes the first 50 elements of X given r and X1 = 0.5,
+% where r is the parameter of the logistic map 
+% and X1 is the initial population.
+n = 50;
+X(1) = 0.5;
+
+for i = 1:n - 1
+    X(i + 1) = r*X(i)*(1 - X(i));
+end
+
+
 %echo on
 
 %r = 3.9;
@@ -1907,6 +1919,17 @@ hold off
 ```
 
 ```{r}
+# logmap.R
+# Computes the first 50 elements of X given r and X1 = 0.5,
+# where r is the parameter of the logistic map 
+# and X1 is the initial population.
+n <- 50
+X <- as.numeric(rep(NA, n)) # initialize
+X[1] = 0.5
+for(j in 2:n) {
+  X[j] <- r*X[j - 1]*(1 - X[j - 1])
+}
+
 r <- 3.9
 source("logmap.R")
 plot(X)
@@ -1923,6 +1946,17 @@ plot(rVec, yVec, pch = 16, col = "red")
 ```
 
 ```{python}
+# logmap.py
+# Computes the first 50 elements of X given r and X1 = 0.5,
+# where r is the parameter of the logistic map 
+# and X1 is the initial population.
+n = 50
+X = [] # initialize
+X.append(0.5)
+for j in range(1, n):
+    X.append(r*X[j - 1]*(1 - X[j - 1]))
+
+
 import sys
 import pylab as pl
 import numpy as np

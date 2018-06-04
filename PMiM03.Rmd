@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 Version 1.1.8
 
-#Chapter 3: Loops
+# Chapter 3: Loops
 
 ## 3.1 Updating variables
 
