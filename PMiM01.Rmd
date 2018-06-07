@@ -1,7 +1,7 @@
 ---
-title: "PMiM01"
+title: "Chapter 1: Variables and values"
 author: "Robert A. Stevens"
-date: "03/25/18"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
@@ -19,8 +19,6 @@ knitr::opts_chunk$set(
 *Physical Modeling in MATLAB* by Allen B. Downey 
 
 Version 1.1.8
-
-# Chapter 1: Variables and values
 
 ## 1.1 A glorified calculator
 

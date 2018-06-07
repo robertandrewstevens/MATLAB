@@ -1,7 +1,7 @@
 ---
-title: "PMiM02"
+title: "Chapter 2: Scripts"
 author: "Robert A. Stevens"
-date: "03/26/2018"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
@@ -20,8 +20,6 @@ knitr::opts_chunk$set(
 
 Version 1.1.8
 
-# Chapter 2: Scripts
-
 ## 2.1 M-files
 
 So far we have typed all of our programs “at the prompt,” which is fine if you are not writing more than a few lines. Beyond that, you will want to store your program in a script and then execute the script.
@@ -32,14 +30,20 @@ You can create and edit scripts with any text editor or word processor, but the 
 
 Type the following code in the editor
 
+*Octave code*
+
 ```{octave}
 x = 5
 ```
+
+*R code*
 
 ```{r}
 x <- 5
 x
 ```
+
+*Pyton code*
 
 ```{python}
 x = 5
@@ -52,6 +56,8 @@ By default, MATLAB will store your script in a directory that is on the search p
 
 Go back to the Command Window and type myscript (without the extension) at the prompt. MATLAB executes your script and displays the result.
 
+*Octave code*
+
 ```{octave}
 function res = myscript() 
     x = 5
@@ -59,6 +65,8 @@ end
 
 myscript()
 ```
+
+*R code*
 
 ```{r}
 myscript <- function() {
@@ -68,6 +76,8 @@ myscript <- function() {
 ans <- myscript()
 ans
 ```
+
+*Pyton code*
 
 ```{python}
 def myscript():
@@ -82,33 +92,50 @@ When you run a script, MATLAB executes the commands in the M-File, one after ano
 
 If something goes wrong and MATLAB can’t find your script, you will get an error message like:
 
+*Octave code*
+
 ```{octave, error=TRUE}
 myscript
 ```
 
+*R code*
+
 ```{r, error=TRUE}
 rm(list = ls())
-(myscript())
+
+ans <- myscript()
+ans
 ```
 
+*Pyton code*
+
 ```{python, error=TRUE}
-myscript
+ans = myscript()
+print(ans)
 ```
 
 In this case you can either save your script again in a directory that is on the search path, or modify the search path to include the directory where you keep your scripts. You’ll have to consult the documentation for the details (sorry!).
 
 The filename can be anything you want, but you should try to choose something meaningful and memorable. You should be very careful to choose a name that is not already in use; if you do, you might accidentally replace one of MATLAB’s functions with your own. Finally, the name of the file cannot contain spaces. If you create a file named 'my script.m', MATLAB doesn’t complain until you try to run it:
 
+*Octave code*
+
 ```{octave, error=TRUE}
 my script
 ```
 
+*R code*
+
 ```{r, error=TRUE}
-(my script()) # intentional error
+ans = my script() # intentional error
+print(ans)
 ```
 
+*Pyton code*
+
 ```{python, error=TRUE}
-print(my script)
+ans = my script() # intentional error
+print(ans)
 ```
 
 The problem is that it is looking for a script named “my”. The problem is even worse if the first word of the filename is a function that exists. Just for fun, create a script named abs val.m and run it.
@@ -129,6 +156,8 @@ Translate this expression into MATLAB and store your code in a file named fibona
 
 - Postcondition: the result is stored in 'ans'
 
+*Octave code*
+
 ```{octave}
 n = 10;
 
@@ -137,6 +166,8 @@ t2 = (1 - sqrt(5))/2;
 diff = t1^n - t2^n;
 ans = diff/sqrt(5)
 ```
+
+*R code*
 
 ```{r}
 n <- 10
@@ -147,6 +178,8 @@ diff <- t1^n - t2^n
 ans <- diff/sqrt(5)
 ans
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -186,6 +219,8 @@ You must always be 100% sure that the code you are running is the code you think
 
 The variables you create are stored in the workspace, which is a set of variables and their values. The who command prints the names of the variables in the workspace.
 
+*Octave code*
+
 ```{octave}
 x = 5;
 y = 7;
@@ -193,12 +228,18 @@ z = 9;
 who
 ```
 
+*R code*
+
 ```{r}
+rm(list = ls())
+
 x <- 5
 y <- 7
 z <- 9
 objects() # "who" in MATLAB
 ```
+
+*Pyton code*
 
 ```{python}
 x = 5
@@ -208,21 +249,31 @@ z = 9
 # "who" in MATLAB or objects() in R
 # http://www.gossamer-threads.com/lists/python/python/565579
 
-print("Your variables are:")
+#print("Your variables are:")
 print([var for var in dir() if not (var.startswith('_') or var == 'var')])
 ```
 
 The clear command removes variables. 
 
+*Octave code*
+
 ```{octave}
+x = 5;
+y = 7;
+z = 9;
+
 clear y
 who
 ```
+
+*R code*
 
 ```{r}
 rm(y) # "clear y" in MATLAB
 objects()
 ```
+
+*Pyton code*
 
 ```{python}
 x = 5
@@ -232,19 +283,26 @@ z = 9
 # http://grokbase.com/t/python/tutor/07adweedqr/variables-in-workspace
 del(y) # "clear y" in MATLAB or rm(y)  in R
 
-print("Your variables are:")
+#print("Your variables are:")
 print([var for var in dir() if not (var.startswith('_') or var == 'var')])
 ```
 
 To display the value of a variable, you can use the disp function.
 
+*Octave code*
+
 ```{octave}
+z = 9;
 disp(z) 
 ```
+
+*R code*
 
 ```{r}
 print(z) # "disp(z)" in MATLAB
 ```
+
+*Pyton code*
 
 ```{python}
 z = 9
@@ -254,17 +312,23 @@ print(z) # "disp(z)" in MATLAB
 
 But it’s easier to just type the variable name.
 
+*Octave code*
+
 ```{octave}
+z = 9;
 z 
 ```
+
+*R code*
 
 ```{r}
 z
 ```
 
+*Pyton code*
+
 ```{python}
 z = 9
-
 print(z)
 ```
 
@@ -276,63 +340,79 @@ Again, when you try something new, you should make a few mistakes on purpose so 
 
 The most common error with scripts is to run a script without creating the necessary variables. For example, fibonacci1 requires you to assign a value to n. If you don’t:
 
+*Octave code*
+
 ```{octave, error=TRUE}
 % "fibanocci1" from Exercise 2.1
+function ans = fibonacci1(n)
+    t1 = (1 + sqrt(5))/2;
+    t2 = (1 - sqrt(5))/2;
+    diff = t1^n - t2^n;
+    ans = diff/sqrt(5)
+end
 
-fibonacci1
+fibonacci1;
 ```
 
 ```{octave}
 % "fibanocci1" from Exercise 2.1
+function ans = fibonacci1(n)
+    t1 = (1 + sqrt(5))/2;
+    t2 = (1 - sqrt(5))/2;
+    diff = t1^n - t2^n;
+    ans = diff/sqrt(5)
+end
 
-n = 10
-fibonacci1
+fibonacci1(10);
 ```
+
+*R code*
 
 ```{r, error=TRUE}
 # "fibanocci1" from Exercise 2.1
-source("fibanocci1.R", echo = TRUE)
+fibanocci1 <- function(n) {
+  t1 <- (1 + sqrt(5))/2
+  t2 <- (1 - sqrt(5))/2
+  diff <- t1^n - t2^n
+  ans <- diff/sqrt(5)
+  ans
+}
+
+fibanocci1()
 ```
 
 ```{r}
-n <- 10
+fibanocci1(10)
+```
 
+*Pyton code*
+
+```{python, error=TRUE}
 # "fibanocci1" from Exercise 2.1
-source("fibanocci1.R", echo = TRUE)
-```
+from math import *
 
-```{r, error=TRUE}
-rm(n)
+def fibanocci1(n):
+    t1 = (1 + sqrt(5))/2
+    t2 = (1 - sqrt(5))/2
+    diff = t1**n - t2**n
+    ans = diff/sqrt(5)
+    print(ans)
 
-t1 <- (1 + sqrt(5))/2
-t2 <- (1 - sqrt(5))/2
-diff <- t1^n - t2^n
-ans <- diff/sqrt(5)
-ans
-```
-
-```{r, error=TRUE}
-n <- 10
-
-t1 <- (1 + sqrt(5))/2
-t2 <- (1 - sqrt(5))/2
-diff <- t1^n - t2^n
-ans <- diff/sqrt(5)
-ans
+fibanocci1() # intentional error
 ```
 
 ```{python, error=TRUE}
 # "fibanocci1" from Exercise 2.1
+from math import *
 
-fibanocci1 # intentional error
-```
+def fibanocci1(n):
+    t1 = (1 + sqrt(5))/2
+    t2 = (1 - sqrt(5))/2
+    diff = t1**n - t2**n
+    ans = diff/sqrt(5)
+    print(ans)
 
-```{python, error=TRUE}
-n = 10
-# http://stackoverflow.com/questions/5788891/execfile-with-argument-in-python-shell
-import sys
-sys.argv = ['fibanocci1.py','n']
-execfile('fibanocci1.py')
+fibanocci1(10) 
 ```
 
 The details of this message might be different for you, depending on what’s in your script. But the general idea is that n is undefined. Notice that MATLAB tells you what line of your program the error is in, and displays the line.
@@ -359,17 +439,49 @@ A precondition is something that must be true, when the script starts, in order 
 
 If there is a comment at the beginning of a script, MATLAB assumes it is the documentation for the script, so if you type help fibonacci1, you get the contents of the comment (without the percent signs).
 
+*Octave code*
+
 ```{octave}
+% "fibanocci1" from Exercise 2.1
+
+% Computes the nth Fibonacci number.
+% Precondition: you must assign a value to n before running this script.  
+% Postcondition: the result is stored in ans.
+function ans = fibonacci1(n)
+    t1 = (1 + sqrt(5))/2;
+    t2 = (1 - sqrt(5))/2;
+    diff = t1^n - t2^n;
+    ans = diff/sqrt(5)
+end
+
 help fibonacci1
 ```
+
+*R code*
 
 ```{r, error=TRUE}
 help("fibanocci1") # help is for commands or packages
 ```
 
+*Pyton code*
+
 ```{python, error=TRUE}
-help("fibanocci1.R") # comment out - 'help' is for commands or packages in R
-doc fibanocci1 # comment out - 'doc' is for internal fucntions in Python
+# "fibanocci1" from Exercise 2.1
+from math import *
+
+def fibanocci1(n):
+    """
+    Computes the nth Fibonacci number.
+    Precondition: you must assign a value to n before running this script.  
+    Postcondition: the result is stored in ans.
+    """
+    t1 = (1 + sqrt(5))/2
+    t2 = (1 - sqrt(5))/2
+    diff = t1**n - t2**n
+    ans = diff/sqrt(5)
+    print(ans)
+
+help(fibanocci1) 
 ```
 
 That way, scripts that you write behave just like predefined scripts. You can even use the doc command to see your comment in the Help Window.
@@ -380,16 +492,22 @@ In mathematics the equals sign means that the two sides of the equation have the
 
 One difference is that the sides of an assignment statement are not interchangeable. The right side can be any legal expression, but the left side has to be a variable, which is called the target of the assignment. So this is legal:
 
+*Octave code*
+
 ```{octave}
 y = 1; 
 x = y + 1 
 ```
+
+*R code*
 
 ```{r}
 y <- 1
 x <- y + 1
 x
 ```
+
+*Pyton code*
 
 ```{python}
 y = 1
@@ -399,13 +517,19 @@ print(x)
 
 But this is not:
 
+*Octave code*
+
 ```{octave, error=TRUE}
 y + 1 = x % intentional error
 ```
 
+*R code*
+
 ```{r, error=TRUE}
 y + 1 <- x # intentional error
 ```
+
+*Pyton code*
 
 ```{python, error=TRUE}
 y + 1 = x # intentional error
@@ -417,16 +541,22 @@ Another difference is that an assignment statement is only temporary, in the fol
 
 A third difference is that a mathematical equality is a statement that may or may not be true. For example, y = y + 1 is a statement that happens to be false for all real values of y. In MATLAB, y = y + 1 is a sensible and useful assignment statement. It reads the current value of y, adds one, and replaces the old value with the new value.
 
+*Octave code*
+
 ```{octave}
 y = 1; 
 y = y + 1 
 ```
+
+*R code*
 
 ```{r}
 y <- 1
 y <- y + 1
 y
 ```
+
+*Pyton code*
 
 ```{python}
 y = 1
@@ -440,6 +570,8 @@ To test your understanding of assignment statements, try this exercise:
 
 **Exercise 2.2** Write a few lines of code that swap the values of x and y. Put your code in a script called swap and test it.
 
+*Octave code*
+
 ```{octave}
 x =  1;
 y = 10;
@@ -452,7 +584,9 @@ x
 y
 ```
 
-```{r, comment=NA}
+*R code*
+
+```{r}
 x <-  1 
 y <- 10 
 
@@ -464,6 +598,8 @@ x
 y
 ```
 
+*Pyton code*
+
 ```{python}
 x =  1 
 y = 10 
@@ -471,21 +607,6 @@ y = 10
 temp = x
 x = y
 y = temp
-
-print(x)
-print(y)
-```
-
-```{python, eval=FALSE}
-# if create file 'swap.py'
-
-import sys
-
-x =  1 
-y = 10 
-
-sys.argv = ['swap.py', 'x', 'y']
-execfile('swap.py')
 
 print(x)
 print(y)
@@ -527,13 +648,19 @@ For example, suppose you know that x is the sine of some angle and you want to f
 
 Since we know sin 0 = 0, we could try
 
+*Octave code*
+
 ```{octave}
 asin(0)
 ```
 
+*R code*
+
 ```{r, comment=NA}
 asin(0)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -543,13 +670,19 @@ print(asin(0))
 
 which is correct. Also, we know that the sine of 90 degrees is 1, so if we try asin(1), we expect the answer to be 90, right?
 
+*Octave code*
+
 ```{octave}
 asin(1)
 ```
 
+*R code*
+
 ```{r}
 asin(1)
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -559,13 +692,19 @@ print(asin(1))
 
 Oops. We forgot that the trig functions in MATLAB work in radians, not degrees. So the correct answer is π/2, which we can confirm by dividing through by pi:
 
+*Octave code*
+
 ```{octave}
 asin(1)/pi
 ```
 
+*R code*
+
 ```{r}
 asin(1)/pi
 ```
+
+*Pyton code*
 
 ```{python}
 from math import *
@@ -581,25 +720,25 @@ Which brings us to the Sixth Theorem of Debugging:
 
 ## 2.9 Glossary
 
-**M-file:** A file that contains a MATLAB program.
+M-file: A file that contains a MATLAB program.
 
-**script:** An M-file that contains a sequence of MATLAB commands.
+script: An M-file that contains a sequence of MATLAB commands.
 
-**search path:** The list of directories where MATLAB looks for M-files.
+search path: The list of directories where MATLAB looks for M-files.
 
-**workspace:** A set of variables and their values.
+workspace: A set of variables and their values.
 
-**precondition:** Something that must be true when the script starts, in order for it to work correctly.
+precondition: Something that must be true when the script starts, in order for it to work correctly.
 
-**postcondition:** Something that will be true when the script completes.
+postcondition: Something that will be true when the script completes.
 
-**target:** The variable on the left side of an assignment statement.
+target: The variable on the left side of an assignment statement.
 
-**incremental development:** A way of programming by making a series of small, testable changes.
+incremental development: A way of programming by making a series of small, testable changes.
 
-**scaffolding:** Code you write to help you program or debug, but which is not part of the finished program.
+scaffolding: Code you write to help you program or debug, but which is not part of the finished program.
 
-**unit testing:** A process of testing software by testing each component in isolation.
+unit testing: A process of testing software by testing each component in isolation.
 
 ## 2.10 Exercises
 
@@ -621,11 +760,92 @@ In the next chapter we will see how to execute your script automatically, and ho
 
 - Postcondition:  a and b have been modified to reflect the number of cars that moved.
 
-```{octave}
+*Octave code*
 
+```{octave}
+a = 150; % initial number of cars in Albany
+b = 150; % initial number of cars in Boston
+
+aRate = 0.05; % Rate of cars in Albany dropped off in Boston
+bRate = 0.03; % Rate of cars in Boston dropped off in Albany
+
+% aMove = Number of cars moved from Albany to Boston
+% bMove = Number of cars moved from Boston to Albany
+
+% iteration 1
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 2
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 3
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 4
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 5
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 6
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 7
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 8
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 9
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
+
+% iteration 10
+aMove = round(aRate*a);
+bMove = round(bRate*b); 
+a = a - aMove + bMove; # Number of cars remaining in Albany
+b = b - bMove + aMove; # Number of cars remaining in Boston
+display([a b])
 ```
 
-```{r}
+*R code*
+
+```{r, results = "hold"}
 a <- 150 # initial number of cars in Albany
 b <- 150 # initial number of cars in Boston
 
@@ -638,221 +858,153 @@ bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
 # iteration 1
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 2
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 3
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 4
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 5
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 6
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 7
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 8
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 9
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
+a <- a - aMove + bMove # Number of cars remaining in Albany
+b <- b - bMove + aMove # Number of cars remaining in Boston
+c(a, b)
 
 # iteration 10
 aMove <- round(aRate*a) 
 bMove <- round(bRate*b) 
-(a <- a - aMove + bMove) # Number of cars remaining in Albany
-(b <- b - bMove + aMove) # Number of cars remaining in Boston
-```
-
-
-```{python}
-
-```
-
-These are for Chapter 3?
-
-```{octave}
-% "carUpdate"
-
-aRate = 0.05; % Rate of cars in Albany dropped off in Boston
-bRate = 0.03; % Rate of cars in Boston dropped off in Albany
-
-aMove = round(aRate * a); % Number of cars moved from Albany to Boston
-bMove = round(bRate * b); % Number of cars moved from Boston to Albany
-
-a = a - aMove + bMove % Number of cars remaining in Albany
-b = b - bMove + aMove % Number of cars remaining in Boston
-
-a = 150 % initial number of cars in Albany
-b = 150 % initial number of cars in Boston
-
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-carUpdate
-```
-
-```{octave}
-% "car_update"
-
-aRate = 0.05; % Rate of cars in Albany dropped off in Boston
-bRate = 0.03; % Rate of cars in Boston dropped off in Albany
-
-atob = round(aRate*a - bRate*b); % Number of cars moved from Albany to Boston
-
-a = a - atob % Number of cars remaining in Albany
-b = b + atob % Number of cars remaining in Boston
-```
-
-```{r}
-# "carUpdate"
-
-aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
-bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
-
-aMove <- round(aRate * a) # Number of cars moved from Albany to Boston
-bMove <- round(bRate * b) # Number of cars moved from Boston to Albany
-
 a <- a - aMove + bMove # Number of cars remaining in Albany
 b <- b - bMove + aMove # Number of cars remaining in Boston
-
-print(a)
-print(b)
-
-a <- 150 # initial number of cars in Albany
-b <- 150 # initial number of cars in Boston
-
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-source("carUpdate.R")
-
+c(a, b)
 ```
 
-```{r}
-# "car_update"
-aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
-bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
-
-atob <- round(aRate*a - bRate*b) # Number of cars moved from Albany to Boston
-
-print(a <- a - atob) # Number of cars remaining in Albany
-print(b <- b + atob) # Number of cars remaining in Boston
-```
-
+*Pyton code*
 
 ```{python}
-# "carUpdate"
-aRate = 0.05 # Rate of cars in Albany dropped off in Boston
-bRate = 0.03 # Rate of cars in Boston dropped off in Albany
-
-aMove = round(aRate * a) # Number of cars moved from Albany to Boston
-bMove = round(bRate * b) # Number of cars moved from Boston to Albany
-
-a = a - aMove + bMove # Number of cars remaining in Albany
-b = b - bMove + aMove # Number of cars remaining in Boston
-
-print "a = ", a
-print "b = ", b
-
-import sys
-
 a = 150 # initial number of cars in Albany
 b = 150 # initial number of cars in Boston
 
-sys.argv = ['carUpdate.py', 'a', 'b']
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-execfile('carUpdate.py')
-```
-
-```{python}
-# "car_update"
-
 aRate = 0.05 # Rate of cars in Albany dropped off in Boston
 bRate = 0.03 # Rate of cars in Boston dropped off in Albany
 
-atob = round(aRate*a - bRate*b) # Number of cars moved from Albany to Boston
+# aMove = Number of cars moved from Albany to Boston
+# bMove = Number of cars moved from Boston to Albany
 
-a = a - atob # Number of cars remaining in Albany
-b = b + atob # Number of cars remaining in Boston
+# iteration 1
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
 
-print "a = ", a
-print "b = ", b
+# iteration 2
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 3
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 4
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 5
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 6
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 7
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 8
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 9
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
+
+# iteration 10
+aMove = round(aRate*a) 
+bMove = round(bRate*b) 
+a = a - aMove + bMove # Number of cars remaining in Albany
+b = b - bMove + aMove # Number of cars remaining in Boston
+print(a, b)
 ```

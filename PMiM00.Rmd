@@ -1,11 +1,11 @@
 ---
-title: "PMiM00"
+title: "Physical Modeling in MATLAB"
 author: "Robert A. Stevens"
-date: "6/19/2017"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
-*Physical Modeling in MATLAB* by Allen B. Downey 
+by Allen B. Downey 
 
 Version 1.1.8
 
