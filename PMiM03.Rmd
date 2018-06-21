@@ -103,32 +103,65 @@ end
 ```
 
 ```{octave}
-echo off
+function ans = car_update(a, b)
+    aRate = 0.05; % Rate of cars in Albany dropped off in Boston
+    bRate = 0.03; % Rate of cars in Boston dropped off in Albany
+
+    atob = round(aRate*a - bRate*b); % Number of cars moved from Albany to Boston
+
+    a = a - atob % Number of cars remaining in Albany
+    b = b + atob % Number of cars remaining in Boston
+    display([a b])
+end
+
+%echo off
 a = 150;
 b = 150;
 for i = 1:52
-    carUpdate % renamed from "car_update"
+    car_update(a, b)
 end
-echo on
+%echo on
 ```
 
 ```{r}
-a <- 150;
-b <- 150;
+car_update <- function(A, B) {
+  aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
+  bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
+
+  atob <- round(aRate*A - bRate*B) # Number of cars moved from Albany to Boston
+
+  A <- A - atob # Number of cars remaining in Albany
+  B <- B + atob # Number of cars remaining in Boston
+  cat(A, B, "\n")
+  return(c(A, B))
+}
+
+a <- 150
+b <- 150
 for(i in 1:52) {
-  source("carUpdate.R") # renamed from "car_update"
+  a <- car_update(a, b)[1]
+  b <- car_update(a, b)[2]
 }
 ```
 
 ```{python}
-import sys
+def car_update(A, B):
 
-sys.argv = ['carUpdate.py', 'a', 'b']
+    aRate = 0.05 # Rate of cars in Albany dropped off in Boston
+    bRate = 0.03 # Rate of cars in Boston dropped off in Albany
+
+    atob = round(aRate*A - bRate*B) # Number of cars moved from Albany to Boston
+
+    A = A - atob # Number of cars remaining in Albany
+    B = B + atob # Number of cars remaining in Boston
+
+    print(A, B)
+    return(A, B)
 
 a = 150
 b = 150
-for i in range(1, 53):
-    execfile('carUpdate.py') # renamed from "car_update.py"
+for i in range(0, 52):
+    a, b = car_update(a, b)
 ```
 
 The first line looks like an assignment statement, and it is like an assignment statement, except that it runs more than once. The first time it runs, it creates the variable i and assigns it the value 1. The second time, i gets the value 2, and so on, up to 52.
@@ -182,7 +215,7 @@ end
 
 ```{r}
 for(i in 1:5) {
-  print(i)
+  cat(i, "\n")
 }
 ```
 
@@ -212,39 +245,43 @@ car_loop
 ```
 
 ```{r}
-# Use a for loop to run "car_update.R" 52 times
+car_loop <- function(A, B) {
+  # Use a for loop to run "car_update.R" 52 times
+
+  for(i in 1:52) {
+    A <- car_update(A, B)[1]
+    B <- car_update(A, B)[2]
+  }
+}
 
 a <- 150 # initial number of cars in Albany
 b <- 150 # initial number of cars in Boston
-
-for(i in 1:52) {
-  source("car_update.R")
-}
-
-source("car_loop.R")
+car_loop(a, b)
 ```
 
 ```{python}
-# Use a for loop to run car_update 52 times. 
+def car_update(A, B):
 
-import sys
+    aRate = 0.05 # Rate of cars in Albany dropped off in Boston
+    bRate = 0.03 # Rate of cars in Boston dropped off in Albany
+
+    atob = round(aRate*A - bRate*B) # Number of cars moved from Albany to Boston
+
+    A = A - atob # Number of cars remaining in Albany
+    B = B + atob # Number of cars remaining in Boston
+
+    print(A, B)
+    return(A, B)
+    
+def car_loop(A, B):
+    # Use a for loop to run car_update 52 times.
+
+    for i in range(1, 53):
+        A, B = car_update(A, B)
 
 a = 150 # initial number of cars in Albany
-print "a = ", a
-
 b = 150 # initial number of cars in Boston
-print "b = ", b
-
-sys.argv = ['car_update.py', 'a', 'b']
-
-for i in range(1, 53):
-    execfile("car_update.py")
-    
-execfile("car_loop.py")
-```
-
-```{python}
-
+car_loop(a, b)
 ```
 
 ## 3.5 plotting

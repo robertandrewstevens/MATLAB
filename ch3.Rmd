@@ -43,15 +43,7 @@ carUpdate
 ```
 
 ```{octave}
-% "car_update"
 
-aRate = 0.05; % Rate of cars in Albany dropped off in Boston
-bRate = 0.03; % Rate of cars in Boston dropped off in Albany
-
-atob = round(aRate*a - bRate*b); % Number of cars moved from Albany to Boston
-
-a = a - atob % Number of cars remaining in Albany
-b = b + atob % Number of cars remaining in Boston
 ```
 
 ```{r}
@@ -94,14 +86,7 @@ source("carUpdate.R")
 ```
 
 ```{r}
-# "car_update"
-aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
-bRate <- 0.03 # Rate of cars in Boston dropped off in Albany
 
-atob <- round(aRate*a - bRate*b) # Number of cars moved from Albany to Boston
-
-print(a <- a - atob) # Number of cars remaining in Albany
-print(b <- b + atob) # Number of cars remaining in Boston
 ```
 
 
@@ -147,16 +132,5 @@ execfile('carUpdate.py')
 ```
 
 ```{python}
-# "car_update"
 
-aRate = 0.05 # Rate of cars in Albany dropped off in Boston
-bRate = 0.03 # Rate of cars in Boston dropped off in Albany
-
-atob = round(aRate*a - bRate*b) # Number of cars moved from Albany to Boston
-
-a = a - atob # Number of cars remaining in Albany
-b = b + atob # Number of cars remaining in Boston
-
-print "a = ", a
-print "b = ", b
 ```
