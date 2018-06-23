@@ -1,0 +1,27 @@
+---
+title: "Octave Plot"
+author: "Robert A. Stevens"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r, echo=FALSE}
+setwd("~/GitHub/MATLAB")
+knitr::opts_chunk$set(
+  comment=NA,
+  engine.path = list(
+    python = '/usr/local/bin/python3',
+    octave = '/Applications/Octave.app/Contents/Resources/usr/Cellar/octave/4.0.3/bin/octave'
+  )
+)
+
+library(reticulate)
+
+setwd("~/GitHub/MATLAB")
+```
+
+```{octave}
+plot(1, 2)
+%saveas (1, "Octave_figure.png");
+print -dpdfwrite test.pdf 
+```

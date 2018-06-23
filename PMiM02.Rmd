@@ -586,7 +586,7 @@ y
 
 *R code*
 
-```{r}
+```{r, results="hold"}
 x <-  1 
 y <- 10 
 
@@ -763,87 +763,6 @@ In the next chapter we will see how to execute your script automatically, and ho
 *Octave code*
 
 ```{octave}
-a = 150; % initial number of cars in Albany
-b = 150; % initial number of cars in Boston
-
-aRate = 0.05; % Rate of cars in Albany dropped off in Boston
-bRate = 0.03; % Rate of cars in Boston dropped off in Albany
-
-% aMove = Number of cars moved from Albany to Boston
-% bMove = Number of cars moved from Boston to Albany
-
-% iteration 1
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 2
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 3
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 4
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 5
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 6
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 7
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 8
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 9
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-
-% iteration 10
-aMove = round(aRate*a);
-bMove = round(bRate*b); 
-a = a - aMove + bMove; # Number of cars remaining in Albany
-b = b - bMove + aMove; # Number of cars remaining in Boston
-display([a b])
-```
-
-```{octave}
 function [A, B] = car_update(A, B)
 
     aRate = 0.05; % Rate of cars in Albany dropped off in Boston
@@ -852,8 +771,9 @@ function [A, B] = car_update(A, B)
     aMove = round(aRate * A); % Number of cars moved from Albany to Boston
     bMove = round(bRate * B); % Number of cars moved from Boston to Albany
 
-    A = A - aMove + bMove % Number of cars remaining in Albany
-    B = B - bMove + aMove % Number of cars remaining in Boston
+    A = A - aMove + bMove; % Number of cars remaining in Albany
+    B = B - bMove + aMove; % Number of cars remaining in Boston
+    display([A B])
 end
 
 a = 150; % initial number of cars in Albany
@@ -873,7 +793,7 @@ b = 150; % initial number of cars in Boston
 
 *R code*
 
-```{r}
+```{r, results="hold"}
 car_update <- function(A, B) {
 
   aRate <- 0.05 # Rate of cars in Albany dropped off in Boston
