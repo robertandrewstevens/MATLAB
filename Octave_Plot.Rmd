@@ -15,13 +15,40 @@ knitr::opts_chunk$set(
   )
 )
 
-library(reticulate)
+#library(reticulate)
+library(R.utils)
 
 setwd("~/GitHub/MATLAB")
 ```
 
 ```{octave}
-plot(1, 2)
+%plot(1, 2)
 %saveas (1, "Octave_figure.png");
-print -dpdfwrite test.pdf 
+%print -dpdfwrite test.pdf 
+
+plot(1:10)
+%print("out.png")
+print("out.eps")
+```
+
+![](out.eps)
+
+
+<img src="/Users/robertstevens/GitHub/MATLAB/out.eps" alt="some text">
+
+```{r}
+#eps("out.eps", width=7, height=7)
+#postscript("out.eps", width=7, height=7, onefile=TRUE, horizontal=FALSE)
+#knitr::include_graphics("out.eps")
+
+#postscript("out.eps", width = 4.0, height = 3.0)
+#plot(1,1)
+#dev.off()
+
+#library(convertGraph)
+#install.phantom("~/GitHub/MATLAB")
+#convertGraph("./out.eps", "./out.png", path = "~/GitHub/MATLAB")
+
+library(TraMineRextras)
+convert.g(path = "~/GitHub/MATLAB", from = "eps", to = "png")
 ```

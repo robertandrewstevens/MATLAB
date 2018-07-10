@@ -6,7 +6,6 @@ output: html_document
 ---
 
 ```{r, echo=FALSE}
-setwd("~/GitHub/MATLAB")
 knitr::opts_chunk$set(
   comment=NA,
   engine.path = list(
