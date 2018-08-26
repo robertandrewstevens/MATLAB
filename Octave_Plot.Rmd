@@ -5,10 +5,12 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
-```{r, echo=FALSE}
-setwd("~/GitHub/MATLAB")
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#setwd("~/GitHub/MATLAB")
 knitr::opts_chunk$set(
-  comment=NA,
+  comment = NA,
+  message = FALSE, 
+  warning = FALSE,
   engine.path = list(
     python = '/usr/local/bin/python3',
     octave = '/Applications/Octave.app/Contents/Resources/usr/Cellar/octave/4.0.3/bin/octave'
@@ -22,16 +24,16 @@ setwd("~/GitHub/MATLAB")
 ```
 
 ```{octave}
-%plot(1, 2)
-%saveas (1, "Octave_figure.png");
+plot(1, 2)
+saveas (1, "Octave_figure.png");
 %print -dpdfwrite test.pdf 
 
-plot(1:10)
+%plot(1:10)
 %print("out.png")
-print("out.eps")
+%print("out.eps")
 ```
 
-![](out.eps)
+![](Octave_figure.png)
 
 
 <img src="/Users/robertstevens/GitHub/MATLAB/out.eps" alt="some text">
@@ -49,6 +51,6 @@ print("out.eps")
 #install.phantom("~/GitHub/MATLAB")
 #convertGraph("./out.eps", "./out.png", path = "~/GitHub/MATLAB")
 
-library(TraMineRextras)
-convert.g(path = "~/GitHub/MATLAB", from = "eps", to = "png")
+#library(TraMineRextras)
+#convert.g(path = "~/GitHub/MATLAB", from = "eps", to = "png")
 ```

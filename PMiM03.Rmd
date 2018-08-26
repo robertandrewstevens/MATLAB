@@ -5,16 +5,20 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(
-  comment=NA,
+  comment = NA,
+  message = FALSE, 
+  warning = FALSE,
   engine.path = list(
-    python = '/usr/local/bin/python3',
     octave = '/Applications/Octave.app/Contents/Resources/usr/Cellar/octave/4.0.3/bin/octave'
   )
 )
 
 library(reticulate)
+
+#use_python("/usr/local/bin/python3")
+use_python("/Library/Frameworks/Python.framework/Versions/3.6/bin/")
 
 setwd("~/GitHub/MATLAB")
 ```
@@ -32,9 +36,9 @@ a = a - 0.05*a + 0.03*b
 b = b + 0.05*a - 0.03*b
 ```
 
-But that would be wrong, so very wrong. Why? The problem is that the first line changes the value of a, so when the second line runs, it gets the old value of b and the new value of a. As a result, the change in a is not always the same as the change in b, which violates the principle of Conversation of Cars!
+But that would be wrong, so very wrong. Why? The problem is that the first line changes the value of `a`, so when the second line runs, it gets the old value of `b` and the new value of `a`. As a result, the change in `a` is not always the same as the change in `b`, which violates the principle of Conversation of Cars!
 
-One solution is to use temporary variables anew and bnew:
+One solution is to use temporary variables `anew` and `bnew`:
 
 ```
 anew = a - 0.05*a + 0.03*b
@@ -85,17 +89,17 @@ There are two ways of thinking about numerical errors, called absolute and relat
 
 An absolute error is just the difference between the correct value and the approximation. We usually write the magnitude of the error, ignoring its sign, because it doesn’t matter whether the approximation is too high or too low.
 
-For example, we might want to estimate 9! using the formula sqrt(18*π)*(9/e)^9. The exact answer is 9·8·7·6·5·4·3·2·1 = 362,880. The approximation is 359,536.87. The absolute error is 3,343.13.
+For example, we might want to estimate 9! using the formula $\sqrt{18\pi}(9/e)^9$. The exact answer is 9·8·7·6·5·4·3·2·1 = 362,880. The approximation is 359,536.87. The absolute error is 3,343.13.
 
-At first glance, that sounds like a lot — we’re off by three thousand — but it is worth taking into account the size of the thing we are estimating. For example, $3000 matters a lot if we are talking about my annual salary, but not at all if we are talking about the national debt.
+At first glance, that sounds like a lot — we’re off by three thousand — but it is worth taking into account the size of the thing we are estimating. For example, \$3000 matters a lot if we are talking about my annual salary, but not at all if we are talking about the national debt.
 
 A natural way to handle this problem is to use relative error, which is the error expressed as a fraction (or percentage) of the exact value. In this case, we would divide the error by 362,880, yielding 0.00921, which is just less than 1%. For many purposes, being off by 1% is good enough.
 
 ## 3.4 for loops
 
-A loop is a part of a program that executes repeatedly; a for loop is the kind of loop that uses the for statement.
+A **loop** is a part of a program that executes repeatedly; a **for loop** is the kind of loop that uses the for statement.
 
-The simplest use of a for loop is to execute one or more lines a fixed number of times. For example, in the last chapter we wrote a script named car update that simulates one week in the life of a rental car company. To simulate an entire year, we have to run it 52 times:
+The simplest use of a **for loop** is to execute one or more lines a fixed number of times. For example, in the last chapter we wrote a script named `car_update` that simulates one week in the life of a rental car company. To simulate an entire year, we have to run it 52 times:
 
 ```
 for i=1:52
@@ -153,27 +157,27 @@ for(i in 1:52) {
 
 ```{python}
 def car_update(A, B):
-
+    
     aRate = 0.05 # Rate of cars in Albany dropped off in Boston
     bRate = 0.03 # Rate of cars in Boston dropped off in Albany
-
+    
     atob = round(aRate*A - bRate*B) # Number of cars moved from Albany to Boston
-
+    
     A = A - atob # Number of cars remaining in Albany
     B = B + atob # Number of cars remaining in Boston
-
+    
     print(A, B)
     return(A, B)
-
+    
 a = 150
 b = 150
 for i in range(0, 52):
     a, b = car_update(a, b)
 ```
 
-The first line looks like an assignment statement, and it is like an assignment statement, except that it runs more than once. The first time it runs, it creates the variable i and assigns it the value 1. The second time, i gets the value 2, and so on, up to 52.
+The first line looks like an assignment statement, and it is like an assignment statement, except that it runs more than once. The first time it runs, it creates the variable `i` and assigns it the value 1. The second time, `i` gets the value 2, and so on, up to 52.
 
-The colon operator, “:”, specifies a range of integers. In the spirit of unit testing, you can create a range at the prompt:
+The colon operator, `:`, specifies a **range** of integers. In the spirit of unit testing, you can create a range at the prompt:
 
 *Octave code*
 
@@ -194,9 +198,9 @@ ans = list(range(1, 6))
 print(ans)
 ```
 
-The variable you use in the for statement is called the loop variable. It is a common convention to use the names i, j and k as loop variables.
+The variable you use in the for statement is called the **loop variable**. It is a common convention to use the names `i`, `j` and `k` as loop variables.
 
-The statements inside the loop are called the body. By convention, they are indented to show that they are inside the loop, but the indentation does not actually affect the execution of the program. The end of the loop is officially marked by the end statement.
+The statements inside the loop are called the **body**. By convention, they are indented to show that they are inside the loop, but the indentation does not actually affect the execution of the program. The end of the loop is officially marked by the end statement.
 
 To see the loop in action you can run a loop that displays the loop variable:
 
@@ -225,7 +229,7 @@ for i in range(1, 6):
 
 As this example shows, you can run a for loop from the command line, but it’s much more common to put it in a script.
 
-**Exercise 3.1** Create a script named "car_loop"" that uses a for loop to run car update 52 times. Remember that before you run car update, you have to assign values to a and b. For this exercise, start with the values a = 150 and b = 150.
+**Exercise 3.1** Create a script named `car_loop` that uses a for loop to run car update 52 times. Remember that before you run `car_update`, you have to assign values to `a` and `b`. For this exercise, start with the values `a` = 150 and `b` = 150.
 
 If everything goes smoothly, your script will display a long stream of numbers on the screen. But it is probably too long to fit, and even if it fit, it would be hard to interpret. A graph would be much better!
 
@@ -279,24 +283,24 @@ car_loop(a, b)
 
 ```{python}
 def car_update(A, B):
-
+    
     aRate = 0.05 # Rate of cars in Albany dropped off in Boston
     bRate = 0.03 # Rate of cars in Boston dropped off in Albany
-
+    
     atob = round(aRate*A - bRate*B) # Number of cars moved from Albany to Boston
-
+    
     A = A - atob # Number of cars remaining in Albany
     B = B + atob # Number of cars remaining in Boston
-
+    
     print(A, B)
     return(A, B)
     
 def car_loop(A, B):
     # Use a for loop to run car_update 52 times.
-
+    
     for i in range(1, 53):
         A, B = car_update(A, B)
-
+    
 a = 150 # initial number of cars in Albany
 b = 150 # initial number of cars in Boston
 car_loop(a, b)
@@ -304,7 +308,7 @@ car_loop(a, b)
 
 ## 3.5 plotting
 
-plot is a versatile function for plotting points and lines on a two-dimensional graph. Unfortunately, it is so versatile that it can be hard to use (and hard to read the documentation!). We will start simple and work our way up.
+`plot` is a versatile function for plotting points and lines on a two-dimensional graph. Unfortunately, it is so versatile that it can be hard to use (and hard to read the documentation!). We will start simple and work our way up.
 
 To plot a single point, type
 
@@ -312,7 +316,10 @@ To plot a single point, type
 
 ```{octave}
 plot(1, 2)
+saveas(1, "figure-3-1.png");
 ```
+
+![](figure-3-1.png)
 
 *R code*
 
@@ -324,14 +331,12 @@ plot(1, 2, xlab = "", ylab = "")
 *Python code*
 
 ```{python}
-import pylab as pl
-
-pl.plot(1, 2, 'bo')
-#pl.show()
-pl.savefig("fig-3-1.png")
+import matplotlib.pyplot as plt
+    
+plt.plot(1, 2, 'bo')
+plt.show()
+plt.close()
 ```
-
-![](fig-3-1.png)
 
 A Figure Window should appear with a graph and a single, blue dot at x position 1 and y position 2. To make the dot more visible, you can specify a different shape:
 
@@ -339,7 +344,10 @@ A Figure Window should appear with a graph and a single, blue dot at x position 
 
 ```{octave}
 plot(1, 2, 'o')
+saveas(1, "figure-3-2.png");
 ```
+
+![](figure-3-2.png)
 
 *R code*
 
@@ -351,14 +359,12 @@ plot(1, 2, pch = 16, xlab = "", ylab = "")
 *Python code*
 
 ```{python}
-import pylab as pl
+import matplotlib.pyplot as plt
 
-pl.plot(1, 2, 'o')
-#pl.show()
-pl.savefig("fig-3-2.png")
+plt.plot(1, 2, 'o')
+plt.show()
+plt.close()
 ```
-
-![](fig-3-2.png)
 
 The letter in single quotes is a string that specifies how the point should be plotted. You can also specify the color:
 
@@ -366,7 +372,10 @@ The letter in single quotes is a string that specifies how the point should be p
 
 ```{octave}
 plot(1, 2, 'ro')
+saveas(1, "figure-3-3.png");
 ```
+
+![](fig-3-3.png)
 
 *R code*
 
@@ -378,18 +387,16 @@ plot(1, 2, pch = 1, col = "red", xlab = "", ylab = "")
 *Python code*
 
 ```{python}
-import pylab as pl
+import matplotlib.pyplot as plt
 
-pl.plot(1, 2, 'ro')
-#pl.show()
-pl.savefig("fig-3-3.png")
+plt.plot(1, 2, 'ro')
+plt.show()
+plt.close()
 ```
 
-![](fig-3-3.png)
+r stands for red; the other colors include green, blue, cyan, magenta, yellow and black. Other shapes include `+`, `*`, `x`, `s` (for square), `d` (for diamond), and `^` (for a triangle).
 
-r stands for red; the other colors include green, blue, cyan, magenta, yellow and black. Other shapes include “+”, “*”, “x”, “s” (for square), “d” (for diamond), and “^” (for a triangle).
-
-When you use plot this way, it can only plot one point at a time. If you run plot again, it clears the figure before making the new plot. The hold command lets you override that behavior. hold on tells MATLAB not to clear the figure when it makes a new plot; hold off returns to the default behavior.
+When you use `plot` this way, it can only plot one point at a time. If you run `plot` again, it clears the figure before making the new plot. The `hold` command lets you override that behavior. `hold` on tells MATLAB not to clear the figure when it makes a new plot; `hold off` returns to the default behavior.
 
 Try this:
 
@@ -400,7 +407,10 @@ hold on
 plot(1, 1, 'o')
 plot(2, 2, 'o')
 hold off
+saveas(1, "figure-3-4.png");
 ```
+
+![](fig-3-4.png)
 
 *R code*
 
@@ -413,23 +423,21 @@ points(2, 2, pch = 1)
 *Python code*
 
 ```{python}
-import pylab as pl
+import matplotlib.pyplot as plt
 
-pl.plot(1, 1, 'o')
-pl.plot(2, 2, 'o')
-#pl.show()
-pl.savefig("fig-3-4.png")
+plt.plot(1, 1, 'o')
+plt.plot(2, 2, 'o')
+plt.show()
+plt.close()
 ```
-
-![](fig-3-4.png)
 
 You should see a figure with two points. MATLAB scales the plot automatically so that the axes run from the lowest value in the plot to the highest. So in this example the points are plotted in the corners.
 
-**Exercise 3.2** Modify "car_loop"" so that each time through the loop it plots the value of a versus the value of i.
+**Exercise 3.2** Modify `car_loop` so that each time through the loop it plots the value of `a` versus the value of `i`.
 
-Once you get that working, modify it so it plots the values of a with red circles and the values of b with blue diamonds.
+Once you get that working, modify it so it plots the values of `a` with red circles and the values of `b` with blue diamonds.
 
-One more thing: if you use hold on to prevent MATLAB from clearing the figure, you might want to clear the figure yourself, from time to time, with the command clf.
+One more thing: if you use hold on to prevent MATLAB from clearing the figure, you might want to clear the figure yourself, from time to time, with the command `clf`.
 
 *Octave code*
 
@@ -460,7 +468,10 @@ b = 150; % initial number of cars in Boston
 hold on
 car_loop(a, b);
 hold off
+saveas(1, "figure-3-5.png");
 ```
+
+![](fig-3-5.png)
 
 *R code*
 
@@ -473,7 +484,6 @@ car_update <- function(A, B) {
 
   A <- A - atob # Number of cars remaining in Albany
   B <- B + atob # Number of cars remaining in Boston
-  #cat(A, B, "\n")
   return(c(A, B))
 }
 
@@ -499,7 +509,7 @@ car_loop(a, b)
 *Python code*
 
 ```{python}
-import pylab as pl
+import matplotlib.pyplot as plt
 
 def car_update(A, B):
 
@@ -511,7 +521,6 @@ def car_update(A, B):
     A = A - atob # Number of cars remaining in Albany
     B = B + atob # Number of cars remaining in Boston
 
-    #print(A, B)
     return(A, B)
     
 def car_loop(A, B):
@@ -519,24 +528,22 @@ def car_loop(A, B):
 
     for i in range(1, 53):
         A, B = car_update(A, B)
-        pl.plot(i, A, 'ro')
-        pl.plot(i, B, 'bD')
+        plt.plot(i, A, 'ro')
+        plt.plot(i, B, 'bD')
 
 a = 150 # initial number of cars in Albany
 b = 150 # initial number of cars in Boston
 car_loop(a, b)
 
-#pl.show()
-pl.savefig("fig-3-5.png")
+plt.show()
+plt.close()
 ```
-
-![](fig-3-5.png)
 
 ## 3.6 Sequences
 
-In mathematics a sequence is a set of numbers that corresponds to the positive integers. The numbers in the sequence are called elements. In math notation, the elements are denoted with subscripts, so the first element of the series A is A[1], followed by A[2], and so on.
+In mathematics a **sequence** is a set of numbers that corresponds to the positive integers. The numbers in the sequence are called **elements**. In math notation, the elements are denoted with subscripts, so the first element of the series A is A[1], followed by A[2], and so on.
 
-for loops are a natural way to compute the elements of a sequence. As an example, in a geometric sequence, each element is a constant multiple of the previous element. As a more specific example, let’s look at the sequence with A[1] = 1 and the ratio A[i + 1] = A[i]/2, for all i. In other words, each element is half as big as the one before it.
+for loops are a natural way to compute the elements of a sequence. As an example, in a geometric sequence, each element is a constant multiple of the previous element. As a more specific example, let’s look at the sequence with A[1] = 1 and the ratio A[i + 1] = A[i]/2, for all `i`. In other words, each element is half as big as the one before it.
 
 The following loop computes the first 10 elements of A:
 
@@ -574,9 +581,9 @@ Each time through the loop, we find the next value of a by dividing the previous
 
 Each time through the loop, we replace the previous element with the next, so at the end, a contains the 10th element. The other elements are displayed on the screen, but they are not saved in a variable. Later, we will see how to save all of the elements of a sequence in a vector.
 
-This loop computes the sequence recurrently, which means that each element depends on the previous one. For this sequence it is also possible to compute the i-th element directly, as a function of i, without using the previous element. In math notation, A[i] = A[1]r^(i − 1).
+This loop computes the sequence **recurrently**, which means that each element depends on the previous one. For this sequence it is also possible to compute the i-th element **directly**, as a function of `i`, without using the previous element. In math notation, A[i] = A[1]r^(i − 1).
 
-**Exercise 3.3** Write a script named sequence that uses a loop to compute elements of A directly.
+**Exercise 3.3** Write a script named `sequence` that uses a loop to compute elements of A directly.
 
 *Octave code*
 
@@ -611,11 +618,11 @@ for i in range(2, 11):
 
 ## 3.7 Series
 
-In mathematics, a series is the sum of the elements of a sequence. It’s a terrible name, because in common English, “sequence” and “series” mean pretty much the same thing, but in math, a sequence is a set of numbers, and a series is an expression (a sum) that has a single value. In math notation, a series is often written using the summation symbol "sum".
+In mathematics, a **series** is the sum of the elements of a sequence. It’s a terrible name, because in common English, “sequence” and “series” mean pretty much the same thing, but in math, a sequence is a set of numbers, and a series is an expression (a sum) that has a single value. In math notation, a series is often written using the summation symbol $\sum$.
 
 For example, the sum of the first 10 elements of A is
 
-$\sum_{i=1}^{10}A_{i}$
+$$\sum_{i=1}^{10}A_{i}$$
 
 A for loop is a natural way to compute the value of this series: 
 
@@ -658,9 +665,9 @@ print(total)
 
 A1 is the first element of the sequence, so each time through the loop a is the i-th element.
 
-The way we are using total is sometimes called an accumulator; that is, a variable that accumulates a result a little bit at a time. Before the loop we initialize it to 0. Each time through the loop we add in the i-th element. At the end of the loop total contains the sum of the elements. Since that’s the value we were looking for, we assign it to ans.
+The way we are using total is sometimes called an **accumulator**; that is, a variable that accumulates a result a little bit at a time. Before the loop we initialize it to 0. Each time through the loop we add in the i-th element. At the end of the loop **total** contains the sum of the elements. Since that’s the value we were looking for, we assign it to `ans`.
 
-**Exercise 3.4** This example computes the terms of the series directly; as an exercise, write a script named series that computes the same sum by computing the elements recurrently. You will have to be careful about where you start and stop the loop.
+**Exercise 3.4** This example computes the terms of the series directly; as an exercise, write a script named `series` that computes the same sum by computing the elements recurrently. You will have to be careful about where you start and stop the loop.
 
 *Octave code*
 
@@ -778,7 +785,7 @@ series(40)
 
 It sure looks like it’s converging on 2.
 
-Replacing a constant with a variable is called generalization. Instead of computing a fixed, specific number of terms, the new script is more general; it can compute any number of terms.
+Replacing a constant with a variable is called **generalization**. Instead of computing a fixed, specific number of terms, the new script is more general; it can compute any number of terms.
 
 This is an important idea we will come back to when we talk about functions.
 
@@ -819,11 +826,11 @@ previous elements.
 
 In order to get started, you have to specify the first two elements, but once you have those, you can compute the rest. The most common Fibonacci sequence starts with F[1] = 1 and F[2] = 1.
 
-Write a script called fibonacci2 that uses a for loop to compute the first 10 elements of this Fibonacci sequence. As a postcondition, your script should assign the 10th element to ans.
+Write a script called `fibonacci2` that uses a for loop to compute the first 10 elements of this Fibonacci sequence. As a postcondition, your script should assign the 10th element to `ans`.
 
-Now generalize your script so that it computes the nth element for any value of n, with the precondition that you have to set n before you run the script. To keep things simple for now, you can assume that n is greater than 0.
+Now generalize your script so that it computes the nth element for any value of n, with the precondition that you have to set `n` before you run the script. To keep things simple for now, you can assume that `n` is greater than 0.
 
-Hint: you will have to use two variables to keep track of the previous two elements of the sequence. You might want to call them prev1 and prev2. Initially, prev1 = F1 and prev2 = F2. At the end of the loop, you will have to update prev1 and prev2; think carefully about the order of the updates!
+Hint: you will have to use two variables to keep track of the previous two elements of the sequence. You might want to call them `prev1` and `prev2`. Initially, `prev1` = F[1] and `prev2` = F[2]. At the end of the loop, you will have to update `prev1` and `prev2`; think carefully about the order of the updates!
 
 - Computes the nth Fibonacci number.
 
@@ -889,7 +896,7 @@ def fibonacci2(n):
 fibonacci2(10)
 ```
 
-**Exercise 3.6** Write a script named fib plot that loops i through a range from 1 to 20, uses fibonacci2 to compute Fibonacci numbers, and plots F[i] for each i with a series of red circles.
+**Exercise 3.6** Write a script named `fib_plot` that loops `i` through a range from 1 to 20, uses `fibonacci2` to compute Fibonacci numbers, and plots F[i] for each `i` with a series of red circles.
 
 *Octave code*
 
@@ -919,7 +926,10 @@ for i = 3:20
 end
 
 hold off
+saveas(1, "figure-3-6.png");
 ```
+
+![](fig-3-6.png)
 
 *R code*
 
@@ -945,7 +955,6 @@ points(2, 1, col = "red", pch = 1); # n = 2, F2 = 1
 
 for(n in 3:20) {
   ans <- fibonacci2(n)
-  #cat(n, ans, "\n")
   points(n, ans, col = "red", pch = 1);
 }
 ```
@@ -953,7 +962,7 @@ for(n in 3:20) {
 *Python code*
 
 ```{python}
-import pylab as pl
+import matplotlib.pyplot as plt
 
 def fibonacci2(n):
 
@@ -967,16 +976,13 @@ def fibonacci2(n):
         prev1 = total
     return(total)
 
-pl.plot(1, 1, 'ro') # n = 1, F1 = 1
-pl.plot(2, 1, 'ro') # n = 2, F2 = 1
+plt.plot(1, 1, 'ro') # n = 1, F1 = 1
+plt.plot(2, 1, 'ro') # n = 2, F2 = 1
 
 for n in range(3, 21):
   ans = fibonacci2(n)
-  #print(n, ans)
-  pl.plot(n, ans, 'ro')
+  plt.plot(n, ans, 'ro')
 
-#pl.show()
-pl.savefig("fig-3-6.png")
+plt.show()
+plt.close()
 ```
-
-![](fig-3-6.png)
