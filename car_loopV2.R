@@ -1,0 +1,17 @@
+# Physical Modeling in MATLAB by Allen B. Downey
+# Chapter 3:  Loops
+# Script for Exercise 3.1
+# MATLAB script refactored into R
+
+# Use a for loop to run car_update 52 times. 
+
+print(a <- 150) # initial number of cars in Albany
+print(b <- 150) # initial number of cars in Boston
+
+plot(c(0, 52), c(0, 200), xlab = "Week", ylab = "Count", type = "n")
+
+for(i in 1:52) {
+  source("car_update.R");
+  points(i, a, col = "red", pch = 1);
+  points(i, b, col = "blue", pch = 18);
+}
